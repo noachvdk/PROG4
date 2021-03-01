@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Managers">
+      <UniqueIdentifier>{ace6644a-e0dd-4e89-851c-7ad62a53b87c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components">
+      <UniqueIdentifier>{aa38f881-d780-4e65-8c95-5c9ac7538e54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGUI">
+      <UniqueIdentifier>{13a49922-c5ef-4cb8-aca9-539505f4b5b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Commands">
+      <UniqueIdentifier>{b0e99e26-4056-4473-a509-5ddd224cd9ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Observer">
+      <UniqueIdentifier>{fbd89e40-9dc5-4539-b4bc-7fe7b3720d76}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MiniginPCH.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Minigin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="FontComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="FpsComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui-1.81\imconfig.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui-1.81\imgui.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui-1.81\imgui_internal.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui-1.81\imstb_rectpack.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui-1.81\imstb_textedit.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui-1.81\imstb_truetype.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui-1.81\backends\imgui_impl_opengl2.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui-1.81\backends\imgui_impl_sdl.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Command.h">
+      <Filter>Header Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="Observer.h">
+      <Filter>Header Files\Observer</Filter>
+    </ClInclude>
+    <ClInclude Include="Subject.h">
+      <Filter>Header Files\Observer</Filter>
+    </ClInclude>
+    <ClInclude Include="LivesComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="PointComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="AllComponents.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MiniginPCH.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TextObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Minigin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Header Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>Header Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Header Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseComponent.cpp">
+      <Filter>Header Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="FontComponent.cpp">
+      <Filter>Header Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureComponent.cpp">
+      <Filter>Header Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeManager.cpp">
+      <Filter>Header Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="FpsComponent.cpp">
+      <Filter>Header Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui-1.81\imgui.cpp">
+      <Filter>ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui-1.81\imgui_demo.cpp">
+      <Filter>ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui-1.81\imgui_draw.cpp">
+      <Filter>ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui-1.81\imgui_tables.cpp">
+      <Filter>ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui-1.81\imgui_widgets.cpp">
+      <Filter>ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui-1.81\backends\imgui_impl_opengl2.cpp">
+      <Filter>ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui-1.81\backends\imgui_impl_sdl.cpp">
+      <Filter>ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerComponent.cpp">
+      <Filter>Header Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Command.cpp">
+      <Filter>Header Files\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="Observer.cpp">
+      <Filter>Header Files\Observer</Filter>
+    </ClCompile>
+    <ClCompile Include="Subject.cpp">
+      <Filter>Header Files\Observer</Filter>
+    </ClCompile>
+    <ClCompile Include="LivesComponent.cpp">
+      <Filter>Header Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="PointComponent.cpp">
+      <Filter>Header Files\Components</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
