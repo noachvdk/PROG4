@@ -27,6 +27,7 @@ bool InputManager::ProcessInput()
 		const DWORD dwResult = XInputGetState(i, &m_CurrGamepadState[i]);
 	}
 	//Read input from keyboard
+	m_Event = SDL_Event(); //Reset 
 	SDL_PollEvent(&m_Event);
 
 	if (IsPressedDown(ControllerButton::ButtonStart,0) || (IsKeyPressedDown(SDLK_ESCAPE)))
@@ -36,14 +37,6 @@ bool InputManager::ProcessInput()
 		Rumble(0,GetLeftTrigger(0), GetRightTrigger(0));
 	else
 		Rumble(0);
-
-
-	//SDL_Event e;
-	//while (SDL_PollEvent(&e)) {
-	//	if (e.type == SDL_MOUSEBUTTONDOWN) {
-	//		
-	//	}
-	//}
 
 	return true;
 }
@@ -83,7 +76,7 @@ bool InputManager::IsKeyPressedHeld(const SDL_Keycode key) const
 
 bool InputManager::IsKeyPressedReleased(const SDL_Keycode key) const
 {
-	if (m_Event.type == SDL_KEYDOWN && !m_Event.key.repeat) //For now this is the same as KeyPressed
+	if (m_Event.type == SDL_KEYUP && !m_Event.key.repeat) //Requires work
 	{
 		return (m_Event.key.keysym.sym == key);
 	}

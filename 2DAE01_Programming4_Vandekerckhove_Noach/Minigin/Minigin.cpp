@@ -72,28 +72,26 @@ void dae::Minigin::LoadGame() const
 	title->AddOffset(80, 20);
 	to->AddComponent(title);
 	scene.Add(to);
-
+	//Player 1 
 	auto PlayerOneObject = std::make_shared<GameObject>();
-	auto PlayerOne = new PlayerComponent{ 0 };
-	PlayerOneObject->AddComponent(PlayerOne);
-	auto livesOne = new LivesComponent{ 3,"Lingua.otf",16 };
-	PlayerOneObject->AddComponent(livesOne);
-	auto PointOne = new PointComponent{"Lingua.otf",16 };
-	PlayerOneObject->AddComponent(PointOne);
-	PointOne->AddTextOffset(550, 0);
-	scene.Add(PlayerOneObject);
 	PlayerOneObject->SetPosition(10, 75);
+	PlayerOneObject->AddComponent(new SubjectComponent{});
+	PlayerOneObject->AddComponent(new PlayerComponent{ 0 });
+	PlayerOneObject->AddComponent(new LivesComponent{ 3,true });
+	auto Points = new PointComponent{"Lingua.otf",16 };
+	Points->AddTextOffset(550, 0);
+	PlayerOneObject->AddComponent(Points);
+	scene.Add(PlayerOneObject);
 	
-
+	//Player 2
 	auto PlayerTwoObject = std::make_shared<GameObject>();
-	auto PlayerTwo = new PlayerComponent{ 1 };
-	PlayerTwoObject->AddComponent(PlayerTwo);
-	auto livesTwo = new LivesComponent{ 3,"Lingua.otf",16 };
-	PlayerTwoObject->AddComponent(livesTwo);
 	PlayerTwoObject->SetPosition(10, 100);
-	auto PointTwo = new PointComponent{ "Lingua.otf",16 };
-	PlayerTwoObject->AddComponent(PointTwo);
-	PointTwo->AddTextOffset(550, 0);
+	PlayerTwoObject->AddComponent(new PlayerComponent{ 1 });
+	PlayerTwoObject->AddComponent(new LivesComponent{ 3,true });
+	Points = new PointComponent{ "Lingua.otf",16 };
+	Points->AddTextOffset(550, 0);
+	PlayerTwoObject->AddComponent(Points);
+	PlayerTwoObject->AddComponent(new SubjectComponent{});
 	scene.Add(PlayerTwoObject);
 }
 
@@ -121,14 +119,16 @@ void dae::Minigin::Run()
 		auto& renderer = Renderer::GetInstance();
 		auto& sceneManager = SceneManager::GetInstance();
 		auto& input = InputManager::GetInstance();
+		//Player 1 inputs
 		input.AddInputAction(InputAction{ 0, SDLK_z, TriggerType::OnPress, ControllerButton::ButtonA, new DieCommand() });
-		input.AddInputAction(InputAction{ 1, SDLK_KP_5, TriggerType::OnPress, ControllerButton::ButtonA, new DieCommand() });
 		input.AddInputAction(InputAction{ 0, SDLK_q, TriggerType::OnPress, ControllerButton::ButtonB, new DefeatedCoilyCommand() });
-		input.AddInputAction(InputAction{ 1, SDLK_KP_1, TriggerType::OnPress, ControllerButton::ButtonB, new DefeatedCoilyCommand() });
 		input.AddInputAction(InputAction{ 0, SDLK_s, TriggerType::OnPress, ControllerButton::ButtonY, new ColorChangeCommand() });
-		input.AddInputAction(InputAction{ 1, SDLK_KP_2, TriggerType::OnPress, ControllerButton::ButtonY, new ColorChangeCommand() });
 		input.AddInputAction(InputAction{ 0, SDLK_d, TriggerType::OnPress, ControllerButton::ButtonX, new CatchSlickOrSamCommand() });
-		input.AddInputAction(InputAction{ 1, SDLK_KP_3, TriggerType::OnPress, ControllerButton::ButtonX, new CatchSlickOrSamCommand() });
+		//Player 2 inputs
+		input.AddInputAction(InputAction{ 1, SDLK_UP, TriggerType::OnPress, ControllerButton::ButtonA, new DieCommand() });
+		input.AddInputAction(InputAction{ 1, SDLK_LEFT, TriggerType::OnPress, ControllerButton::ButtonB, new DefeatedCoilyCommand() });
+		input.AddInputAction(InputAction{ 1, SDLK_DOWN, TriggerType::OnPress, ControllerButton::ButtonY, new ColorChangeCommand() });
+		input.AddInputAction(InputAction{ 1, SDLK_RIGHT, TriggerType::OnPress, ControllerButton::ButtonX, new CatchSlickOrSamCommand() });
 		
 		auto& time = TimeManager::GetInstance();
 		bool doContinue = true;

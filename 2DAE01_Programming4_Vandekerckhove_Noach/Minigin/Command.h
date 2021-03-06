@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
 #include "GameObject.h"
+#include "SubjectComponent.h"
+#include "LivesComponent.h"
 using namespace dae;
 
 class Command
@@ -42,7 +44,9 @@ class DieCommand : public Command
 public:
 	void Execute(GameObject& obj)override
 	{
-		obj.Notify(Event::ActorDied);
+		auto lives = obj.GetComponent<LivesComponent>();
+		if (lives)
+			lives->Die();
 	}
 };
 
@@ -51,7 +55,9 @@ class TakeDamageCommand : public Command
 public:
 	void Execute(GameObject& obj)override
 	{
-		obj.Notify(Event::ActorTakeDamage);
+		auto lives = obj.GetComponent<LivesComponent>();
+		if (lives)
+			lives->DecreaseHealth();
 	}
 };
 
@@ -60,7 +66,9 @@ class ColorChangeCommand : public Command
 public:
 	void Execute(GameObject& obj)override
 	{
-		obj.Notify(Event::ColorChange);
+		auto subject = obj.GetComponent<SubjectComponent>();
+		if (subject)
+		obj.GetComponent<SubjectComponent>()->Notify(Event::ColorChange);
 	}
 };
 
@@ -69,7 +77,9 @@ class DefeatedCoilyCommand : public Command
 public:
 	void Execute(GameObject& obj)override
 	{
-		obj.Notify(Event::DefeatedCoily);
+		auto subject = obj.GetComponent<SubjectComponent>();
+		if (subject)
+		obj.GetComponent<SubjectComponent>()->Notify(Event::DefeatedCoily);
 	}
 };
 
@@ -78,6 +88,8 @@ class CatchSlickOrSamCommand : public Command
 public:
 	void Execute(GameObject& obj)override
 	{
-		obj.Notify(Event::CatchedSlickOrSam);
+		auto subject = obj.GetComponent<SubjectComponent>();
+		if (subject)
+		obj.GetComponent<SubjectComponent>()->Notify(Event::CatchedSlickOrSam);
 	}
 };

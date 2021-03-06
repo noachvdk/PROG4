@@ -39,8 +39,7 @@ namespace dae
 			return components;
 		}
 		Transform GetTransform() const { return m_Transform; }
-
-		void Notify(Event event);
+		std::vector<BaseComponent*> GetAllComponents() const { return m_pComponents; }
 
 		GameObject();
 		virtual ~GameObject();
@@ -52,6 +51,5 @@ namespace dae
 	private:
 		Transform m_Transform;
 		std::vector<BaseComponent*> m_pComponents;
-		std::unique_ptr<Subject> m_Subject;
 	};
 }

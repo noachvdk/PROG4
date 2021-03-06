@@ -3,10 +3,10 @@
 #include "ResourceManager.h"
 #include "Renderer.h"
 #include "BaseComponent.h"
+#include "SubjectComponent.h"
 
 
 dae::GameObject::GameObject()
-	: m_Subject(std::make_unique<Subject>())
 {
 	
 }
@@ -39,11 +39,8 @@ void dae::GameObject::AddComponent(BaseComponent* component)
 	m_pComponents.push_back(component);
 	component->SetParentObject(this);
 	component->PostAddedToGameObject();
-	if(dynamic_cast<Observer*>(component))
-		m_Subject->AddObserver(dynamic_cast<Observer*>(component));
+	auto subject = GetComponent<SubjectComponent>();
+	if(dynamic_cast<Observer*>(component) && subject) //Add observers to existing subject component
+		subject->AddObserver(dynamic_cast<Observer*>(component));
 }
 
-void dae::GameObject::Notify(Event event)
-{
-	m_Subject->Notify(event);
-}

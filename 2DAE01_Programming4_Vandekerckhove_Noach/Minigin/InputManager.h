@@ -38,7 +38,7 @@ namespace dae
 	{
 	public:
 		const unsigned int ID;
-		const SDL_Keycode keyboardCode; 
+		const SDL_Keycode keyboardCode;
 		const TriggerType type;
 		ControllerButton button;
 		Command* command;

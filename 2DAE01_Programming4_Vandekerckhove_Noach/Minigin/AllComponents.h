@@ -5,3 +5,4 @@
 #include "PlayerComponent.h"
 #include "PointComponent.h"
 #include "TextureComponent.h"
+#include "SubjectComponent.h"

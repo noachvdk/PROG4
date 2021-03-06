@@ -6,6 +6,7 @@ namespace dae
 	{
 		ActorDied,
 		ActorTakeDamage,
+		ActorHealthChange,
 		ColorChange,
 		DefeatedCoily,
 		CatchedSlickOrSam

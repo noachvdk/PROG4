@@ -132,6 +132,12 @@
     <ClInclude Include="AllComponents.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
+    <ClInclude Include="LivesDisplayComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SubjectComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MiniginPCH.cpp">
@@ -150,9 +156,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TextObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Font.cpp">
@@ -225,6 +228,15 @@
       <Filter>Header Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="PointComponent.cpp">
+      <Filter>Header Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="LivesDisplayComponent.cpp">
+      <Filter>Header Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="TextObject.cpp">
+      <Filter>Header Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="SubjectComponent.cpp">
       <Filter>Header Files\Components</Filter>
     </ClCompile>
   </ItemGroup>
