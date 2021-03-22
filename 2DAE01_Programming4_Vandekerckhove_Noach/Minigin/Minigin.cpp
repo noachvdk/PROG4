@@ -11,17 +11,22 @@
 #include "GameObject.h"
 #include "Scene.h"
 #include "AllComponents.h"
+#include "VisualBenchmarking.h"
+#include "audio.h"
 
 using namespace std;
 using namespace std::chrono;
 
 void dae::Minigin::Initialize()
 {
-	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
+	_putenv("SDL_AUDIODRIVER=DirectSound");
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0)
 	{
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
 	}
 
+	initAudio();
+	
 	m_Window = SDL_CreateWindow(
 		"Programming 4 assignment",
 		SDL_WINDOWPOS_CENTERED,
@@ -36,6 +41,7 @@ void dae::Minigin::Initialize()
 	}
 
 	Renderer::GetInstance().Init(m_Window);
+	Session::Get().BeginSession();
 }
 
 /**
@@ -97,11 +103,23 @@ void dae::Minigin::LoadGame() const
 
 void dae::Minigin::Cleanup()
 {
+	Session::Get().EndSession();
+	ServiceLocator::Destroy();
+	endAudio();
 	Renderer::GetInstance().Destroy();
 	SDL_DestroyWindow(m_Window);
 	m_Window = nullptr;
 	SDL_Quit();
 }
+
+void Minigin::SoundLoop()
+{
+	while (m_Continue)
+	{
+		ServiceLocator::GetSoundSystem().Update();
+	}
+}
+
 
 void dae::Minigin::Run()
 {
@@ -109,7 +127,8 @@ void dae::Minigin::Run()
 
 	// tell the resource manager where he can find the game data
 	ResourceManager::GetInstance().Init("../Data/");
-
+	ServiceLocator::RegisterSoundSystem(new LoggingSoundSystem( new SDLAudioSystem()));
+	
 	LoadGame();
 
 	//in the properties of project go to Linker>System and set SubSystem to Console for console window
@@ -131,22 +150,28 @@ void dae::Minigin::Run()
 		input.AddInputAction(InputAction{ 1, SDLK_RIGHT, TriggerType::OnPress, ControllerButton::ButtonX, new CatchSlickOrSamCommand() });
 		
 		auto& time = TimeManager::GetInstance();
-		bool doContinue = true;
+		m_Continue = true;
 		auto lastTime = high_resolution_clock::now();
-		while (doContinue)
+
+		std::thread SoundThread(&dae::Minigin::SoundLoop,this); //this way sound queue is processed on a different thread
+		while(m_Continue)
 		{
 			const auto currentTime = high_resolution_clock::now();
 			const float deltaTime = duration<float>(currentTime - lastTime).count();
 			time.Update(deltaTime);
-
-			doContinue = input.ProcessInput();
+			
+			m_Continue = input.ProcessInput();
 
 			sceneManager.Update();
 			renderer.Render();
 			
 			lastTime = currentTime;
 		}
+
+		SoundThread.join();
 	}
+
 
 	Cleanup();
 }
+

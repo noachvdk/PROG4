@@ -28,6 +28,12 @@
     <Filter Include="Header Files\Observer">
       <UniqueIdentifier>{fbd89e40-9dc5-4539-b4bc-7fe7b3720d76}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ServiceLocator">
+      <UniqueIdentifier>{00fc41d7-8eb4-4458-bded-b658572a0940}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Sound">
+      <UniqueIdentifier>{9eb35c89-41ac-4e28-9a07-f403c6d666ef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MiniginPCH.h">
@@ -138,6 +144,18 @@
     <ClInclude Include="SubjectComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
+    <ClInclude Include="VisualBenchmarking.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceLocator.h">
+      <Filter>Header Files\ServiceLocator</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundSystem.h">
+      <Filter>Header Files\ServiceLocator</Filter>
+    </ClInclude>
+    <ClInclude Include="audio.h">
+      <Filter>Header Files\Sound</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MiniginPCH.cpp">
@@ -238,6 +256,15 @@
     </ClCompile>
     <ClCompile Include="SubjectComponent.cpp">
       <Filter>Header Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceLocator.cpp">
+      <Filter>Header Files\ServiceLocator</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundSystem.cpp">
+      <Filter>Header Files\ServiceLocator</Filter>
+    </ClCompile>
+    <ClCompile Include="audio.c">
+      <Filter>Header Files\Sound</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

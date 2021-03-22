@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "SubjectComponent.h"
 #include "LivesComponent.h"
+#include "ServiceLocator.h"
 using namespace dae;
 
 class Command
@@ -47,6 +48,7 @@ public:
 		auto lives = obj.GetComponent<LivesComponent>();
 		if (lives)
 			lives->Die();
+		ServiceLocator::GetSoundSystem().Pause();
 	}
 };
 
@@ -69,6 +71,7 @@ public:
 		auto subject = obj.GetComponent<SubjectComponent>();
 		if (subject)
 		obj.GetComponent<SubjectComponent>()->Notify(Event::ColorChange);
+		ServiceLocator::GetSoundSystem().UnPause();
 	}
 };
 
@@ -80,6 +83,8 @@ public:
 		auto subject = obj.GetComponent<SubjectComponent>();
 		if (subject)
 		obj.GetComponent<SubjectComponent>()->Notify(Event::DefeatedCoily);
+		auto& ss = ServiceLocator::GetSoundSystem();
+		ss.PlaySound("../Data/sounds/door1.wav", SDL_MIX_MAXVOLUME);
 	}
 };
 
@@ -91,5 +96,7 @@ public:
 		auto subject = obj.GetComponent<SubjectComponent>();
 		if (subject)
 		obj.GetComponent<SubjectComponent>()->Notify(Event::CatchedSlickOrSam);
+		auto& ss = ServiceLocator::GetSoundSystem();
+		ss.PlayMusic("../Data/music/road.wav", SDL_MIX_MAXVOLUME);
 	}
 };

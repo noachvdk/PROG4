@@ -1,7 +1,6 @@
 #include "MiniginPCH.h"
 #include "InputManager.h"
 #include <SDL.h>
-#include <iostream> 
 #include <algorithm>    // std::find
 #include <vector>  
 #include <SDL.h>
