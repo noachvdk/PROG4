@@ -87,6 +87,15 @@ void InputManager::AddInputAction(InputAction action)
 	m_InputActions.push_back(action);
 }
 
+void InputManager::ResetInputActions()
+{
+	for (auto& action : m_InputActions)
+	{
+		safeDelete(action.command);
+	}
+	m_InputActions.clear();
+}
+
 bool InputManager::GetIsLeftStickInDeadZone(const int playerID) const
 {
 	const short x = m_CurrGamepadState[playerID].Gamepad.sThumbLX;

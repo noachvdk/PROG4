@@ -6,3 +6,5 @@
 #include "PointComponent.h"
 #include "TextureComponent.h"
 #include "SubjectComponent.h"
+#include "LevelComponent.h"
+#include "CharacterComponent.h"

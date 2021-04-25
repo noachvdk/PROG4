@@ -11,7 +11,7 @@ namespace dae
 	class TextureComponent final: public BaseComponent
 	{
 	public:
-		TextureComponent(const std::string& filename);
+		TextureComponent(const std::string& filename, bool move = false,bool fixedsize = false);
 		~TextureComponent() override;
 
 		TextureComponent(const TextureComponent& other) = delete;
@@ -22,10 +22,14 @@ namespace dae
 		void UpdateComponent() override;
 		void RenderComponent() override;
 		void PostAddedToGameObject() override {};
+		void SetSize(float size) { m_Size = size; }
 
 		void SetOffset(float x, float y);
 	private:
 		float m_OffsetX, m_OffsetY;
+		bool m_MoveIndependently;
+		bool m_FixedSize;
+		float m_Size;
 		std::shared_ptr<Texture2D> m_pTexture;
 	};
 

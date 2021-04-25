@@ -4,7 +4,7 @@
 
 namespace dae
 {
-	class SubjectComponent : public BaseComponent
+	class SubjectComponent final: public BaseComponent
 	{
 	public:
 		SubjectComponent();

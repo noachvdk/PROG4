@@ -1,9 +1,11 @@
 #pragma once
 #include <iostream>
 #include "GameObject.h"
-#include "SubjectComponent.h"
+#include "LevelManager.h"
+#include "AllComponents.h"
 #include "LivesComponent.h"
 #include "ServiceLocator.h"
+#include "SceneManager.h"
 using namespace dae;
 
 class Command
@@ -17,27 +19,6 @@ class JumpCommand : public Command
 {
 public:
 	void Execute(GameObject& obj)override { std::cout << "jump"; UNREFERENCED_PARAMETER(obj); }
-};
-
-class DuckCommand : public Command
-{
-public:
-	void Execute(GameObject& obj)override { std::cout << "Duck"; UNREFERENCED_PARAMETER(obj);
-	}
-};
-
-class FartCommand : public Command
-{
-public:
-	void Execute(GameObject& obj)override { std::cout << "Fart"; UNREFERENCED_PARAMETER(obj);
-	}
-};
-
-class FireCommand : public Command
-{
-public:
-	void Execute(GameObject& obj)override { std::cout << "Fire"; UNREFERENCED_PARAMETER(obj);
-	}
 };
 
 class DieCommand : public Command
@@ -70,7 +51,9 @@ public:
 	{
 		auto subject = obj.GetComponent<SubjectComponent>();
 		if (subject)
-		obj.GetComponent<SubjectComponent>()->Notify(Event::ColorChange);
+		{
+			subject->Notify(Event::ColorChange);
+		}
 		ServiceLocator::GetSoundSystem().UnPause();
 	}
 };
@@ -82,7 +65,10 @@ public:
 	{
 		auto subject = obj.GetComponent<SubjectComponent>();
 		if (subject)
-		obj.GetComponent<SubjectComponent>()->Notify(Event::DefeatedCoily);
+		{
+			subject->Notify(Event::DefeatedCoily);
+			subject->Notify(Event::LevelFinished);
+		}
 		auto& ss = ServiceLocator::GetSoundSystem();
 		ss.PlaySound("../Data/sounds/door1.wav", SDL_MIX_MAXVOLUME);
 	}
@@ -98,5 +84,49 @@ public:
 		obj.GetComponent<SubjectComponent>()->Notify(Event::CatchedSlickOrSam);
 		auto& ss = ServiceLocator::GetSoundSystem();
 		ss.PlayMusic("../Data/music/road.wav", SDL_MIX_MAXVOLUME);
+	}
+};
+
+class MoveUpLeft : public Command
+{
+public:
+	void Execute(GameObject& obj)override
+	{
+		auto character = obj.GetComponent<CharacterComponent>();
+		if (character)
+			obj.GetComponent<CharacterComponent>()->move(direction::UpLeft);
+	}
+};
+
+class MoveUpRight : public Command
+{
+public:
+	void Execute(GameObject& obj)override
+	{
+		auto character = obj.GetComponent<CharacterComponent>();
+		if (character)
+			obj.GetComponent<CharacterComponent>()->move(direction::UpRight);
+	}
+};
+
+class MoveDownLeft : public Command
+{
+public:
+	void Execute(GameObject& obj)override
+	{
+		auto character = obj.GetComponent<CharacterComponent>();
+		if (character)
+			obj.GetComponent<CharacterComponent>()->move(direction::DownLeft);
+	}
+};
+
+class MoveDownRight : public Command
+{
+public:
+	void Execute(GameObject& obj)override
+	{
+		auto character = obj.GetComponent<CharacterComponent>();
+		if (character)
+			obj.GetComponent<CharacterComponent>()->move(direction::DownRight);
 	}
 };

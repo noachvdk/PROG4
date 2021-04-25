@@ -1,52 +1,87 @@
 #include "MiniginPCH.h"
 #include "LivesComponent.h"
-#include "LivesDisplayComponent.h"
+#include "FontComponent.h"
 #include "PlayerComponent.h"
 #include "SubjectComponent.h"
 
 using namespace dae;
 
-LivesComponent::LivesComponent(const int startingLives, bool DisplayHealth)
+LivesComponent::LivesComponent(const int startingLives, const std::string& font, const unsigned int size, bool displayHealth)
 	: m_CurrentLives(startingLives)
 	, m_MaxLives(startingLives)
 	, m_IsDead(false)
-	, m_DisplayHealth(DisplayHealth)
+	, m_DisplayHealth(displayHealth)
+	, m_NeedsUpdate(false)
 {
-	if(DisplayHealth)
-		m_pLivesDisplay = new LivesDisplayComponent{ "Lingua.otf",16 };
+	m_pFontComponent = new FontComponent{ font,size," " };
 }
 
 void LivesComponent::UpdateComponent()
 {
+	if(m_NeedsUpdate)
+	{
+		const auto parent = GetParentObject()->GetComponent<PlayerComponent>();
+		if (parent && m_DisplayHealth)
+		{
+			if(m_IsDead)
+			{
+				m_pFontComponent->SetText("Player " + std::to_string(parent->GetPlayerID() + 1) + " has died");
+			}
+			else
+			{
+				m_pFontComponent->SetText("Player " + std::to_string(parent->GetPlayerID() + 1) + " has " + std::to_string(m_CurrentLives) + " lives");
+			}
+		}
 
+	}
 }
 
 void LivesComponent::PostAddedToGameObject()
 {
-	if(m_DisplayHealth)
-		GetParentObject()->AddComponent(m_pLivesDisplay);
+	GetParentObject()->AddComponent(m_pFontComponent);
+	m_NeedsUpdate = true;
+}
+
+void LivesComponent::Notify(Event event)
+{
+	if(event == Event::ActorHealthChange)
+	{
+		m_NeedsUpdate = true;
+	}
+	else if(event == Event::ActorDied)
+	{
+		m_NeedsUpdate = true;
+	}
+	else if (event == Event::LevelFinished)
+	{
+		m_CurrentLives = m_MaxLives;
+		m_IsDead = false;
+		m_NeedsUpdate = true;
+	}
 }
 
 void LivesComponent::AddTextOffset(const float x, const float y) const
 {
 	if (m_DisplayHealth)
-		m_pLivesDisplay->AddTextOffset(x, y);
+		m_pFontComponent->AddOffset(x, y);
 }
 
 void LivesComponent::DecreaseHealth(int amount)
 {
 	m_CurrentLives -= amount;
-	if (m_CurrentLives < 0)
+	if (m_CurrentLives <= 0)
 	{
-		m_CurrentLives = 0;
-		m_IsDead = true;
+		Die();
 	}
-	GetParentObject()->GetComponent<SubjectComponent>()->Notify(Event::ActorHealthChange);
+
+	auto subject = GetParentObject()->GetComponent<SubjectComponent>();
+	if (subject)
+		subject->Notify(Event::ActorHealthChange);
 }
 
 void LivesComponent::Die()
 {
 	m_CurrentLives = 0;
 	m_IsDead = true;
-	GetParentObject()->GetComponent<SubjectComponent>()->Notify(Event::ActorHealthChange);
+	GetParentObject()->GetComponent<SubjectComponent>()->Notify(Event::ActorDied);
 }

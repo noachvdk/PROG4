@@ -34,6 +34,9 @@
     <Filter Include="Header Files\Sound">
       <UniqueIdentifier>{9eb35c89-41ac-4e28-9a07-f403c6d666ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Level">
+      <UniqueIdentifier>{44ce1640-e6bf-445f-a7b4-1ac8b2120217}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MiniginPCH.h">
@@ -49,9 +52,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
@@ -138,9 +138,6 @@
     <ClInclude Include="AllComponents.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="LivesDisplayComponent.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="SubjectComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
@@ -156,6 +153,30 @@
     <ClInclude Include="audio.h">
       <Filter>Header Files\Sound</Filter>
     </ClInclude>
+    <ClInclude Include="SimpleSDLSoundSystem.h">
+      <Filter>Header Files\ServiceLocator</Filter>
+    </ClInclude>
+    <ClInclude Include="HexagonalGrid.h">
+      <Filter>Header Files\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelSettings.h">
+      <Filter>Header Files\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelManager.h">
+      <Filter>Header Files\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MiniginPCH.cpp">
@@ -168,9 +189,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Transform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
@@ -248,9 +266,6 @@
     <ClCompile Include="PointComponent.cpp">
       <Filter>Header Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="LivesDisplayComponent.cpp">
-      <Filter>Header Files\Components</Filter>
-    </ClCompile>
     <ClCompile Include="TextObject.cpp">
       <Filter>Header Files\Components</Filter>
     </ClCompile>
@@ -265,6 +280,30 @@
     </ClCompile>
     <ClCompile Include="audio.c">
       <Filter>Header Files\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleSDLSoundSystem.cpp">
+      <Filter>Header Files\ServiceLocator</Filter>
+    </ClCompile>
+    <ClCompile Include="HexagonalGrid.cpp">
+      <Filter>Header Files\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Header Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelSettings.cpp">
+      <Filter>Header Files\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelManager.cpp">
+      <Filter>Header Files\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelComponent.cpp">
+      <Filter>Header Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterComponent.cpp">
+      <Filter>Header Files\Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

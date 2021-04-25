@@ -1,13 +1,14 @@
 #pragma once
 #include "BaseComponent.h"
+#include "Observer.h"
 
 namespace dae
 {
-	class LivesDisplayComponent;
-	class LivesComponent final : public BaseComponent
+	class FontComponent;
+	class LivesComponent final : public BaseComponent, public Observer
 	{
 	public:
-		LivesComponent(const int startingLives, bool displayHealth = false);
+		LivesComponent(const int startingLives, const std::string& font, const unsigned int size, bool displayHealth = false);
 		~LivesComponent() override = default;
 
 		LivesComponent(const LivesComponent& other) = delete;
@@ -19,6 +20,8 @@ namespace dae
 		void RenderComponent() override{};
 		void PostAddedToGameObject() override;
 
+		void Notify(Event event) override;
+		
 		int GetCurrentLives() const { return m_CurrentLives; }
 		bool GetIsDead() const { return m_IsDead; }
 		void AddTextOffset(const float x, const float y) const;
@@ -30,7 +33,9 @@ namespace dae
 		int m_MaxLives;
 		bool m_IsDead;
 		bool m_DisplayHealth;
-		LivesDisplayComponent* m_pLivesDisplay;
+		bool m_NeedsUpdate;
+		FontComponent* m_pFontComponent;
+
 	};
 }
 

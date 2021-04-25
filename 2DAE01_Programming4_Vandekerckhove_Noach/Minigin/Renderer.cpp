@@ -3,10 +3,12 @@
 #include <SDL.h>
 #include "SceneManager.h"
 #include "Texture2D.h"
-
+#include "LevelManager.h"
+#include "ResourceManager.h"
+#include "GameSettings.h"
 
 bool dae::Renderer::m_ShowDemo = false;
-bool dae::Renderer::m_ShowButtons = true;
+bool dae::Renderer::m_ShowButtons = false;
 
 int GetOpenGLDriverIndex()
 {
@@ -35,6 +37,8 @@ void dae::Renderer::Init(SDL_Window * window)
 	ImGui::CreateContext();
 	ImGui_ImplSDL2_InitForOpenGL(window, SDL_GL_GetCurrentContext());
 	ImGui_ImplOpenGL2_Init();
+
+
 	
 	//m_ShowDemo = true;
 }
@@ -44,13 +48,12 @@ void dae::Renderer::Render() const
 	SDL_RenderClear(m_Renderer);
 
 	SceneManager::GetInstance().Render();
-
 	//Demo window
 	ImGui_ImplOpenGL2_NewFrame();
 	ImGui_ImplSDL2_NewFrame(m_Window);
 	ImGui::NewFrame();
 
-	if(m_ShowButtons)
+	if(SceneManager::GetInstance().GetCurrentSceneName() == "MainMenu")
 	{
 		const ImGuiViewport* main_viewport = ImGui::GetMainViewport();
 		const int size{ 200 };
@@ -71,18 +74,18 @@ void dae::Renderer::Render() const
 		const ImVec2 buttonSize{ 100,20 };
 		if (ImGui::Button("Single player", buttonSize))
 		{
-			ImGui::SameLine();
-			ImGui::Text("Thanks for clicking me!");
+			GameSettings::GetInstance().SetGameMode(GameMode::SinglePlayer);
+			SceneManager::GetInstance().SetCurrentSceneName("SinglePlayerLevel");
 		}
 		if (ImGui::Button("Co-op", buttonSize))
 		{
-			ImGui::SameLine();
-			ImGui::Text("Thanks for clicking me!");
+			GameSettings::GetInstance().SetGameMode(GameMode::Coop);
+			SceneManager::GetInstance().SetCurrentSceneName("CoopLevel");
 		}
 		if (ImGui::Button("Versus", buttonSize))
 		{
-			ImGui::SameLine();
-			ImGui::Text("Thanks for clicking me!");
+			GameSettings::GetInstance().SetGameMode(GameMode::Versus);
+			SceneManager::GetInstance().SetCurrentSceneName("SinglePlayerLevel");
 		}
 		ImGui::Unindent();
 		ImGui::End();
@@ -127,4 +130,34 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 	dst.w = static_cast<int>(width);
 	dst.h = static_cast<int>(height);
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
+}
+
+//some logic & code is sampled from https://www.redblobgames.com/grids/hexagons/implementation.html
+
+void dae::Renderer::RenderHex(const Hex& hex) const
+{
+	const int nsides = 6;
+	const int pointySideAngle{ 30 };
+	const int hexagonAngle{ 360 / nsides };
+	
+	const glm::vec2 size{ hex.Radius * sin(60 * M_PI / 180) ,hex.Radius };
+	RenderTexture(*LevelManager::GetInstance().GetHexTexture(hex.currentTexID), hex.pos.x - size.x, hex.pos.y - hex.Radius, size.x * 2.0f,size.y * 2.0f);
+	
+	for (int i = 0; i < nsides; i++) 
+	{
+		//outer lines
+		auto angle_deg = hexagonAngle * i - pointySideAngle; // the -30 is to make the hex point upwards
+		auto angle_rad = M_PI / 180 * angle_deg;
+		const glm::vec2 point(hex.pos.x + hex.Radius * cos(angle_rad), hex.pos.y + hex.Radius * sin(angle_rad));
+
+		angle_deg = hexagonAngle * (i+1) - pointySideAngle;
+		angle_rad = M_PI / 180 * angle_deg;
+		const glm::vec2 point2(hex.pos.x + hex.Radius * cos(angle_rad), hex.pos.y + hex.Radius * sin(angle_rad));
+		SDL_RenderDrawLine(m_Renderer, int(point.x), int(point.y), int(point2.x), int(point2.y));
+		//inner lines
+		if (i % 2 != 0)
+		{
+			SDL_RenderDrawLine(m_Renderer, int(hex.pos.x), int(hex.pos.y), int(point2.x), int(point2.y));
+		}
+	}
 }

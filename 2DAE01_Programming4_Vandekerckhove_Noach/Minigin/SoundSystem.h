@@ -36,6 +36,9 @@ namespace dae
 		virtual void UnPause() = 0;
 		virtual void Init() = 0;
 		virtual void Update() = 0;
+		virtual void Mute() = 0;
+		virtual void UnMute() = 0;
+		virtual void ToggleMute() = 0;
 	};
 
 	class NullAudioSystem : public SoundSystem
@@ -57,64 +60,9 @@ namespace dae
 		void UnPause() override { std::cout << "no sound system\n"; }
 		void Init() override { std::cout << "no sound system\n"; }
 		void Update() override { }
-	};
-
-	class SDLAudioSystem : public SoundSystem
-	{
-	public:
-		void PlaySound(const std::string path, const int volume) override
-		{
-			std::lock_guard<std::mutex>guard(m_Mutex);
-
-			for (int i = m_Head; i != m_Tail; i = (i + 1) % MAX_PENDING)
-			{
-				if(m_Pending[i].path == path)
-				{
-					return;
-				}
-			}
-			
-			assert((m_Tail + 1) % MAX_PENDING != m_Head);
-			
-			m_Pending[m_Tail].path = path;
-			m_Pending[m_Tail].volume = volume;
-			m_Pending[m_Tail].isMusic = false;
-			m_Tail = (m_Tail + 1) % MAX_PENDING;
-		}
-		void PlayMusic(const std::string path, const int volume) override
-		{
-			std::lock_guard<std::mutex>guard(m_Mutex);
-			assert((m_Tail + 1) % MAX_PENDING != m_Head);
-
-			m_Pending[m_Tail].path = path;
-			m_Pending[m_Tail].volume = volume;
-			m_Pending[m_Tail].isMusic = true;
-			
-			m_Tail = (m_Tail + 1) % MAX_PENDING;
-		}
-		void Pause() override{ pauseAudio();}
-		void UnPause() override { unpauseAudio(); }
-		void Init() override {m_Head = 0; m_Tail = 0; }
-
-		void Update() override
-		{
-			if (m_Head == m_Tail) //Return if no events in queue
-				return;
-
-			std::lock_guard<std::mutex> guard(m_Mutex);
-			if (!m_Pending[m_Head].isMusic)
-				playSound(m_Pending[m_Head].path.c_str(), m_Pending[m_Head].volume);
-			else
-				playMusic(m_Pending[m_Head].path.c_str(), m_Pending[m_Head].volume);
-
-			m_Head = (m_Head + 1) % MAX_PENDING;
-		}
-	private:
-		static const int MAX_PENDING = 16;
-		static Audio m_Pending[MAX_PENDING];
-		static int m_Head;
-		static int m_Tail;
-		std::mutex m_Mutex;
+		void Mute() override { std::cout << "Mute\n"; }
+		void UnMute() override { std::cout << "UnMute\n"; }
+		void ToggleMute() override { std::cout << "Mute\n"; }
 	};
 	
 	class LoggingSoundSystem : public SoundSystem
@@ -134,8 +82,12 @@ namespace dae
 		}
 		void Pause() override { std::cout << "pausing\n"; m_pSoundSystem->Pause(); }
 		void UnPause() override { std::cout << "unpausing\n"; m_pSoundSystem->UnPause(); }
-		void Init() override { std::cout << "init\n"; m_pSoundSystem->Init(); }
+		void Init() override { std::cout << "init soundsystem\n"; m_pSoundSystem->Init(); }
 		void Update() override { m_pSoundSystem->Update(); }
+
+		void Mute() override { std::cout << "Mute\n"; m_pSoundSystem->Mute(); }
+		void UnMute() override { std::cout << "UnMute\n"; m_pSoundSystem->UnMute(); }
+		void ToggleMute() override { std::cout << "Mute\n"; m_pSoundSystem->ToggleMute(); }
 	private:
 		SoundSystem* m_pSoundSystem;
 	};

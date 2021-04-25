@@ -78,10 +78,12 @@ namespace dae
 		float GetRightTrigger(const int playerID) const;
 		//Rumble
 		void Rumble(const int playerID, float leftRumble = 0.f, float rightRumble = 0.0f);
-
+		//Reset
+		void Reset() { m_Event = SDL_Event();}
 		//Actions
 		void AddInputAction(InputAction action);
 		std::vector<InputAction> GetInputActions() const { return m_InputActions; }
+		void ResetInputActions();
 		//Keys
 		bool IsKeyPressedDown(const SDL_Keycode key) const;
 		bool IsKeyPressedHeld(const SDL_Keycode key) const;

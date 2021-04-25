@@ -7,9 +7,11 @@ namespace dae
 		ActorDied,
 		ActorTakeDamage,
 		ActorHealthChange,
+		ActorFell,
 		ColorChange,
 		DefeatedCoily,
-		CatchedSlickOrSam
+		CatchedSlickOrSam,
+		LevelFinished
 	};
 
 	class Observer

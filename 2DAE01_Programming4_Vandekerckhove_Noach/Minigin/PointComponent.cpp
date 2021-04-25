@@ -46,6 +46,9 @@ void PointComponent::Notify(Event event)
 	case Event::DefeatedCoily:
 		AddPoints(500);
 		break;
+	case Event::LevelFinished:
+		ResetPoints();
+		break;
 	default:
 		break;
 	}
