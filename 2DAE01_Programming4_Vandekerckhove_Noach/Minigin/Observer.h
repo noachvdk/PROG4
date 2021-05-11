@@ -8,10 +8,15 @@ namespace dae
 		ActorTakeDamage,
 		ActorHealthChange,
 		ActorFell,
+		ActorMoveUpLeft,
+		ActorMoveUpRight,
+		ActorMoveDownLeft,
+		ActorMoveDownRight,
 		ColorChange,
 		DefeatedCoily,
 		CatchedSlickOrSam,
-		LevelFinished
+		LevelFinished,
+		Reset
 	};
 
 	class Observer

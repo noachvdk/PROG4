@@ -17,6 +17,7 @@ namespace dae
 	public:
 
 		void SetGameMode(GameMode newMode);
+		void SetGameOver();
 		GameMode GetGameMode() const { return m_CurrentGameMode; }
 
 		void Init();

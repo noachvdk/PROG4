@@ -230,10 +230,12 @@
     <ClInclude Include="..\3rdParty\imgui-1.81\imstb_textedit.h" />
     <ClInclude Include="..\3rdParty\imgui-1.81\imstb_truetype.h" />
     <ClInclude Include="AllComponents.h" />
+    <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="audio.h" />
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="CharacterComponent.h" />
     <ClInclude Include="Command.h" />
+    <ClInclude Include="Disc.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FontComponent.h" />
     <ClInclude Include="FpsComponent.h" />
@@ -245,8 +247,10 @@
     <ClInclude Include="LevelManager.h" />
     <ClInclude Include="LevelSettings.h" />
     <ClInclude Include="LivesComponent.h" />
+    <ClInclude Include="Logger.h" />
     <ClInclude Include="Minigin.h" />
     <ClInclude Include="MiniginPCH.h" />
+    <ClInclude Include="MultiAnimationComponent.h" />
     <ClInclude Include="Observer.h" />
     <ClInclude Include="PlayerComponent.h" />
     <ClInclude Include="PointComponent.h" />
@@ -261,7 +265,6 @@
     <ClInclude Include="SoundSystem.h" />
     <ClInclude Include="Subject.h" />
     <ClInclude Include="SubjectComponent.h" />
-    <ClInclude Include="TextObject.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="TextureComponent.h" />
     <ClInclude Include="TimeManager.h" />
@@ -311,6 +314,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="AnimationComponent.cpp" />
     <ClCompile Include="audio.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -320,6 +324,7 @@
     <ClCompile Include="BaseComponent.cpp" />
     <ClCompile Include="CharacterComponent.cpp" />
     <ClCompile Include="Command.cpp" />
+    <ClCompile Include="Disc.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FontComponent.cpp" />
     <ClCompile Include="FpsComponent.cpp" />
@@ -331,6 +336,7 @@
     <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="LevelSettings.cpp" />
     <ClCompile Include="LivesComponent.cpp" />
+    <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Minigin.cpp" />
     <ClCompile Include="MiniginPCH.cpp">
@@ -340,6 +346,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MiniginPCH.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="MultiAnimationComponent.cpp" />
     <ClCompile Include="Observer.cpp" />
     <ClCompile Include="PlayerComponent.cpp" />
     <ClCompile Include="PointComponent.cpp" />
@@ -352,7 +359,6 @@
     <ClCompile Include="SoundSystem.cpp" />
     <ClCompile Include="Subject.cpp" />
     <ClCompile Include="SubjectComponent.cpp" />
-    <ClCompile Include="TextObject.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="TextureComponent.cpp" />
     <ClCompile Include="TimeManager.cpp" />

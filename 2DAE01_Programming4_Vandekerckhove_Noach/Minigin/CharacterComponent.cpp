@@ -10,23 +10,22 @@
 
 using namespace dae;
 
-CharacterComponent::CharacterComponent(const std::string& filename)
+CharacterComponent::CharacterComponent()
 	: m_Move(false)
 	, m_Initialized(false)
 	, m_MoveDirection(direction::DownLeft)
-	, m_MoveSpeed(10)
+	, m_MoveSpeed(5.0f)
 	, m_TextureSize(20)
 	, m_StartPos(LevelManager::GetInstance().GetGridOrigin())
 	, m_CurrentPos(LevelManager::GetInstance().GetGridOrigin())
-	, m_NextPos(0,0)
+	, m_NextPos(0, 0)
+	, m_OnDisc(false)
 {
-	m_pTextureComponent = new TextureComponent( filename,true,true);
-	m_pTextureComponent->SetSize(m_TextureSize);
 }
 
 void CharacterComponent::move(direction dir)
 {
-	if (m_Move)
+	if (m_Move || m_OnDisc)
 		return;
 
 	auto& levelmanager = LevelManager::GetInstance();
@@ -37,7 +36,7 @@ void CharacterComponent::move(direction dir)
 	
 	//std::cout << currentHexCoord.x << " and " << currentHexCoord.y << "\n";
 	//std::cout << m_CurrentPos.x << " and " << m_CurrentPos.y << "\n";
-	
+
 	if (m_MoveDirection == direction::UpLeft)
 	{
 		currentHexCoord.x -= 1;
@@ -62,21 +61,28 @@ void CharacterComponent::move(direction dir)
 		if (int(currentHexCoord.x) % 2 == 0)
 			currentHexCoord.y += 1;
 	}
+
 	
+	const auto subject = GetParentObject()->GetComponent<SubjectComponent>();
+	//move to hex/Disc or fall off
 	if (levelmanager.GetIsHexValidByCoord(currentHexCoord))
 	{
 		m_NextPos = levelmanager.GetHexPosByCoord(currentHexCoord);
 		if (!levelmanager.GetIsHexFlippedByCoord(currentHexCoord))
-		{
-			auto subject = GetParentObject()->GetComponent<SubjectComponent>();
+		{	
 			if (subject)
 				subject->Notify(Event::ColorChange);
 		}
 		levelmanager.ChangeHexColorByPos(m_NextPos);
 	}
+	else if(levelmanager.GetIsDiscValidByCoord(currentHexCoord))
+	{
+		m_NextPos = levelmanager.GetDiscPosByCoord(currentHexCoord);
+		m_OnDisc = true;
+		m_CurrentCoord = currentHexCoord;
+	}
 	else
 	{
-		auto subject = GetParentObject()->GetComponent<SubjectComponent>();
 		if (subject)
 			subject->Notify(Event::ActorFell);
 		m_NextPos = m_StartPos;
@@ -87,6 +93,15 @@ void CharacterComponent::move(direction dir)
 	}
 	//std::cout << currentHexCoord.x << " and " << currentHexCoord.y << "\n";
 	//std::cout << m_NextPos.x << " and " << m_NextPos.y << "\n";
+	//
+	if (m_MoveDirection == direction::UpLeft)
+		subject->Notify(Event::ActorMoveUpLeft);
+	else if (m_MoveDirection == direction::UpRight)
+		subject->Notify(Event::ActorMoveUpRight);
+	else if (m_MoveDirection == direction::DownLeft)
+		subject->Notify(Event::ActorMoveDownLeft);
+	else if (m_MoveDirection == direction::DownRight)
+		subject->Notify(Event::ActorMoveDownRight);
 }
 
 void CharacterComponent::UpdateComponent()
@@ -117,11 +132,14 @@ void CharacterComponent::UpdateComponent()
 			}
 		}
 		m_CurrentPos = m_StartPos;
-		m_pTextureComponent->SetOffset(m_CurrentPos.x, m_CurrentPos.y - m_TextureSize);
 		m_Initialized = true;
 	}
+
+	if (m_IsDead)
+		return;
 	
-	if(m_Move)
+	//move pos if needed
+	if(m_Move && !m_OnDisc)
 	{
 		//update currentpos to nextpos using deltatime and a dir vector
 
@@ -135,24 +153,55 @@ void CharacterComponent::UpdateComponent()
 			m_Move = false;
 			m_CurrentPos = m_NextPos;
 		}
-		
-		m_pTextureComponent->SetOffset(m_CurrentPos.x, m_CurrentPos.y- m_TextureSize);
+	}
+	else if(m_Move && m_OnDisc)
+	{
+		auto dir = m_NextPos - m_CurrentPos;
+		glm::normalize(dir);
+
+		m_CurrentPos += (dir * TimeManager::GetInstance().GetDeltaTime() * m_MoveSpeed);
+
+		if (glm::distance(m_CurrentPos, m_NextPos) <= 1.0f)
+		{
+			m_Move = false;
+			m_CurrentPos = m_NextPos;
+			LevelManager::GetInstance().SetHexSteppedOn(m_CurrentCoord);
+		}
+	}
+	else if(m_OnDisc)
+	{
+		glm::vec2 topPos = LevelManager::GetInstance().GetDiscTopPos();
+		auto dir = topPos - m_CurrentPos;
+		glm::normalize(dir);
+
+		m_CurrentPos += (dir * TimeManager::GetInstance().GetDeltaTime() * m_MoveSpeed);
+
+		if (glm::distance(m_CurrentPos, topPos) <= 1.0f)
+		{
+			m_Move = false;
+			m_OnDisc = false;
+			m_CurrentPos = m_StartPos;
+		}
 	}
 }
 
 void CharacterComponent::PostAddedToGameObject()
 {
-	GetParentObject()->AddComponent(m_pTextureComponent);
-	m_pTextureComponent->SetOffset(m_CurrentPos.x, m_CurrentPos.y - m_TextureSize);
 }
 
 void CharacterComponent::Notify(Event event)
 {
-	if (event == Event::LevelFinished || event == Event::ActorDied)
+	if (event == Event::LevelFinished)
 	{
 		m_CurrentPos = m_StartPos;
 		m_NextPos = m_CurrentPos;
 		m_Move = false;
-		m_pTextureComponent->SetOffset(m_CurrentPos.x, m_CurrentPos.y - m_TextureSize);
+	}
+	else if(event == Event::ActorDied)
+	{
+		m_CurrentPos = m_StartPos;
+		m_NextPos = m_CurrentPos;
+		m_Move = false;
+		//m_IsDead = true;
 	}
 }

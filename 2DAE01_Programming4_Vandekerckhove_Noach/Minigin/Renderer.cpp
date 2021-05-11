@@ -7,6 +7,12 @@
 #include "ResourceManager.h"
 #include "GameSettings.h"
 
+#include "imgui.h"
+#include "../imgui-1.81/backends/imgui_impl_sdl.h"
+#include "../imgui-1.81/backends/imgui_impl_opengl2.h"
+//Imgui_widgets.cpp altered line 6190
+//added a pragma warning disable to prevent Unreferenced parameter error
+
 bool dae::Renderer::m_ShowDemo = false;
 bool dae::Renderer::m_ShowButtons = false;
 
@@ -130,6 +136,14 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 	dst.w = static_cast<int>(width);
 	dst.h = static_cast<int>(height);
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
+}
+
+void dae::Renderer::RenderTexture(const Texture2D& texture, SDL_Rect dest, SDL_Rect src, bool flipped) const
+{
+	if (flipped)
+		SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), &src, &dest, 0.0f, nullptr, SDL_FLIP_NONE);
+	else
+		SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), &src, &dest, 0.0f, nullptr, SDL_FLIP_HORIZONTAL);
 }
 
 //some logic & code is sampled from https://www.redblobgames.com/grids/hexagons/implementation.html

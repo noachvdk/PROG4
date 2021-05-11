@@ -4,6 +4,7 @@
 struct Hex;
 struct SDL_Window;
 struct SDL_Renderer;
+struct SDL_Rect;
 
 namespace dae
 {
@@ -20,9 +21,11 @@ namespace dae
 
 		void RenderTexture(const Texture2D& texture, float x, float y) const;
 		void RenderTexture(const Texture2D& texture, float x, float y, float width, float height) const;
+		void RenderTexture(const Texture2D& texture, SDL_Rect dest, SDL_Rect src, bool flipped) const;
+		
 		void RenderHex(const Hex& hex) const;
 
-		SDL_Renderer* GetSDLRenderer() const { return m_Renderer; }
+		/*[[nodiscard]]*/SDL_Renderer* GetSDLRenderer() const { return m_Renderer; }
 	private:
 		SDL_Renderer* m_Renderer{};
 		SDL_Window* m_Window;

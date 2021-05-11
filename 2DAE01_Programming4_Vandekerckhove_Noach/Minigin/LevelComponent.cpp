@@ -17,19 +17,23 @@ LevelComponent::LevelComponent(const int levelID)
 
 void LevelComponent::UpdateComponent()
 {
-	if (LevelManager::GetInstance().GetCurrentLevelID() != m_LevelID)
+	auto& levelmanager = LevelManager::GetInstance();
+
+	levelmanager.Update();
+	
+	if (levelmanager.GetCurrentLevelID() != m_LevelID)
 	{
-		LevelManager::GetInstance().SetCurrentLevelID(m_LevelID);
+		levelmanager.SetCurrentLevelID(m_LevelID);
 		m_NeedsUpdate = true;
 	}
 
 
 	//broadcast event here
-	if (LevelManager::GetInstance().GetAreAllHexesFlipped())
+	if (levelmanager.GetAreAllHexesFlipped())
 	{
 		/*std::cout << "finished\n";*/
 		m_LevelID++;
-		if (m_LevelID > LevelManager::GetInstance().GetAmountOfLevels())
+		if (m_LevelID > levelmanager.GetAmountOfLevels())
 			m_LevelID = 1;
 		auto subject = GetParentObject()->GetComponent<SubjectComponent>();
 		if (subject)
@@ -50,6 +54,16 @@ void LevelComponent::PostAddedToGameObject()
 {
 	GetParentObject()->AddComponent(m_pFontComponent);
 	m_pFontComponent->AddOffset(GetParentObject()->GetTransform().GetPosition().x + m_Offset.x, -GetParentObject()->GetTransform().GetPosition().y + m_Offset.y);
+}
+
+void LevelComponent::SetDisc01(const glm::vec2& coord)
+{
+	LevelManager::GetInstance().SetDisc01(coord);
+}
+
+void LevelComponent::SetDisc02(const glm::vec2& coord)
+{
+	LevelManager::GetInstance().SetDisc02(coord);
 }
 
 void LevelComponent::Notify(Event)

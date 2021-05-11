@@ -100,6 +100,15 @@ void GameSettings::SetGameMode(GameMode newMode)
 	}
 }
 
+void GameSettings::SetGameOver()
+{
+	auto& sceneManager = SceneManager::GetInstance();
+	sceneManager.SetCurrentSceneName("MainMenu");
+
+	auto& lvl = LevelManager::GetInstance();
+	lvl.SetCurrentLevelID(1);
+}
+
 void GameSettings::Init()
 {
 	m_CurrentGameMode = GameMode::NotChosen;

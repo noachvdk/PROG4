@@ -27,7 +27,6 @@ namespace dae
 		void AddTextOffset(const float x, const float y) const;
 
 		void DecreaseHealth(int amount = 1);
-		void Die();
 	private:
 		int m_CurrentLives;
 		int m_MaxLives;

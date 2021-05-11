@@ -8,7 +8,8 @@
 //#include <glm/vec3.hpp>
 #include <glm/glm.hpp>
 #pragma warning(pop)
-
+#include "Texture2D.h"
+#include "algorithm"
 //some logic & code is sampled from https://www.redblobgames.com/grids/hexagons/implementation.html
 
 struct Hex //putting this in the namespace will cause errors

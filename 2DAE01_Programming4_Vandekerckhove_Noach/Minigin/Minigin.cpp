@@ -15,6 +15,7 @@
 #include "GameSettings.h"
 #include "SimpleSDLSoundSystem.h"
 #include "LevelManager.h"
+#include "Logger.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -54,7 +55,6 @@ void dae::Minigin::LoadGame() const
 {
 
 	LevelManager::GetInstance().LoadLevelWithShape("Shape.txt", "LevelSettings.txt");
-	
 	//Demo scene
 	{
 		auto& scene = SceneManager::GetInstance().CreateScene("Demo");
@@ -123,16 +123,23 @@ void dae::Minigin::LoadGame() const
 		//Level
 		auto LevelObj = std::make_shared<GameObject>();
 		const auto level = new LevelComponent(1);
+		level->SetDisc01(glm::vec2(3, -3));
+		level->SetDisc02(glm::vec2(3, 2));
 		LevelObj->AddComponent(level);
 		LevelObj->AddComponent(Levelsubject);
 		LevelScene.Add(LevelObj);
 		Player01subject->AddObserver(level);
+	
 		//Player 1 
 		auto PlayerOneObject = std::make_shared<GameObject>();
 		PlayerOneObject->SetPosition(10, 75);
 		const auto pointComp = new PointComponent{ "Lingua.otf",16 };
-		const auto characterComp = new CharacterComponent("Qbert.png");
+		const auto characterComp = new CharacterComponent();
 		const auto liveComp = new LivesComponent{ 3,"Lingua.otf",16,true };
+		auto multiQbertAnim = new MultiAnimationComponent(AnimState::FacingForward);
+		multiQbertAnim->AddAnimationComponent(std::make_shared<AnimationComponent>("QbertFacingAway.png", 1, 2, .5f, AnimState::FacingAway));
+		multiQbertAnim->AddAnimationComponent(std::make_shared<AnimationComponent>("QbertFacingForward.png", 1, 2, .5f, AnimState::FacingForward));
+		PlayerOneObject->AddComponent(multiQbertAnim);
 		PlayerOneObject->AddComponent(Player01subject);
 		PlayerOneObject->AddComponent(new PlayerComponent{ 0 });
 		PlayerOneObject->AddComponent(liveComp);
@@ -149,6 +156,16 @@ void dae::Minigin::LoadGame() const
 		auto go = std::make_shared<GameObject>();
 		go->AddComponent(new FpsComponent{ "lingua.otf",24 });
 		LevelScene.Add(go);
+
+		////test
+		//auto test = std::make_shared<GameObject>();
+		//test->SetPosition(216, 180);
+		//auto multiQbertAnim = new MultiAnimationComponent(AnimState::FacingForward);
+		//multiQbertAnim->AddAnimationComponent(std::make_shared<AnimationComponent>("QbertFacingAway.png", 1, 2, .5f, AnimState::FacingAway));
+		//multiQbertAnim->AddAnimationComponent(std::make_shared<AnimationComponent>("QbertFacingForward.png", 1, 2, .5f, AnimState::FacingForward));
+		//test->AddComponent(multiAnim);
+		//
+		//LevelScene.Add(test);
 	}
 
 	//CoopLevel
@@ -169,7 +186,7 @@ void dae::Minigin::LoadGame() const
 		//Player 1 
 		auto PlayerOneObject = std::make_shared<GameObject>();
 		const auto pointComp01 = new PointComponent{ "Lingua.otf",16 };
-		const auto characterComp01 = new CharacterComponent("Qbert.png");
+		const auto characterComp01 = new CharacterComponent();
 		const auto liveComp01 = new LivesComponent{ 3,"Lingua.otf",16,true };
 		PlayerOneObject->SetPosition(10, 75);
 		PlayerOneObject->AddComponent(Player01subject);
@@ -186,7 +203,7 @@ void dae::Minigin::LoadGame() const
 		//Player 2
 		auto PlayerTwoObject = std::make_shared<GameObject>();
 		const auto pointComp02 = new PointComponent{ "Lingua.otf",16 };
-		const auto characterComp02 = new CharacterComponent("Qbert.png");
+		const auto characterComp02 = new CharacterComponent();
 		const auto liveComp02 = new LivesComponent{ 3,"Lingua.otf",16,true };
 		PlayerTwoObject->SetPosition(10, 100);
 		PlayerTwoObject->AddComponent(new PlayerComponent{ 1 });

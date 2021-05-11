@@ -8,3 +8,5 @@
 #include "SubjectComponent.h"
 #include "LevelComponent.h"
 #include "CharacterComponent.h"
+#include "AnimationComponent.h"
+#include "MultiAnimationComponent.h"

@@ -1,14 +1,15 @@
 #include "MiniginPCH.h"
 #include "LevelSettings.h"
-#include <iostream>
 #include <fstream>
+
+#include "Logger.h"
 #include "ResourceManager.h"
 
 void dae::LevelSettings::LoadLevelSettings(const std::string& path)
 {
 	std::ifstream file{ dae::ResourceManager::GetInstance().GetFullPath() + path };
 	if (!file)
-		std::cout << "file not opened " << dae::ResourceManager::GetInstance().GetFullPath() + path << "\n";
+		Logger::GetInstance().Log(LogType::Error, "file not opened " + ResourceManager::GetInstance().GetFullPath() + path);
 
 
 	std::string str;
@@ -28,7 +29,14 @@ void dae::LevelSettings::LoadLevelSettings(const std::string& path)
 		lvl.m_LevelID = std::stoi(id);
 		lvl.m_JumpsNeeded = std::stoi(jumps);
 		lvl.m_CanChangeBack = (canChangeBack != "false");
-		std::cout << "Level with ID " << lvl.m_LevelID << " needs " << lvl.m_JumpsNeeded <<" jumps to change to last color and " <<lvl.m_CanChangeBack <<"\n";
+		if(lvl.m_CanChangeBack ==0)
+		{
+			Logger::GetInstance().Log(LogType::Info, "Level with ID " + std::to_string(lvl.m_LevelID) + " needs " + std::to_string(lvl.m_JumpsNeeded) + " jumps to change to last color and can't be changed back");
+		}
+		else
+		{
+			Logger::GetInstance().Log(LogType::Info, "Level with ID " + std::to_string(lvl.m_LevelID) + " needs " + std::to_string(lvl.m_JumpsNeeded) + " jumps to change to last color and can be changed back");
+		}
 		m_Levels.push_back(lvl);
 	}
 

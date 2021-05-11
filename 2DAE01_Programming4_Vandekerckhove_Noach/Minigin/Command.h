@@ -24,11 +24,8 @@ public:
 class DieCommand : public Command
 {
 public:
-	void Execute(GameObject& obj)override
+	void Execute(GameObject&)override
 	{
-		auto lives = obj.GetComponent<LivesComponent>();
-		if (lives)
-			lives->Die();
 		ServiceLocator::GetSoundSystem().Pause();
 	}
 };
@@ -63,7 +60,7 @@ class DefeatedCoilyCommand : public Command
 public:
 	void Execute(GameObject& obj)override
 	{
-		auto subject = obj.GetComponent<SubjectComponent>();
+		const auto subject = obj.GetComponent<SubjectComponent>();
 		if (subject)
 		{
 			subject->Notify(Event::DefeatedCoily);

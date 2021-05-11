@@ -1,6 +1,7 @@
 #include "MiniginPCH.h"
 #include "LivesComponent.h"
 #include "FontComponent.h"
+#include "GameSettings.h"
 #include "PlayerComponent.h"
 #include "SubjectComponent.h"
 
@@ -69,19 +70,18 @@ void LivesComponent::AddTextOffset(const float x, const float y) const
 void LivesComponent::DecreaseHealth(int amount)
 {
 	m_CurrentLives -= amount;
+	auto subject = GetParentObject()->GetComponent<SubjectComponent>();
 	if (m_CurrentLives <= 0)
 	{
-		Die();
+		m_CurrentLives = m_MaxLives;
+		if (subject)
+			subject->Notify(Event::ActorDied);
+		GameSettings::GetInstance().SetGameOver();
 	}
-
-	auto subject = GetParentObject()->GetComponent<SubjectComponent>();
-	if (subject)
-		subject->Notify(Event::ActorHealthChange);
-}
-
-void LivesComponent::Die()
-{
-	m_CurrentLives = 0;
-	m_IsDead = true;
-	GetParentObject()->GetComponent<SubjectComponent>()->Notify(Event::ActorDied);
+	else
+	{
+		if (subject)
+			subject->Notify(Event::ActorHealthChange);
+	}
+	
 }

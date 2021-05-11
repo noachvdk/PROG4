@@ -49,6 +49,9 @@ void PointComponent::Notify(Event event)
 	case Event::LevelFinished:
 		ResetPoints();
 		break;
+	case Event::ActorDied:
+		ResetPoints();
+		break;
 	default:
 		break;
 	}

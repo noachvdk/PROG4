@@ -1,9 +1,8 @@
 #include "MiniginPCH.h"
 #include "HexagonalGrid.h"
-#include <iostream>
 #include <fstream>
+#include "Logger.h"
 #include "ResourceManager.h"
-
 using namespace dae;
 
 void HexagonalGridManager::Init(int maxSteps, bool goBack)
@@ -113,7 +112,7 @@ void HexagonalGridManager::loadFromFileRawHex(const std::string& path)
 	std::ifstream file{ dae::ResourceManager::GetInstance().GetFullPath() + path };
 	std::string text;
 	if (!file)
-		std::cout << "file not opened " << dae::ResourceManager::GetInstance().GetFullPath() + path << "\n";
+		Logger::GetInstance().Log(LogType::Error, "file not opened " + ResourceManager::GetInstance().GetFullPath() + path);
 
 	int x{};
 	int y{};
@@ -129,7 +128,7 @@ void HexagonalGridManager::loadFromFileShape(const std::string& path)
 {
 	std::ifstream file{ dae::ResourceManager::GetInstance().GetFullPath() + path };
 	if (!file)
-		std::cout << "file not opened " << dae::ResourceManager::GetInstance().GetFullPath() + path << "\n";
+		Logger::GetInstance().Log(LogType::Error, "file not opened " + ResourceManager::GetInstance().GetFullPath() + path);
 
 	std::string text;
 	file >> text;
@@ -168,10 +167,10 @@ void HexagonalGridManager::loadFromFileShape(const std::string& path)
 	}
 	else
 	{
-		std::cout << "no valid shape (currently only Square and Pyramid are supported)\n";
+		Logger::GetInstance().Log(LogType::Warning, "no valid shape(currently only Square and Pyramid are supported");
 	}
 	//Mabye add more shapes
-	std::cout <<"the shape is " <<text << " with size " << size << "\n";
+	Logger::GetInstance().Log(LogType::Info, "the level shape is " + text + " with size " + std::to_string(size));
 	//file.close();
 }
 
