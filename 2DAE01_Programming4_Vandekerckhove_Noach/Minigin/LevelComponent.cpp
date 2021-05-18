@@ -35,7 +35,7 @@ void LevelComponent::UpdateComponent()
 		m_LevelID++;
 		if (m_LevelID > levelmanager.GetAmountOfLevels())
 			m_LevelID = 1;
-		auto subject = GetParentObject()->GetComponent<SubjectComponent>();
+		const auto subject = GetParentObject()->GetComponent<SubjectComponent>();
 		if (subject)
 			subject->Notify(Event::LevelFinished);
 	}
@@ -54,16 +54,6 @@ void LevelComponent::PostAddedToGameObject()
 {
 	GetParentObject()->AddComponent(m_pFontComponent);
 	m_pFontComponent->AddOffset(GetParentObject()->GetTransform().GetPosition().x + m_Offset.x, -GetParentObject()->GetTransform().GetPosition().y + m_Offset.y);
-}
-
-void LevelComponent::SetDisc01(const glm::vec2& coord)
-{
-	LevelManager::GetInstance().SetDisc01(coord);
-}
-
-void LevelComponent::SetDisc02(const glm::vec2& coord)
-{
-	LevelManager::GetInstance().SetDisc02(coord);
 }
 
 void LevelComponent::Notify(Event)

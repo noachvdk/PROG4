@@ -12,11 +12,13 @@ namespace dae
 		ActorMoveUpRight,
 		ActorMoveDownLeft,
 		ActorMoveDownRight,
+		ActorHitPurple,
+		ActorHitGreen,
 		ColorChange,
 		DefeatedCoily,
 		CatchedSlickOrSam,
 		LevelFinished,
-		Reset
+		Reset,
 	};
 
 	class Observer

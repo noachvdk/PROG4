@@ -1,12 +1,12 @@
 #include "MiniginPCH.h"
 #include "GameSettings.h"
 #include "InputManager.h"
-#include "AllComponents.h"
+#include "Logger.h"
 #include "SceneManager.h"
-#include "Scene.h"
 using namespace dae;
 
 GameSettings::GameSettings()
+	:m_CurrentGameMode(GameMode::NotChosen)
 {
 }
 
@@ -14,54 +14,13 @@ GameSettings::GameSettings()
 void GameSettings::SetGameMode(GameMode newMode)
 {
 	m_CurrentGameMode = newMode;
-	//auto& scene = SceneManager::GetInstance().GetCurrentScene();
 	auto& input = InputManager::GetInstance();
 	input.ResetInputActions();
 	
-	////player objs
-	//if(scene.GetName() == "MainMenu")
-	//{
-	//	m_PlayerOneObj = std::make_shared<GameObject>();
-	//	m_PlayerOneObj->AddComponent(new PlayerComponent{ 0 });
-
-	//	m_PlayerTwoObj = std::make_shared<GameObject>();
-	//	if(m_CurrentGameMode != GameMode::SinglePlayer)
-	//	{
-	//		m_PlayerTwoObj->AddComponent(new PlayerComponent{ 1 });
-	//	}
-	//}
-	//else
-	//{
-	//	//Player 1 
-	//	m_PlayerOneObj = std::make_shared<GameObject>();
-	//	m_PlayerOneObj->SetPosition(10, 75);
-	//	m_PlayerOneObj->AddComponent(new SubjectComponent{});
-	//	m_PlayerOneObj->AddComponent(new PlayerComponent{ 0 });
-	//	m_PlayerOneObj->AddComponent(new LivesComponent{ 3,true });
-	//	auto Points = new PointComponent{ "Lingua.otf",16 };
-	//	Points->AddTextOffset(550, 0);
-	//	m_PlayerOneObj->AddComponent(Points);
-
-	//	m_PlayerTwoObj = std::make_shared<GameObject>();
-	//	if (m_CurrentGameMode != GameMode::SinglePlayer)
-	//	{
-	//		//Player 2
-	//		m_PlayerTwoObj->SetPosition(10, 100);
-	//		m_PlayerTwoObj->AddComponent(new PlayerComponent{ 1 });
-	//		m_PlayerTwoObj->AddComponent(new LivesComponent{ 3,true });
-	//		Points = new PointComponent{ "Lingua.otf",16 };
-	//		Points->AddTextOffset(550, 0);
-	//		m_PlayerTwoObj->AddComponent(Points);
-	//		m_PlayerTwoObj->AddComponent(new SubjectComponent{});
-	//	}
-
-	//}
-
 	//inputs
 	if(m_CurrentGameMode == GameMode::SinglePlayer)
 	{
-		std::cout<<"Gamemode is Singleplayer\n";
-	
+		Logger::GetInstance().Log(LogType::Info, "Gamemode is Singleplayer");
 		
 		//Player 1 inputs
 		input.AddInputAction(InputAction{ 0, SDLK_a, TriggerType::OnPress, ControllerButton::ButtonA, new MoveUpLeft() });
@@ -71,7 +30,7 @@ void GameSettings::SetGameMode(GameMode newMode)
 	}
 	else if(m_CurrentGameMode == GameMode::Coop)
 	{
-		std::cout << "Gamemode is coop\n";
+		Logger::GetInstance().Log(LogType::Info, "Gamemode is Co-op");
 	
 		//Player 1 inputs
 		input.AddInputAction(InputAction{ 0, SDLK_a, TriggerType::OnPress, ControllerButton::ButtonA, new MoveUpLeft() });
@@ -86,7 +45,7 @@ void GameSettings::SetGameMode(GameMode newMode)
 	}
 	else if (m_CurrentGameMode == GameMode::Versus)
 	{
-		std::cout << "Gamemode is Versus\n";
+		Logger::GetInstance().Log(LogType::Info, "Gamemode is Versus");
 		//Player 1 inputs
 		input.AddInputAction(InputAction{ 0, SDLK_z, TriggerType::OnPress, ControllerButton::ButtonA, new DieCommand() });
 		input.AddInputAction(InputAction{ 0, SDLK_q, TriggerType::OnPress, ControllerButton::ButtonB, new DefeatedCoilyCommand() });
@@ -105,6 +64,8 @@ void GameSettings::SetGameOver()
 	auto& sceneManager = SceneManager::GetInstance();
 	sceneManager.SetCurrentSceneName("MainMenu");
 
+	Logger::GetInstance().Log(LogType::Info, "Game over");
+	
 	auto& lvl = LevelManager::GetInstance();
 	lvl.SetCurrentLevelID(1);
 }

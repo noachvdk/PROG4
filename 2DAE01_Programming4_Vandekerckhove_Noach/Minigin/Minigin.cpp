@@ -42,7 +42,8 @@ void dae::Minigin::Initialize()
 	{
 		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
 	}
-
+	
+	srand(unsigned int(time(NULL)));
 	Renderer::GetInstance().Init(m_Window);
 	Session::Get().BeginSession();
 	GameSettings::GetInstance().Init();
@@ -118,13 +119,13 @@ void dae::Minigin::LoadGame() const
 	//singlePlayerLevel
 	{
 		auto& LevelScene = SceneManager::GetInstance().CreateScene("SinglePlayerLevel");
+		//subjects
 		auto Player01subject = new SubjectComponent{};
 		auto Levelsubject = new SubjectComponent{};
+		
 		//Level
 		auto LevelObj = std::make_shared<GameObject>();
 		const auto level = new LevelComponent(1);
-		level->SetDisc01(glm::vec2(3, -3));
-		level->SetDisc02(glm::vec2(3, 2));
 		LevelObj->AddComponent(level);
 		LevelObj->AddComponent(Levelsubject);
 		LevelScene.Add(LevelObj);
@@ -139,6 +140,7 @@ void dae::Minigin::LoadGame() const
 		auto multiQbertAnim = new MultiAnimationComponent(AnimState::FacingForward);
 		multiQbertAnim->AddAnimationComponent(std::make_shared<AnimationComponent>("QbertFacingAway.png", 1, 2, .5f, AnimState::FacingAway));
 		multiQbertAnim->AddAnimationComponent(std::make_shared<AnimationComponent>("QbertFacingForward.png", 1, 2, .5f, AnimState::FacingForward));
+		characterComp->SetAnimComponent(multiQbertAnim);
 		PlayerOneObject->AddComponent(multiQbertAnim);
 		PlayerOneObject->AddComponent(Player01subject);
 		PlayerOneObject->AddComponent(new PlayerComponent{ 0 });
@@ -157,15 +159,44 @@ void dae::Minigin::LoadGame() const
 		go->AddComponent(new FpsComponent{ "lingua.otf",24 });
 		LevelScene.Add(go);
 
-		////test
-		//auto test = std::make_shared<GameObject>();
+		//Coily
+		auto CoilyGO = std::make_shared<GameObject>();
 		//test->SetPosition(216, 180);
-		//auto multiQbertAnim = new MultiAnimationComponent(AnimState::FacingForward);
-		//multiQbertAnim->AddAnimationComponent(std::make_shared<AnimationComponent>("QbertFacingAway.png", 1, 2, .5f, AnimState::FacingAway));
-		//multiQbertAnim->AddAnimationComponent(std::make_shared<AnimationComponent>("QbertFacingForward.png", 1, 2, .5f, AnimState::FacingForward));
-		//test->AddComponent(multiAnim);
-		//
-		//LevelScene.Add(test);
+		auto coily = new CoilyComponent();
+		coily->AddTarget(characterComp);
+		auto multiCoilyAnim = new MultiAnimationComponent(AnimState::None);
+		multiCoilyAnim->AddAnimationComponent(std::make_shared<AnimationComponent>("CoilyFacingAway.png", 1, 2, .5f, AnimState::FacingAway));
+		multiCoilyAnim->AddAnimationComponent(std::make_shared<AnimationComponent>("CoilyFacingForward.png", 1, 2, .5f, AnimState::FacingForward));
+		multiCoilyAnim->AddAnimationComponent(std::make_shared<AnimationComponent>("CoilyEgg.png", 1, 2, .5f, AnimState::None));
+		coily->SetAnim(multiCoilyAnim);
+		CoilyGO->AddComponent(coily);
+		CoilyGO->AddComponent(multiCoilyAnim);
+
+		Player01subject->AddObserver(coily);
+		Levelsubject->AddObserver(coily);
+		LevelScene.Add(CoilyGO);
+	
+
+		//Slick and sam
+		auto SlickAndSamGO = std::make_shared<GameObject>();
+		auto sam = new SlickOrSamComponent();
+		auto slick = new SlickOrSamComponent();
+		auto multislickAnim = new MultiAnimationComponent(AnimState::Invisible);
+		multislickAnim->AddAnimationComponent(std::make_shared<AnimationComponent>("SlickAnim.png", 1, 4, 0.5f, AnimState::None));
+		auto multiSamAnim = new MultiAnimationComponent(AnimState::Invisible);
+		multiSamAnim->AddAnimationComponent(std::make_shared<AnimationComponent>("SamAnim.png", 1, 4, 0.5f, AnimState::None));
+		slick->SetAnimComponent(multiSamAnim);
+		sam->SetAnimComponent(multislickAnim);
+		SlickAndSamGO->AddComponent(sam);
+		SlickAndSamGO->AddComponent(slick);
+		SlickAndSamGO->AddComponent(multislickAnim);
+		SlickAndSamGO->AddComponent(multiSamAnim);
+		Levelsubject->AddObserver(slick);
+		Levelsubject->AddObserver(sam);
+		Player01subject->AddObserver(slick);
+		Player01subject->AddObserver(sam);
+		
+		LevelScene.Add(SlickAndSamGO);
 	}
 
 	//CoopLevel
@@ -188,9 +219,16 @@ void dae::Minigin::LoadGame() const
 		const auto pointComp01 = new PointComponent{ "Lingua.otf",16 };
 		const auto characterComp01 = new CharacterComponent();
 		const auto liveComp01 = new LivesComponent{ 3,"Lingua.otf",16,true };
+		PlayerOneObject->AddComponent(new PlayerComponent{ 0 });
+
+		auto multiQbertAnim01 = new MultiAnimationComponent(AnimState::FacingForward);
+		multiQbertAnim01->AddAnimationComponent(std::make_shared<AnimationComponent>("QbertFacingAway.png", 1, 2, .5f, AnimState::FacingAway));
+		multiQbertAnim01->AddAnimationComponent(std::make_shared<AnimationComponent>("QbertFacingForward.png", 1, 2, .5f, AnimState::FacingForward));
+		PlayerOneObject->AddComponent(multiQbertAnim01);
+		characterComp01->SetAnimComponent(multiQbertAnim01);
+		
 		PlayerOneObject->SetPosition(10, 75);
 		PlayerOneObject->AddComponent(Player01subject);
-		PlayerOneObject->AddComponent(new PlayerComponent{ 0 });
 		PlayerOneObject->AddComponent(liveComp01);
 		pointComp01->AddTextOffset(550, 0);
 		PlayerOneObject->AddComponent(pointComp01);
@@ -205,8 +243,15 @@ void dae::Minigin::LoadGame() const
 		const auto pointComp02 = new PointComponent{ "Lingua.otf",16 };
 		const auto characterComp02 = new CharacterComponent();
 		const auto liveComp02 = new LivesComponent{ 3,"Lingua.otf",16,true };
-		PlayerTwoObject->SetPosition(10, 100);
 		PlayerTwoObject->AddComponent(new PlayerComponent{ 1 });
+
+		auto multiQbertAnim02 = new MultiAnimationComponent(AnimState::FacingForward);
+		multiQbertAnim02->AddAnimationComponent(std::make_shared<AnimationComponent>("QbertFacingAway.png", 1, 2, .5f, AnimState::FacingAway));
+		multiQbertAnim02->AddAnimationComponent(std::make_shared<AnimationComponent>("QbertFacingForward.png", 1, 2, .5f, AnimState::FacingForward));
+		PlayerTwoObject->AddComponent(multiQbertAnim02);
+		characterComp02->SetAnimComponent(multiQbertAnim02);
+		
+		PlayerTwoObject->SetPosition(10, 100);
 		PlayerTwoObject->AddComponent(liveComp02);
 		pointComp02->AddTextOffset(550, 0);
 		PlayerTwoObject->AddComponent(pointComp02);
@@ -217,10 +262,48 @@ void dae::Minigin::LoadGame() const
 		Levelsubject->AddObserver(characterComp02);
 		Levelsubject->AddObserver(liveComp02);
 
+
+		//Coily
+		auto CoilyGO = std::make_shared<GameObject>();
+		//test->SetPosition(216, 180);
+		auto coily = new CoilyComponent();
+		coily->AddTarget(characterComp01);
+		coily->AddTarget(characterComp02);
+		auto multiCoilyAnim = new MultiAnimationComponent(AnimState::None);
+		multiCoilyAnim->AddAnimationComponent(std::make_shared<AnimationComponent>("CoilyFacingAway.png", 1, 2, .5f, AnimState::FacingAway));
+		multiCoilyAnim->AddAnimationComponent(std::make_shared<AnimationComponent>("CoilyFacingForward.png", 1, 2, .5f, AnimState::FacingForward));
+		multiCoilyAnim->AddAnimationComponent(std::make_shared<AnimationComponent>("CoilyEgg.png", 1, 2, .5f, AnimState::None));
+		coily->SetAnim(multiCoilyAnim);
+		CoilyGO->AddComponent(coily);
+		CoilyGO->AddComponent(multiCoilyAnim);
+
+		Player01subject->AddObserver(coily);
+		Player02subject->AddObserver(coily);
+		Levelsubject->AddObserver(coily);
+		LevelScene.Add(CoilyGO);
+		
 		//fps
 		auto go = std::make_shared<GameObject>();
 		go->AddComponent(new FpsComponent{ "lingua.otf",24 });
 		LevelScene.Add(go);
+
+		//Slick and sam
+		auto SlickAndSamGO = std::make_shared<GameObject>();
+		auto sam = new SlickOrSamComponent();
+		auto slick = new SlickOrSamComponent();
+		auto multislickAnim = new MultiAnimationComponent(AnimState::Invisible);
+		multislickAnim->AddAnimationComponent(std::make_shared<AnimationComponent>("SlickAnim.png", 1, 4, 0.5f, AnimState::None));
+		auto multiSamAnim = new MultiAnimationComponent(AnimState::Invisible);
+		multiSamAnim->AddAnimationComponent(std::make_shared<AnimationComponent>("SamAnim.png", 1, 4, 0.5f, AnimState::None));
+		slick->SetAnimComponent(multiSamAnim);
+		sam->SetAnimComponent(multislickAnim);
+		SlickAndSamGO->AddComponent(sam);
+		SlickAndSamGO->AddComponent(slick);
+		SlickAndSamGO->AddComponent(multislickAnim);
+		SlickAndSamGO->AddComponent(multiSamAnim);
+		Levelsubject->AddObserver(slick);
+		Levelsubject->AddObserver(sam);
+		LevelScene.Add(SlickAndSamGO);
 	}
 
 	//add VersusLevel

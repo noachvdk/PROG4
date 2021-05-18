@@ -1,7 +1,7 @@
 #pragma once
 #include "Singleton.h"
 
-struct Hex;
+class Hex;
 struct SDL_Window;
 struct SDL_Renderer;
 struct SDL_Rect;

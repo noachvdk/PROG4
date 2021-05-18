@@ -6,21 +6,23 @@ using namespace dae;
 
 MultiAnimationComponent::MultiAnimationComponent(AnimState state)
 	: m_State(state)
+	, m_Pos()
 {
 }
 
 void MultiAnimationComponent::UpdateComponent()
 {
-	glm::vec2 pos{};
-	if (m_Character)
-		pos = m_Character->GetCurrentCharacterPos();
-	else
-		m_Character = m_pParentObj->GetComponent<CharacterComponent>();
-	
-	for (auto& comp : m_AnimationComponents)
+	if(m_NeedsUpdate)
 	{
-		comp->SetOffset(pos.x, pos.y - comp->GetTextureFrameHeight());
+		for (auto& comp : m_AnimationComponents)
+		{
+			comp->SetOffset(m_Pos.x, m_Pos.y - comp->GetTextureFrameHeight());
+		}
+		m_NeedsUpdate = false;
 	}
+
+	if (m_State == AnimState::Invisible)
+		return;
 	
 	for (auto& comp : m_AnimationComponents)
 	{
@@ -33,6 +35,9 @@ void MultiAnimationComponent::UpdateComponent()
 
 void MultiAnimationComponent::RenderComponent()
 {
+	if (m_State == AnimState::Invisible)
+		return;
+	
 	for (auto& comp : m_AnimationComponents)
 	{
 		if (comp->GetAnimState() == m_State)
@@ -54,29 +59,10 @@ void MultiAnimationComponent::PostAddedToGameObject()
 
 }
 
-void MultiAnimationComponent::Notify(Event event)
-{		
-	switch (event)
-	{
-	case Event::ActorMoveUpLeft:
-		m_State = AnimState::FacingAway;
-		SetFlippedCurrent(false);
-		break;
-	case Event::ActorMoveUpRight:
-		m_State = AnimState::FacingAway;
-		SetFlippedCurrent(true);
-		break;
-	case Event::ActorMoveDownLeft:
-		m_State = AnimState::FacingForward;
-		SetFlippedCurrent(false);
-		break;
-	case Event::ActorMoveDownRight:
-		m_State = AnimState::FacingForward;
-		SetFlippedCurrent(true);
-		break;
-	default:
-		break;
-	}
+void MultiAnimationComponent::SetState(AnimState state,bool isFlipped)
+{
+	m_State = state;
+	SetFlippedCurrent(isFlipped);
 }
 
 void MultiAnimationComponent::AddAnimationComponent(std::shared_ptr<AnimationComponent> comp)

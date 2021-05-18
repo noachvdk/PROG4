@@ -1,34 +1,38 @@
 #pragma once
 #pragma warning(push)
 #pragma warning (disable:4201)
-//#include <glm/vec3.hpp>
 #include <glm/glm.hpp>
-#include "AnimationComponent.h"
-
 #pragma warning(pop)
+#include "AnimationComponent.h"
 class Disc
 {
 public:
-	Disc(const glm::vec2& coordpos, const glm::vec2& originPos, const int rad);
+	Disc(const glm::vec2& originPos, const int rad, bool side);
 
 	void Reset();
     void Update();
     void Render();
 	
-	bool GetIsUsed()const { return used; }
-	glm::vec2 GetPos() const { return pos; }
-	glm::vec2 GetCoord() const { return coord; }
-	glm::vec2 GetOrigin() const { return origin; }
-    void SetSteppedOn() { steppedOn = true; }
+	bool GetIsUsed()const { return m_Used; }
+	glm::vec2 GetPos() const { return m_StartPos; }
+	glm::vec2 GetCoord() const { return m_Coord; }
+	glm::vec2 GetOrigin() const { return m_Origin; }
+	
+    void SetSteppedOn() { m_SteppedOn = true; }
+	void SetRandomCoord(int max);
 
 private:
-	bool used;
-	bool steppedOn;
-	glm::vec2 coord;
-	glm::vec2 startCoord;
-	glm::vec2 pos;
-	glm::vec2 startPos;
-	glm::vec2 origin;
-	std::shared_ptr<dae::AnimationComponent> anim;
+	void CalcPos();
+	
+	bool m_Used;
+	bool m_SteppedOn;
+	bool m_Side;
+	const int m_Radius;
+	glm::vec2 m_Coord;
+	glm::vec2 m_StartCoord;
+	glm::vec2 m_Pos;
+	glm::vec2 m_StartPos;
+	glm::vec2 m_Origin;
+	std::shared_ptr<dae::AnimationComponent> m_Anim;
 };
 

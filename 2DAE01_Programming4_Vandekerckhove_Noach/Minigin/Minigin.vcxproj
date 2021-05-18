@@ -234,6 +234,7 @@
     <ClInclude Include="audio.h" />
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="CharacterComponent.h" />
+    <ClInclude Include="CoilyComponent.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Disc.h" />
     <ClInclude Include="Font.h" />
@@ -241,6 +242,7 @@
     <ClInclude Include="FpsComponent.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameSettings.h" />
+    <ClInclude Include="Hex.h" />
     <ClInclude Include="HexagonalGrid.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LevelComponent.h" />
@@ -262,6 +264,7 @@
     <ClInclude Include="ServiceLocator.h" />
     <ClInclude Include="SimpleSDLSoundSystem.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="SlickOrSamComponent.h" />
     <ClInclude Include="SoundSystem.h" />
     <ClInclude Include="Subject.h" />
     <ClInclude Include="SubjectComponent.h" />
@@ -323,6 +326,7 @@
     </ClCompile>
     <ClCompile Include="BaseComponent.cpp" />
     <ClCompile Include="CharacterComponent.cpp" />
+    <ClCompile Include="CoilyComponent.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Disc.cpp" />
     <ClCompile Include="Font.cpp" />
@@ -330,6 +334,7 @@
     <ClCompile Include="FpsComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameSettings.cpp" />
+    <ClCompile Include="Hex.cpp" />
     <ClCompile Include="HexagonalGrid.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LevelComponent.cpp" />
@@ -356,6 +361,7 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="ServiceLocator.cpp" />
     <ClCompile Include="SimpleSDLSoundSystem.cpp" />
+    <ClCompile Include="SlickOrSamComponent.cpp" />
     <ClCompile Include="SoundSystem.cpp" />
     <ClCompile Include="Subject.cpp" />
     <ClCompile Include="SubjectComponent.cpp" />

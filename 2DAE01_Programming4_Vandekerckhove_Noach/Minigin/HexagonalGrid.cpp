@@ -3,6 +3,8 @@
 #include <fstream>
 #include "Logger.h"
 #include "ResourceManager.h"
+
+
 using namespace dae;
 
 void HexagonalGridManager::Init(int maxSteps, bool goBack)
@@ -18,23 +20,34 @@ void HexagonalGridManager::Init(int maxSteps, bool goBack)
 
 void HexagonalGridManager::changeClosestHexByPos(const glm::vec2& pos)
 {
-	float distance{ float(INFINITE) };
-	glm::vec2 coord{};
-
-	for (const auto& hex : m_HexGrid)
-	{
-		auto currentDistance = glm::distance(pos, hex.pos);
-		if (currentDistance < distance)
-		{
-			distance = currentDistance;
-			coord = hex.pos;
-		}
-	}
+	const glm::vec2 coord{ getHexByPos(pos)->GetPos() };
 
 	for(auto& hex : m_HexGrid)
 	{
-		if (coord == hex.pos)
-			hex.nextStep();
+		if (coord == hex.GetPos())
+			hex.NextTile();
+	}
+}
+
+void HexagonalGridManager::SetPlayerStandingOnHexByPos(const glm::vec2& pos, bool value)
+{
+	const glm::vec2 coord{ getHexByPos(pos)->GetPos() };
+
+	for (auto& hex : m_HexGrid)
+	{
+		if (coord == hex.GetPos())
+			hex.SetPlayerStandingOn(value);
+	}
+}
+
+void HexagonalGridManager::SetPlayerStandingOnHexByPos(const glm::vec2& pos, CharacterComponent* value)
+{
+	const glm::vec2 coord{ getHexByPos(pos)->GetPos() };
+
+	for (auto& hex : m_HexGrid)
+	{
+		if (coord == hex.GetPos())
+			hex.SetPlayerStandingOn(value);
 	}
 }
 
@@ -43,21 +56,32 @@ void HexagonalGridManager::changeClosestHexByCoord(const glm::vec2& coord)
 	for (auto& hex : m_HexGrid)
 	{
 		if (coord == glm::vec2(hex.r, hex.c))
-			hex.nextStep();
+			hex.NextTile();
 	}
 }
 
-const glm::vec2 HexagonalGridManager::GetHexPosByCoord(const glm::vec2& coord)
+void HexagonalGridManager::ResetClosestHexByPos(const glm::vec2& pos)
+{
+	const glm::vec2 coord{ getHexByPos(pos)->GetPos() };
+	
+	for (auto& hex : m_HexGrid)
+	{
+		if (coord == hex.GetPos())
+			hex.ResetTex();
+	}
+}
+
+const glm::vec2 HexagonalGridManager::GetHexPosByCoord(const glm::vec2& coord) const
 {
 	for (auto& hex : m_HexGrid)
 	{
 		if (coord == glm::vec2(hex.r, hex.c))
-			return hex.pos;
+			return hex.GetPos();
 	}
 	return glm::vec2();
 }
 
-bool HexagonalGridManager::GetIsHexValidByCoord(const glm::vec2& coord)
+bool HexagonalGridManager::GetIsHexValidByCoord(const glm::vec2& coord) const
 {
 	for (auto& hex : m_HexGrid)
 	{
@@ -67,13 +91,13 @@ bool HexagonalGridManager::GetIsHexValidByCoord(const glm::vec2& coord)
 	return false;
 }
 
-bool HexagonalGridManager::GetIsHexAlreadyFlippedByCoord(const glm::vec2& coord)
+bool HexagonalGridManager::GetIsHexAlreadyFlippedByCoord(const glm::vec2& coord) const
 {
 	for (auto& hex : m_HexGrid)
 	{
 		if (coord == glm::vec2(hex.r, hex.c))
 		{
-			if (hex.currentTexID == hex.maxStep)
+			if (hex.GetCurrentTexID() == hex.GetMaxSteps())
 				return true;
 		}
 
@@ -81,9 +105,111 @@ bool HexagonalGridManager::GetIsHexAlreadyFlippedByCoord(const glm::vec2& coord)
 	return false;
 }
 
-const glm::vec2 HexagonalGridManager::GetCoordByClosestPos(const glm::vec2& pos)
+bool HexagonalGridManager::GetIsHexOccupiedByCoord(const glm::vec2& coord) const
 {
-	return glm::vec2(getClosestHex(pos)->r, getClosestHex(pos)->c);
+	for (auto& hex : m_HexGrid)
+	{
+		if (coord == glm::vec2(hex.r, hex.c) && hex.GetPlayerStandingOn())
+			return true;
+	}
+	return false;
+}
+
+bool HexagonalGridManager::GetIsHexOccupiedByPos(const glm::vec2& pos) const
+{
+	const glm::vec2 coord{ getHexByPos(pos)->GetPos() };
+
+	for (auto& hex : m_HexGrid)
+	{
+		if (coord == hex.GetPos() && hex.GetIsPlayerStandingOn())
+			return true;
+	}
+	return false;
+}
+
+CharacterComponent* HexagonalGridManager::GetCharacterOnHexByCoord(const glm::vec2& coord) const
+{
+	for (auto& hex : m_HexGrid)
+	{
+		if (coord == glm::vec2(hex.r, hex.c) && hex.GetPlayerStandingOn())
+			return hex.GetPlayerStandingOn();
+	}
+	return nullptr;
+}
+
+CharacterComponent* HexagonalGridManager::GetCharacterOnHexByPos(const glm::vec2& pos) const
+{
+	const glm::vec2 coord{ getHexByPos(pos)->GetPos() };
+
+	for (auto& hex : m_HexGrid)
+	{
+		if (coord == hex.GetPos() && hex.GetPlayerStandingOn())
+			return hex.GetPlayerStandingOn();
+	}
+	return nullptr;
+}
+
+std::vector<Hex> HexagonalGridManager::GetNeighboringHexesByCoord(const glm::vec2& coord) const
+{
+	std::vector<Hex> m_Neighbors{};
+	for (auto hex : m_HexGrid)
+	{
+		if (coord.x == hex.r && coord.y == hex.c)
+			continue;
+		
+		if(hex.r >= (coord.x - 1) && (coord.x + 1) >= hex.r)
+		{
+			if(coord.x == hex.r) //for the same row
+			{
+				if (hex.c >= coord.y - 1 && coord.y + 1 >= hex.c)
+					m_Neighbors.push_back(hex);
+			}
+			else if ((int)coord.x % 2 == 0) //for the row above and under
+			{
+				if (hex.c >= coord.y - 1 && coord.y >= hex.c)
+					m_Neighbors.push_back(hex);
+			}
+			else //for the row above and under
+			{
+				if (hex.c >= coord.y && coord.y + 1 >= hex.c)
+					m_Neighbors.push_back(hex);
+			}
+			
+		}
+	}
+	return m_Neighbors;
+}
+
+std::vector<Hex> HexagonalGridManager::GetNeighboringAccesibleHexesByCoord(const glm::vec2& coord) const
+{
+	std::vector<Hex> m_Neighbors{};
+	for (auto hex : m_HexGrid)
+	{
+		if (coord.x == hex.r)
+			continue;
+
+		if (hex.r >= (coord.x - 1) && (coord.x + 1) >= hex.r)
+		{
+			if ((int)coord.x % 2 == 0) //for the row above and under
+			{
+				if (hex.c >= coord.y - 1 && coord.y >= hex.c)
+					m_Neighbors.push_back(hex);
+			}
+			else //for the row above and under
+			{
+				if (hex.c >= coord.y && coord.y + 1 >= hex.c)
+					m_Neighbors.push_back(hex);
+			}
+
+		}
+	}
+	return m_Neighbors;
+}
+
+const glm::vec2 HexagonalGridManager::GetCoordByClosestPos(const glm::vec2& pos) const
+{
+	const auto temp = getHexByPos(pos);
+	return glm::vec2(temp->r, temp->c);
 }
 
 void HexagonalGridManager::SetNewLevel(int maxSteps, bool goBack)
@@ -100,11 +226,17 @@ bool HexagonalGridManager::GetAreAllHexesFlipped()
 {
 	for (auto& hex : m_HexGrid)
 	{
-		if (hex.currentTexID != hex.maxStep)
+		if (hex.GetCurrentTexID() != hex.GetMaxSteps())
 			return false;
 	}
 	
 	return true;
+}
+
+void HexagonalGridManager::Render()
+{
+	for (const auto& hex : m_HexGrid)
+		Renderer::GetInstance().RenderHex(hex);
 }
 
 void HexagonalGridManager::loadFromFileRawHex(const std::string& path)
@@ -181,19 +313,31 @@ const std::shared_ptr<Texture2D> HexagonalGridManager::GetHexTexture(int id) con
 	return m_HexTextures[i];
 }
 
-std::shared_ptr<Hex> HexagonalGridManager::getClosestHex(const glm::vec2& pos)
+std::shared_ptr<Hex> dae::HexagonalGridManager::getHexByCoord(const glm::vec2& coord) const
+{
+	std::shared_ptr<Hex> currentHex = nullptr;
+
+	for (auto& hex : m_HexGrid)
+	{
+		if (coord == glm::vec2(hex.r, hex.c))
+			currentHex =std::make_shared<Hex>(hex);
+	}
+
+	return currentHex;
+}
+
+std::shared_ptr<Hex> HexagonalGridManager::getHexByPos(const glm::vec2& pos) const
 {
 	float distance{ float(INFINITE) };
-	std::shared_ptr<Hex> currentHex = std::make_shared<Hex>(0, 0, m_GridBasePos, m_Radius, m_MaxSteps, m_CanChangeBack);
+	std::shared_ptr<Hex> currentHex = nullptr;
 	
 	for(auto& hex : m_HexGrid)
 	{
-		auto currentDistance = glm::distance(pos, hex.pos);
+		const auto currentDistance = glm::distance(pos, hex.GetPos());
 		if(currentDistance<distance)
 		{
 			distance = currentDistance;
 			currentHex = std::make_shared<Hex>(hex);
-
 		}
 	}
 	

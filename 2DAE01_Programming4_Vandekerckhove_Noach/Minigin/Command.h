@@ -89,9 +89,12 @@ class MoveUpLeft : public Command
 public:
 	void Execute(GameObject& obj)override
 	{
-		auto character = obj.GetComponent<CharacterComponent>();
+		const auto character = obj.GetComponent<CharacterComponent>();
 		if (character)
-			obj.GetComponent<CharacterComponent>()->move(direction::UpLeft);
+			character->move(direction::UpLeft);
+		const auto coily = obj.GetComponent<CoilyComponent>();
+		if (coily)
+			coily->move(direction::UpLeft);
 	}
 };
 
@@ -100,9 +103,12 @@ class MoveUpRight : public Command
 public:
 	void Execute(GameObject& obj)override
 	{
-		auto character = obj.GetComponent<CharacterComponent>();
+		const auto character = obj.GetComponent<CharacterComponent>();
 		if (character)
-			obj.GetComponent<CharacterComponent>()->move(direction::UpRight);
+			character->move(direction::UpRight);
+		const auto coily = obj.GetComponent<CoilyComponent>();
+		if (coily)
+			coily->move(direction::UpRight);
 	}
 };
 
@@ -111,9 +117,12 @@ class MoveDownLeft : public Command
 public:
 	void Execute(GameObject& obj)override
 	{
-		auto character = obj.GetComponent<CharacterComponent>();
+		const auto character = obj.GetComponent<CharacterComponent>();
 		if (character)
-			obj.GetComponent<CharacterComponent>()->move(direction::DownLeft);
+			character->move(direction::DownLeft);
+		const auto coily = obj.GetComponent<CoilyComponent>();
+		if (coily)
+			coily->move(direction::DownLeft);
 	}
 };
 
@@ -122,8 +131,11 @@ class MoveDownRight : public Command
 public:
 	void Execute(GameObject& obj)override
 	{
-		auto character = obj.GetComponent<CharacterComponent>();
+		const auto character = obj.GetComponent<CharacterComponent>();
 		if (character)
-			obj.GetComponent<CharacterComponent>()->move(direction::DownRight);
+			character->move(direction::DownRight);
+		const auto coily = obj.GetComponent<CoilyComponent>();
+		if (coily)
+			coily->move(direction::DownRight);
 	}
 };

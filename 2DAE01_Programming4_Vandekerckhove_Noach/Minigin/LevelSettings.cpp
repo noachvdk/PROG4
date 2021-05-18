@@ -31,11 +31,11 @@ void dae::LevelSettings::LoadLevelSettings(const std::string& path)
 		lvl.m_CanChangeBack = (canChangeBack != "false");
 		if(lvl.m_CanChangeBack ==0)
 		{
-			Logger::GetInstance().Log(LogType::Info, "Level with ID " + std::to_string(lvl.m_LevelID) + " needs " + std::to_string(lvl.m_JumpsNeeded) + " jumps to change to last color and can't be changed back");
+			Logger::GetInstance().Log(LogType::Info, "Loaded Level with ID " + std::to_string(lvl.m_LevelID) + " needs " + std::to_string(lvl.m_JumpsNeeded) + " jumps to change to last color and can't be changed back");
 		}
 		else
 		{
-			Logger::GetInstance().Log(LogType::Info, "Level with ID " + std::to_string(lvl.m_LevelID) + " needs " + std::to_string(lvl.m_JumpsNeeded) + " jumps to change to last color and can be changed back");
+			Logger::GetInstance().Log(LogType::Info, "Loaded Level with ID " + std::to_string(lvl.m_LevelID) + " needs " + std::to_string(lvl.m_JumpsNeeded) + " jumps to change to last color and can be changed back");
 		}
 		m_Levels.push_back(lvl);
 	}

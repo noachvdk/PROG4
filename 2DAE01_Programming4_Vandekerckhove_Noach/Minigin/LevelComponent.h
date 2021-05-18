@@ -20,9 +20,6 @@ namespace dae
 		void RenderComponent() override;
 		void PostAddedToGameObject() override;
 
-		void SetDisc01(const glm::vec2& coord);
-		void SetDisc02(const glm::vec2& coord);
-
 		void Notify(Event event) override;
 
 		void NextLevel();

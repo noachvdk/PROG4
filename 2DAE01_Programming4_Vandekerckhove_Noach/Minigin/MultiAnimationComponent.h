@@ -7,7 +7,7 @@ namespace dae
 
 	class AnimationComponent;
 	class CharacterComponent;
-	class MultiAnimationComponent final : public BaseComponent, public Observer
+	class MultiAnimationComponent final : public BaseComponent
 	{
 	public:
 		MultiAnimationComponent(AnimState state);
@@ -22,14 +22,18 @@ namespace dae
 		void RenderComponent() override;
 		void PostAddedToGameObject() override;
 
-		void Notify(Event event) override;
+		void SetState(AnimState state, bool IsFlipped);
 		
 		void AddAnimationComponent(std::shared_ptr<AnimationComponent> comp);
 
 		void SetAnimState(AnimState state) { m_State = state; }
 		void SetFlipped(bool value, AnimState id);
 		void SetFlippedCurrent(bool value);
+		void SetPos(const glm::vec2& pos) { m_Pos = pos; m_NeedsUpdate = true; }
+		void SetPos(const float x, const float y) { m_Pos.x = x; m_Pos.y = y; m_NeedsUpdate = true; }
 	private:
+		bool m_NeedsUpdate;
+		glm::vec2 m_Pos{};
 		AnimState m_State;
 		CharacterComponent* m_Character;
 		std::vector<std::shared_ptr<AnimationComponent>> m_AnimationComponents;

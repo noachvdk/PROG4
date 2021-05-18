@@ -3,7 +3,6 @@
 #include <SDL.h>
 #include <algorithm>    // std::find
 #include <vector>  
-#include <SDL.h>
 
 using namespace dae;
 

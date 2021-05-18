@@ -1,70 +1,18 @@
 #pragma once
 #include "Renderer.h"
-#include <cmath>
 #include <vector>
 #include "Singleton.h"
 #pragma warning(push)
 #pragma warning (disable:4201)
-//#include <glm/vec3.hpp>
 #include <glm/glm.hpp>
 #pragma warning(pop)
 #include "Texture2D.h"
-#include "algorithm"
+#include "Hex.h"
 //some logic & code is sampled from https://www.redblobgames.com/grids/hexagons/implementation.html
-
-struct Hex //putting this in the namespace will cause errors
-{
-    const int c;
-    const int r;
-    const int Radius{};
-    int currentTexID;
-    int maxStep;
-    bool canGoBack;
-    glm::vec2 pos{};
-	
-    Hex(int row, int column, const glm::vec2 origin, const int rad,int maxstep, bool can): c(column), r(row),Radius(rad), currentTexID(0)
-	,maxStep(maxstep),canGoBack(can)
-    {
- 
-        const glm::vec2 offset{ (glm::sin(60 * M_PI / 180) * 2) * Radius, Radius * 1.5f };
-        glm::vec2 basePos{ origin.x + (offset.x * c) , origin.y + (offset.y * r) };
-        if ((r % 2) != 0)
-            basePos.x += offset.x / 2; //push odd rows by half the offset to avoid overlapping
-
-        pos = basePos;
-    }
-    void changeTexID(int id) { currentTexID = id; }
-    void nextStep()
-    {
-    	if(canGoBack)
-    	{
-    		if(currentTexID == maxStep)
-    		{
-                currentTexID = 0;
-    		}
-            else
-            {
-                ++currentTexID;
-                currentTexID = std::min(currentTexID, maxStep);
-            }
-    	}
-        else
-        {
-            ++currentTexID;
-            currentTexID = std::min(currentTexID, maxStep);
-        }
-
-    }
-	void SetNewLevel(int maxstep, bool can)
-    {
-        currentTexID = 0;
-        maxStep = maxstep;
-        canGoBack = can;
-    }
-};
 
 namespace dae
 {
+    class CharacterComponent;
     class HexagonalGridManager final
     {
     public:
@@ -73,28 +21,36 @@ namespace dae
 
         const glm::vec2 GetBaseGridPos() const { return m_GridBasePos; }
         const std::shared_ptr<Texture2D> GetHexTexture(int id) const;
-        std::shared_ptr<Hex> getClosestHex(const glm::vec2& pos);
+        std::shared_ptr<Hex> getHexByPos(const glm::vec2& pos) const;
+        std::shared_ptr<Hex> getHexByCoord(const glm::vec2& coord) const;
         int GetAmountOfSteps()const { return m_Amount; }
 
-        const glm::vec2 GetHexPosByCoord(const glm::vec2& coord);
-        const glm::vec2 GetCoordByClosestPos(const glm::vec2& pos);
+        const glm::vec2 GetHexPosByCoord(const glm::vec2& coord) const;
+        const glm::vec2 GetCoordByClosestPos(const glm::vec2& pos) const;
 
-        bool GetIsHexValidByCoord(const glm::vec2& coord);
-        bool GetIsHexAlreadyFlippedByCoord(const glm::vec2& coord);
+        bool GetIsHexValidByCoord(const glm::vec2& coord) const;
+        bool GetIsHexAlreadyFlippedByCoord(const glm::vec2& coord) const;
+        bool GetIsHexOccupiedByCoord(const glm::vec2& coord) const;
+        bool GetIsHexOccupiedByPos(const glm::vec2& pos) const;
+        CharacterComponent* GetCharacterOnHexByCoord(const glm::vec2& coord) const;
+        CharacterComponent* GetCharacterOnHexByPos(const glm::vec2& pos) const;
+    	std::vector<Hex> GetNeighboringHexesByCoord(const glm::vec2& coord) const;
+        std::vector<Hex> GetNeighboringAccesibleHexesByCoord(const glm::vec2& coord) const;
+
+
+    	void SetPlayerStandingOnHexByPos(const glm::vec2& pos,bool value);
+        void SetPlayerStandingOnHexByPos(const glm::vec2& pos, CharacterComponent* value);
 
         void changeClosestHexByPos(const glm::vec2& pos);
         void changeClosestHexByCoord(const glm::vec2& coord);
+        void ResetClosestHexByPos(const glm::vec2& pos);
 
         bool GetAreAllHexesFlipped();
     	
-        void Render()
-        {
-            for (const auto& hex : m_HexGrid)
-                Renderer::GetInstance().RenderHex(hex);
-        }
+        void Render();
 
         void SetNewLevel(int maxSteps, bool goBack);
-    	
+   
         void Init(int maxSteps, bool goBack);
     private:
 
@@ -104,7 +60,7 @@ namespace dae
         glm::vec2 m_GridBasePos{ 320,140 };
         int m_Radius{ 30 };
         int m_MaxSteps{};
-        int m_Amount;
+        int m_Amount{};
         bool m_CanChangeBack{};
         static const int MAX_HEX_TEXTURES = 3;
         std::shared_ptr<Texture2D> m_HexTextures[MAX_HEX_TEXTURES];

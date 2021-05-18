@@ -59,6 +59,10 @@ void LivesComponent::Notify(Event event)
 		m_IsDead = false;
 		m_NeedsUpdate = true;
 	}
+	else if(event == Event::ActorHitPurple)
+	{
+		DecreaseHealth();
+	}
 }
 
 void LivesComponent::AddTextOffset(const float x, const float y) const

@@ -12,7 +12,8 @@ namespace dae
 		Dying = 2,
 		FacingAway = 3,
 		FacingForward = 4,
-		None = 5
+		None = 5,
+		Invisible = 6
 	};
 	
 	class Texture2D;

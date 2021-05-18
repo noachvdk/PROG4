@@ -10,3 +10,5 @@
 #include "CharacterComponent.h"
 #include "AnimationComponent.h"
 #include "MultiAnimationComponent.h"
+#include "CoilyComponent.h"
+#include "SlickOrSamComponent.h"
