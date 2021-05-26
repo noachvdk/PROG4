@@ -28,6 +28,7 @@ namespace dae
 
 		void Notify(Event event) override;
 		void CollisionWithPurpleEnemy();
+		void CollisionWithGreenEnemy() const;
 	private:
 		direction m_MoveDirection;
 		bool m_Move;

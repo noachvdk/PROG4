@@ -5,7 +5,7 @@
 namespace dae
 {
 	class FontComponent;
-	class LevelComponent final : public BaseComponent, public Observer
+	class LevelComponent final : public BaseComponent
 	{
 	public:
 		LevelComponent(const int levelID);
@@ -20,14 +20,14 @@ namespace dae
 		void RenderComponent() override;
 		void PostAddedToGameObject() override;
 
-		void Notify(Event event) override;
+		//void Notify(Event event) override;
 
 		void NextLevel();
 
 	private:
 		int m_LevelID;
 		bool m_NeedsUpdate;
-		glm::vec2 m_Offset{ 550,50 };
+		glm::vec2 m_Offset{ 550,50 }; //TextOffset
 		FontComponent* m_pFontComponent;
 	};
 

@@ -129,7 +129,6 @@ void dae::Minigin::LoadGame() const
 		LevelObj->AddComponent(level);
 		LevelObj->AddComponent(Levelsubject);
 		LevelScene.Add(LevelObj);
-		Player01subject->AddObserver(level);
 	
 		//Player 1 
 		auto PlayerOneObject = std::make_shared<GameObject>();
@@ -159,22 +158,21 @@ void dae::Minigin::LoadGame() const
 		go->AddComponent(new FpsComponent{ "lingua.otf",24 });
 		LevelScene.Add(go);
 
-		//Coily
-		auto CoilyGO = std::make_shared<GameObject>();
-		//test->SetPosition(216, 180);
-		auto coily = new CoilyComponent();
-		coily->AddTarget(characterComp);
-		auto multiCoilyAnim = new MultiAnimationComponent(AnimState::None);
-		multiCoilyAnim->AddAnimationComponent(std::make_shared<AnimationComponent>("CoilyFacingAway.png", 1, 2, .5f, AnimState::FacingAway));
-		multiCoilyAnim->AddAnimationComponent(std::make_shared<AnimationComponent>("CoilyFacingForward.png", 1, 2, .5f, AnimState::FacingForward));
-		multiCoilyAnim->AddAnimationComponent(std::make_shared<AnimationComponent>("CoilyEgg.png", 1, 2, .5f, AnimState::None));
-		coily->SetAnim(multiCoilyAnim);
-		CoilyGO->AddComponent(coily);
-		CoilyGO->AddComponent(multiCoilyAnim);
+		////Coily
+		//auto CoilyGO = std::make_shared<GameObject>();
+		//auto coily = new CoilyComponent();
+		//coily->AddTarget(characterComp);
+		//auto multiCoilyAnim = new MultiAnimationComponent(AnimState::None);
+		//multiCoilyAnim->AddAnimationComponent(std::make_shared<AnimationComponent>("CoilyFacingAway.png", 1, 2, .5f, AnimState::FacingAway));
+		//multiCoilyAnim->AddAnimationComponent(std::make_shared<AnimationComponent>("CoilyFacingForward.png", 1, 2, .5f, AnimState::FacingForward));
+		//multiCoilyAnim->AddAnimationComponent(std::make_shared<AnimationComponent>("CoilyEgg.png", 1, 2, .5f, AnimState::None));
+		//coily->SetAnim(multiCoilyAnim);
+		//CoilyGO->AddComponent(coily);
+		//CoilyGO->AddComponent(multiCoilyAnim);
 
-		Player01subject->AddObserver(coily);
-		Levelsubject->AddObserver(coily);
-		LevelScene.Add(CoilyGO);
+		//Player01subject->AddObserver(coily);
+		//Levelsubject->AddObserver(coily);
+		//LevelScene.Add(CoilyGO);
 	
 
 		//Slick and sam
@@ -195,8 +193,30 @@ void dae::Minigin::LoadGame() const
 		Levelsubject->AddObserver(sam);
 		Player01subject->AddObserver(slick);
 		Player01subject->AddObserver(sam);
-		
 		LevelScene.Add(SlickAndSamGO);
+
+		//Ugg and wrongway
+		auto UggGO = std::make_shared<GameObject>();
+		auto ugg = new UggOrWrongwayComponent(Type::Ugg);
+		auto multiUggAnim = new MultiAnimationComponent(AnimState::Invisible);
+		multiUggAnim->AddAnimationComponent(std::make_shared<AnimationComponent>("UggAnim.png", 1, 4, 0.5f, AnimState::None));
+		ugg->SetAnimComponent(multiUggAnim);
+		UggGO->AddComponent(ugg);
+		UggGO->AddComponent(multiUggAnim);
+		Levelsubject->AddObserver(ugg);
+		Player01subject->AddObserver(ugg);
+		LevelScene.Add(UggGO);
+		
+		//auto WrongwayGO = std::make_shared<GameObject>();
+		//auto wrongway = new UggOrWrongwayComponent(Type::WrongWay);
+		//auto multiWrongwayAnim = new MultiAnimationComponent(AnimState::Invisible);
+		//multiWrongwayAnim->AddAnimationComponent(std::make_shared<AnimationComponent>("WrongwayAnim.png", 1, 4, 0.5f, AnimState::None));
+		//wrongway->SetAnimComponent(multiWrongwayAnim);
+		//WrongwayGO->AddComponent(wrongway);
+		//WrongwayGO->AddComponent(multiWrongwayAnim);
+		//Levelsubject->AddObserver(wrongway);
+		//Player01subject->AddObserver(wrongway);
+		//LevelScene.Add(WrongwayGO);
 	}
 
 	//CoopLevel
@@ -212,8 +232,6 @@ void dae::Minigin::LoadGame() const
 		LevelObj->AddComponent(level);
 		LevelObj->AddComponent(Levelsubject);
 		LevelScene.Add(LevelObj);
-		Player01subject->AddObserver(level);
-		Player02subject->AddObserver(level);
 		//Player 1 
 		auto PlayerOneObject = std::make_shared<GameObject>();
 		const auto pointComp01 = new PointComponent{ "Lingua.otf",16 };

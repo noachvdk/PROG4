@@ -135,9 +135,6 @@
     <ClInclude Include="SubjectComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="VisualBenchmarking.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ServiceLocator.h">
       <Filter>Header Files\ServiceLocator</Filter>
     </ClInclude>
@@ -194,6 +191,12 @@
     </ClInclude>
     <ClInclude Include="SlickOrSamComponent.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="VisualBenchmarking.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="UggOrWrongwayComponent.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -340,6 +343,9 @@
     </ClCompile>
     <ClCompile Include="SlickOrSamComponent.cpp">
       <Filter>Header Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="UggOrWrongwayComponent.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

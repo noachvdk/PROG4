@@ -6,6 +6,7 @@
 #include "SubjectComponent.h"
 #include "TimeManager.h"
 #include "GameSettings.h"
+#include "Logger.h"
 #include "PlayerComponent.h"
 #include "MultiAnimationComponent.h"
 
@@ -293,4 +294,12 @@ void CharacterComponent::CollisionWithPurpleEnemy()
 	}
 	const auto subject = m_pParentObj->GetComponent<SubjectComponent>();
 	if (subject) subject->Notify(Event::ActorHitPurple);
+	Logger::GetInstance().Log(LogType::Info, "Hit purple enemy");
+}
+
+void CharacterComponent::CollisionWithGreenEnemy() const
+{
+	const auto subject = m_pParentObj->GetComponent<SubjectComponent>();
+	if (subject) subject->Notify(Event::ActorHitGreen);
+	Logger::GetInstance().Log(LogType::Info, "Hit green enemy");
 }

@@ -4,37 +4,42 @@
 
 namespace dae
 {
-	class MultiAnimationComponent;
-	//class CharacterComponent;
-	class SlickOrSamComponent final : public BaseComponent, public Observer
+	enum class Type : int
+	{
+		Ugg = 0,
+		WrongWay = 1
+	};
+	
+	class UggOrWrongwayComponent final : public BaseComponent, public Observer
 	{
 	public:
-		SlickOrSamComponent();
-		~SlickOrSamComponent() = default;
-		SlickOrSamComponent(const SlickOrSamComponent& other) = delete;
-		SlickOrSamComponent(SlickOrSamComponent&& other) noexcept = delete;
-		SlickOrSamComponent& operator=(const SlickOrSamComponent& other) = delete;
-		SlickOrSamComponent& operator=(SlickOrSamComponent&& other) noexcept = delete;
+		UggOrWrongwayComponent(Type type);
+		~UggOrWrongwayComponent() = default;
+		UggOrWrongwayComponent(const UggOrWrongwayComponent& other) = delete;
+		UggOrWrongwayComponent(UggOrWrongwayComponent&& other) noexcept = delete;
+		UggOrWrongwayComponent& operator=(const UggOrWrongwayComponent& other) = delete;
+		UggOrWrongwayComponent& operator=(UggOrWrongwayComponent&& other) noexcept = delete;
 
 		void UpdateComponent() override;
 		void RenderComponent() override {};
 		void PostAddedToGameObject() override {};
 
 		void Notify(Event event) override;
-		
+
 		void SetAnimComponent(MultiAnimationComponent* anim);
 	private:
 		void Die();
-		direction RandomDirectionDown();
-		void MoveDown();
+		direction RandomDirection();
+		void Move();
+		glm::vec2 GetHexCollisionPos() const;
 		// variables
 		bool m_Move;
-		bool m_Initialized;
 		//(re)spawing
 		bool m_IsDead;
 		float m_DeathTimer;
 		float m_MaxDeathTime;
 		//movement
+		Type m_CurrentType;
 		direction m_MoveDirection;
 		float m_MoveSpeed;
 		float m_MoveTimer;
@@ -44,8 +49,9 @@ namespace dae
 		glm::vec2 m_CurrentPos;
 		glm::vec2 m_NextPos;
 		//anim
+		glm::vec2 m_Offset;
 		MultiAnimationComponent* m_Anim;
 	};
-}
 
+}
 

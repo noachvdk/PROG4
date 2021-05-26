@@ -56,11 +56,11 @@ void LevelComponent::PostAddedToGameObject()
 	m_pFontComponent->AddOffset(GetParentObject()->GetTransform().GetPosition().x + m_Offset.x, -GetParentObject()->GetTransform().GetPosition().y + m_Offset.y);
 }
 
-void LevelComponent::Notify(Event)
-{
-	//if (event == Event::LevelFinished)
-	//	NextLevel();
-}
+//void LevelComponent::Notify(Event)
+//{
+//	//if (event == Event::LevelFinished)
+//	//	NextLevel();
+//}
 
 void LevelComponent::NextLevel()
 {

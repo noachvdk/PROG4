@@ -19,6 +19,7 @@ namespace dae
         void loadFromFileRawHex(const std::string& file);
         void loadFromFileShape(const std::string& file);
 
+        const int GetRadius() const { return m_Radius; }
         const glm::vec2 GetBaseGridPos() const { return m_GridBasePos; }
         const std::shared_ptr<Texture2D> GetHexTexture(int id) const;
         std::shared_ptr<Hex> getHexByPos(const glm::vec2& pos) const;

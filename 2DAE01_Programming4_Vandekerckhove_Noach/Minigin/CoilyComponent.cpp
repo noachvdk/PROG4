@@ -84,8 +84,8 @@ void CoilyComponent::UpdateComponent()
 			m_Anim->SetPos(m_CurrentPos.x, m_CurrentPos.y);
 	}
 
-	auto otherPlayer = LevelManager::GetInstance().GetIsHexOccupierByPos(m_CurrentPos);
-	if (otherPlayer && LevelManager::GetInstance().GetIsHexOccupiedByPos(m_CurrentPos))
+	auto otherPlayer = LevelManager::GetInstance().GetPlayerOnHexByPos(m_CurrentPos);
+	if (!m_IsDead && otherPlayer && LevelManager::GetInstance().GetIsHexOccupiedByPos(m_CurrentPos))
 	{
 		otherPlayer->CollisionWithPurpleEnemy();
 		Die();

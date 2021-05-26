@@ -1,12 +1,15 @@
 #include "MiniginPCH.h"
 #include "MultiAnimationComponent.h"
 #include "AnimationComponent.h"
-#include "CharacterComponent.h"
+//#include "CharacterComponent.h"
 using namespace dae;
 
 MultiAnimationComponent::MultiAnimationComponent(AnimState state)
-	: m_State(state)
-	, m_Pos()
+	: m_NeedsUpdate(true)
+	, m_Pos(0,0)
+	, m_Offset(0,0)
+	, m_State(state)
+	//, m_pCharacter(nullptr)
 {
 }
 
@@ -16,7 +19,7 @@ void MultiAnimationComponent::UpdateComponent()
 	{
 		for (auto& comp : m_AnimationComponents)
 		{
-			comp->SetOffset(m_Pos.x, m_Pos.y - comp->GetTextureFrameHeight());
+			comp->SetOffset(m_Pos.x + m_Offset.x, m_Pos.y + m_Offset.y - comp->GetTextureFrameHeight());
 		}
 		m_NeedsUpdate = false;
 	}
@@ -54,7 +57,7 @@ void MultiAnimationComponent::PostAddedToGameObject()
 		glm::vec3 pos{ };
 		if (m_pParentObj)
 			pos = m_pParentObj->GetTransform().GetPosition();
-		comp->SetOffset(pos.x, pos.y);
+		comp->SetOffset(pos.x + m_Offset.x, pos.y + m_Offset.y);
 	}
 
 }
@@ -68,6 +71,34 @@ void MultiAnimationComponent::SetState(AnimState state,bool isFlipped)
 void MultiAnimationComponent::AddAnimationComponent(std::shared_ptr<AnimationComponent> comp)
 {
 	m_AnimationComponents.push_back(comp);
+}
+
+std::shared_ptr<AnimationComponent> MultiAnimationComponent::GetCurrentAnimComponent()
+{
+	std::shared_ptr<AnimationComponent> temp = nullptr;
+	for (auto& comp : m_AnimationComponents)
+	{
+		if (comp->GetAnimState() == m_State)
+		{
+			temp = comp;
+		}
+	}
+
+	return temp;
+}
+
+std::shared_ptr<AnimationComponent> MultiAnimationComponent::GetAnimComponent(AnimState state)
+{
+	std::shared_ptr<AnimationComponent> temp = nullptr;
+	for (auto& comp : m_AnimationComponents)
+	{
+		if (comp->GetAnimState() == state)
+		{
+			temp = comp;
+		}
+	}
+
+	return temp;
 }
 
 void MultiAnimationComponent::SetFlipped(bool value, AnimState id)

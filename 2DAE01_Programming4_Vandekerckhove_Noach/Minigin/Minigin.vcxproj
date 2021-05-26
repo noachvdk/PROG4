@@ -272,6 +272,7 @@
     <ClInclude Include="TextureComponent.h" />
     <ClInclude Include="TimeManager.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="UggOrWrongwayComponent.h" />
     <ClInclude Include="VisualBenchmarking.h" />
   </ItemGroup>
   <ItemGroup>
@@ -369,6 +370,7 @@
     <ClCompile Include="TextureComponent.cpp" />
     <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="UggOrWrongwayComponent.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

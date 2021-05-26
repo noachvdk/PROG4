@@ -18,7 +18,7 @@ namespace dae
 		int GetAmountOfLevels() const { return m_LevelSettings.GetAmountOfLevels(); }
 		LevelSetting GetCurrentSettings() const;
 		
-		//General
+		//General Getters
 		int GetCurrentLevelID()const { return m_CurrentLevelID; }
 		const std::shared_ptr<Texture2D> GetHexTexture(int id) const;
 		int GetAmountOfSteps() const { return m_HexGridManager.GetAmountOfSteps(); }
@@ -27,7 +27,6 @@ namespace dae
 		//Get Hex
 		std::shared_ptr<Hex> getHexByPos(const glm::vec2& pos) const { return m_HexGridManager.getHexByPos(pos); }
 		std::shared_ptr<Hex> getHexByCoord(const glm::vec2& coord) const { return m_HexGridManager.getHexByCoord(coord); }
-		
 		glm::vec2 GetHexCoordByClosestPos(const glm::vec2& pos)const { return m_HexGridManager.GetCoordByClosestPos(pos); }
 		glm::vec2 GetHexPosByCoord(const glm::vec2& coord)const { return m_HexGridManager.GetHexPosByCoord(coord); }
 		bool GetIsHexValidByCoord(const glm::vec2& coord)const { return m_HexGridManager.GetIsHexValidByCoord(coord); }
@@ -35,8 +34,8 @@ namespace dae
 		bool GetIsHexFlippedByCoord(const glm::vec2& coord)const { return m_HexGridManager.GetIsHexAlreadyFlippedByCoord(coord); }
 		bool GetIsHexOccupiedByCoord(const glm::vec2& coord)const { return m_HexGridManager.GetIsHexOccupiedByCoord(coord); }
 		bool GetIsHexOccupiedByPos(const glm::vec2& pos)const { return m_HexGridManager.GetIsHexOccupiedByPos(pos); }
-		CharacterComponent* GetIsHexOccupierByCoord(const glm::vec2& coord)const { return m_HexGridManager.GetCharacterOnHexByCoord(coord); }
-		CharacterComponent* GetIsHexOccupierByPos(const glm::vec2& pos)const { return m_HexGridManager.GetCharacterOnHexByPos(pos); }
+		CharacterComponent* GetPlayerOnHexByCoord(const glm::vec2& coord)const { return m_HexGridManager.GetCharacterOnHexByCoord(coord); }
+		CharacterComponent* GetPlayerOnHexByPos(const glm::vec2& pos)const { return m_HexGridManager.GetCharacterOnHexByPos(pos); }
 		std::vector<Hex> GetNeighboringHexes(const glm::vec2& coord) const { return m_HexGridManager.GetNeighboringHexesByCoord(coord); }
 		std::vector<Hex> GetNeighboringAccesibleHexes(const glm::vec2& coord) const { return m_HexGridManager.GetNeighboringAccesibleHexesByCoord(coord); }
 		//Set Hex
@@ -50,11 +49,11 @@ namespace dae
 		//Set Disc
 		void SetDiscSteppedOn(const glm::vec2& coord)const;
 
-		//
+		//General Setters
 		void SetCurrentLevelID(int newID);
 		void NextLevel();
 		void ChangeHexColorByPos(const glm::vec2& pos);
-		
+		//
 		void Render()const;
 		void Update()const;
 	private:

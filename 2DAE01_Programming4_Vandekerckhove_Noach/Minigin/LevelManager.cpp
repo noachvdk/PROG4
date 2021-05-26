@@ -10,9 +10,11 @@ HexagonalGridManager LevelManager::m_HexGridManager;
 
 LevelManager::LevelManager()
 	:m_CurrentLevelID(0)
+	,m_Disc01(nullptr)
+	,m_Disc02(nullptr)
 {
-	m_Disc01 = std::make_shared<Disc>(m_HexGridManager.GetBaseGridPos(), 30, false);
-	m_Disc02 = std::make_shared<Disc>(m_HexGridManager.GetBaseGridPos(), 30, true);
+	m_Disc01 = std::make_shared<Disc>(m_HexGridManager.GetBaseGridPos(), m_HexGridManager.GetRadius(), false);
+	m_Disc02 = std::make_shared<Disc>(m_HexGridManager.GetBaseGridPos(), m_HexGridManager.GetRadius(), true);
 }
 
 void LevelManager::LoadLevelWithRawHexCoords(const std::string& layout, const std::string& settings) const

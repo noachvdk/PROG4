@@ -74,5 +74,5 @@ void GameSettings::Init()
 {
 	m_CurrentGameMode = GameMode::NotChosen;
 	auto& input = InputManager::GetInstance();
-	input.AddInputAction(InputAction{ 0, SDLK_z, TriggerType::OnPress, ControllerButton::ButtonA, new DieCommand() });
+	input.AddInputAction(InputAction{ 0, SDLK_z, TriggerType::OnPress, ControllerButton::ButtonA, new NullCommand() });
 }

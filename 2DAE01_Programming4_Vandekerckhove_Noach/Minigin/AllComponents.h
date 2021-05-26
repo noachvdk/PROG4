@@ -12,3 +12,4 @@
 #include "MultiAnimationComponent.h"
 #include "CoilyComponent.h"
 #include "SlickOrSamComponent.h"
+#include "UggOrWrongwayComponent.h"

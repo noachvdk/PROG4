@@ -74,8 +74,14 @@ void SlickOrSamComponent::UpdateComponent()
 	}
 
 	//if hit player
-	if (LevelManager::GetInstance().GetIsHexOccupiedByPos(m_CurrentPos))
+	auto otherPlayer = LevelManager::GetInstance().GetPlayerOnHexByPos(m_CurrentPos);
+	if (!m_IsDead && otherPlayer && LevelManager::GetInstance().GetIsHexOccupiedByPos(m_CurrentPos))
+	{
 		Die();
+		otherPlayer->CollisionWithGreenEnemy();
+	}
+	
+		
 }
 
 void SlickOrSamComponent::Notify(Event event)
@@ -148,10 +154,10 @@ void SlickOrSamComponent::MoveDown()
 	}
 	else
 	{
-		//if on last step transform
+		//if on last step die
 		if (currentHexCoord.x == levelmanager.GetAmountOfSteps() + 1)
 			Die();
 		else
-			Logger::GetInstance().Log(LogType::Error, "Coily went wrong somewhere");
+			Logger::GetInstance().Log(LogType::Error, "Slick or sam went wrong somewhere");
 	}
 }

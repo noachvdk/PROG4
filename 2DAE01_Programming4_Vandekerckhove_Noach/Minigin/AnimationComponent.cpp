@@ -42,8 +42,6 @@ void AnimationComponent::UpdateComponent()
 	if(m_pParentObj)
 	pos = m_pParentObj->GetTransform().GetPosition();
 
-	//m_DestRect.x = int((int)pos.x - m_FrameWidth / 2 + m_OffsetX);
-	//m_DestRect.y = int((int)pos.y - m_FrameHeight / 2 + m_OffsetY);
 	m_DestRect.x = static_cast<int>(pos.x) - (m_FrameWidth/2) + int(m_OffsetX);
 	m_DestRect.y = static_cast<int>(pos.y) - (m_FrameHeight / 2) + int(m_OffsetY);
 	m_AnimTimer += TimeManager::GetInstance().GetDeltaTime();

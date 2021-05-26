@@ -13,7 +13,9 @@ namespace dae
         UpLeft,
         UpRight,
         DownLeft,
-        DownRight
+        DownRight,
+        Horizontal,
+        Vertical,
     };
 }
 
