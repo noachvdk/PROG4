@@ -27,6 +27,23 @@ namespace dae
 			}
 			return nullptr;
 		}
+
+		//For components that inherit
+		template<class T>
+		T* GetComponentDynamic()
+		{
+			for (auto component : m_pComponents)
+			{
+				if (component != nullptr)
+				{
+					if(dynamic_cast<T*>(component))
+						return static_cast<T*>(component);
+					
+				}
+			}
+			return nullptr;
+		}
+		
 		template<class T>
 		std::vector<T*> GetComponents()
 		{

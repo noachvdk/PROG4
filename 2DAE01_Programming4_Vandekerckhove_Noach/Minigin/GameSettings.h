@@ -15,12 +15,8 @@ namespace dae
 	class GameSettings final : public Singleton<GameSettings>
 	{
 	public:
-
 		void SetGameMode(GameMode newMode);
-		void SetGameOver();
 		GameMode GetGameMode() const { return m_CurrentGameMode; }
-
-		void Init();
 	private:
 		friend class Singleton<GameSettings>;
 		GameSettings();

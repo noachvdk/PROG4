@@ -73,20 +73,18 @@ void SlickOrSamComponent::UpdateComponent()
 			m_Anim->SetPos(m_CurrentPos.x, m_CurrentPos.y);
 	}
 
-	//if hit player
-	auto otherPlayer = LevelManager::GetInstance().GetPlayerOnHexByPos(m_CurrentPos);
-	if (!m_IsDead && otherPlayer && LevelManager::GetInstance().GetIsHexOccupiedByPos(m_CurrentPos))
-	{
-		Die();
-		otherPlayer->CollisionWithGreenEnemy();
-	}
-	
-		
+	////old if hit player
+	//auto otherPlayer = LevelManager::GetInstance().GetPlayerOnHexByPos(m_CurrentPos);
+	//if (!m_IsDead && otherPlayer && LevelManager::GetInstance().GetIsHexOccupiedByPos(m_CurrentPos))
+	//{
+	//	Die();
+	//	otherPlayer->CollisionWithGreenEnemy();
+	//}
 }
 
 void SlickOrSamComponent::Notify(Event event)
 {
-	if (event == Event::LevelFinished || event == Event::ActorDied || event == Event::ActorHitPurple)
+	if (event == Event::LevelFinished || event == Event::ActorDied || event == Event::ActorHitPurple || event == Event::ActorHitGreen)
 	{
 		Die();
 	}

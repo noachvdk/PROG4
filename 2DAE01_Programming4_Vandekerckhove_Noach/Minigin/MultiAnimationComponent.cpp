@@ -1,15 +1,14 @@
 #include "MiniginPCH.h"
 #include "MultiAnimationComponent.h"
 #include "AnimationComponent.h"
-//#include "CharacterComponent.h"
 using namespace dae;
 
-MultiAnimationComponent::MultiAnimationComponent(AnimState state)
+MultiAnimationComponent::MultiAnimationComponent(AnimState state, bool movesWithParent)
 	: m_NeedsUpdate(true)
+	, m_MovesWithParent(movesWithParent)
 	, m_Pos(0,0)
 	, m_Offset(0,0)
 	, m_State(state)
-	//, m_pCharacter(nullptr)
 {
 }
 
@@ -19,6 +18,12 @@ void MultiAnimationComponent::UpdateComponent()
 	{
 		for (auto& comp : m_AnimationComponents)
 		{
+			if(m_MovesWithParent)
+			{
+				const auto pos = m_pParentObj->GetTransform().GetPosition();
+				comp->SetOffset(pos.x + m_Pos.x + m_Offset.x, pos.y + m_Pos.y + m_Offset.y - comp->GetTextureFrameHeight());
+			}
+			else
 			comp->SetOffset(m_Pos.x + m_Offset.x, m_Pos.y + m_Offset.y - comp->GetTextureFrameHeight());
 		}
 		m_NeedsUpdate = false;

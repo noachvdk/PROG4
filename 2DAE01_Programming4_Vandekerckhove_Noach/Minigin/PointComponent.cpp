@@ -26,6 +26,7 @@ void PointComponent::UpdateComponent()
 void PointComponent::PostAddedToGameObject()
 {
 	GetParentObject()->AddComponent(m_pFontComponent);
+	m_NeedsUpdate = true;
 }
 
 void PointComponent::AddTextOffset(const float x, const float y) const

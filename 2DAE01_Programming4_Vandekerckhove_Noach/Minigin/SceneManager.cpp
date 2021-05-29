@@ -45,5 +45,13 @@ dae::Scene& dae::SceneManager::GetCurrentScene()
 void dae::SceneManager::SetCurrentSceneName(const std::string& scene)
 {
 	m_CurrentSceneName = scene;
+	InputManager::GetInstance().ResetInputActions(); //Reset inputactions
 	InputManager::GetInstance().Reset(); //Reset input so the input to change level doesn't get registered in the next scene
+	LevelManager::GetInstance().SetCurrentLevelID(1);
+	//add the inputactions relevant to the scene
+	auto actions = GetCurrentScene().GetSceneInputActions();
+	for (auto temp : actions)
+	{
+		InputManager::GetInstance().AddInputAction(temp);
+	}
 }

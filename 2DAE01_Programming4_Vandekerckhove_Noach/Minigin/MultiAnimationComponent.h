@@ -10,7 +10,7 @@ namespace dae
 	class MultiAnimationComponent final : public BaseComponent
 	{
 	public:
-		MultiAnimationComponent(AnimState state);
+		MultiAnimationComponent(AnimState state, bool movesWithParent = false);
 		~MultiAnimationComponent() override = default;
 
 		MultiAnimationComponent(const MultiAnimationComponent& other) = delete;
@@ -27,6 +27,7 @@ namespace dae
 
 		std::shared_ptr<AnimationComponent> GetCurrentAnimComponent();
 		std::shared_ptr<AnimationComponent> GetAnimComponent(AnimState state);
+		AnimState GetCurrentAnimState() const { return m_State; }
 
 		void SetState(AnimState state, bool IsFlipped);
 		void SetAnimState(AnimState state) { m_State = state; }
@@ -36,12 +37,13 @@ namespace dae
 		void SetPos(const float x, const float y) { m_Pos.x = x; m_Pos.y = y; m_NeedsUpdate = true; }
 		void SetOffset(const glm::vec2 & offset) { m_Offset = offset; m_NeedsUpdate = true; }
 		void SetOffset(const float x, const float y) { m_Offset.x = x; m_Offset.y = y; m_NeedsUpdate = true; }
+		void SetNeedUpdate(bool value) { m_NeedsUpdate = value; }
 	private:
 		bool m_NeedsUpdate;
+		bool m_MovesWithParent;
 		glm::vec2 m_Pos{};
 		glm::vec2 m_Offset;
 		AnimState m_State;
-		//CharacterComponent* m_pCharacter;
 		std::vector<std::shared_ptr<AnimationComponent>> m_AnimationComponents;
 	};
 

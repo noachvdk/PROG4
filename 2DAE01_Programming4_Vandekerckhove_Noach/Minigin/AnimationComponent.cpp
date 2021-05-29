@@ -68,6 +68,7 @@ void AnimationComponent::UpdateComponent()
 void AnimationComponent::RenderComponent()
 {
 	Renderer::GetInstance().RenderTexture(*m_pTexture, m_DestRect, m_SrcRect, m_IsFlipped);
+	//Renderer::GetInstance().RenderSquare(m_DestRect);
 }
 
 void AnimationComponent::SetOffset(float x, float y)

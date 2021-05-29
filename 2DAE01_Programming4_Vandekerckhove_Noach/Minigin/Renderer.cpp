@@ -4,7 +4,6 @@
 #include "SceneManager.h"
 #include "Texture2D.h"
 #include "LevelManager.h"
-#include "GameSettings.h"
 #include "Hex.h"
 
 #include "imgui.h"
@@ -53,55 +52,14 @@ void dae::Renderer::Render() const
 {
 	SDL_RenderClear(m_Renderer);
 
-	SceneManager::GetInstance().Render();
-	//Demo window
 	ImGui_ImplOpenGL2_NewFrame();
 	ImGui_ImplSDL2_NewFrame(m_Window);
 	ImGui::NewFrame();
+	
+	SceneManager::GetInstance().Render();
 
-	if(SceneManager::GetInstance().GetCurrentSceneName() == "MainMenu")
-	{
-		const ImGuiViewport* main_viewport = ImGui::GetMainViewport();
-		const int size{ 200 };
-		ImGui::SetNextWindowPos(ImVec2(main_viewport->GetCenter().x - (size / 2), main_viewport->GetCenter().y - (size / 2)));
-		ImGui::SetNextWindowSize(ImVec2(size, size));
-		ImGuiWindowFlags windowFlags = 0;
-		windowFlags |= ImGuiWindowFlags_NoTitleBar;
-		windowFlags |= ImGuiWindowFlags_NoScrollbar;
-		windowFlags |= ImGuiWindowFlags_NoMove;
-		windowFlags |= ImGuiWindowFlags_NoResize;
-		windowFlags |= ImGuiWindowFlags_NoCollapse;
-		windowFlags |= ImGuiWindowFlags_NoNav;
-		windowFlags |= ImGuiWindowFlags_NoBackground;
-		if (!ImGui::Begin("buttons",&m_ShowButtons, windowFlags))
-			ImGui::End();
-
-		ImGui::Indent(50.0f);
-		const ImVec2 buttonSize{ 100,20 };
-		if (ImGui::Button("Single player", buttonSize))
-		{
-			GameSettings::GetInstance().SetGameMode(GameMode::SinglePlayer);
-			SceneManager::GetInstance().SetCurrentSceneName("SinglePlayerLevel");
-		}
-		if (ImGui::Button("Co-op", buttonSize))
-		{
-			GameSettings::GetInstance().SetGameMode(GameMode::Coop);
-			SceneManager::GetInstance().SetCurrentSceneName("CoopLevel");
-		}
-		if (ImGui::Button("Versus", buttonSize))
-		{
-			GameSettings::GetInstance().SetGameMode(GameMode::Versus);
-			SceneManager::GetInstance().SetCurrentSceneName("SinglePlayerLevel");
-		}
-		ImGui::Unindent();
-		ImGui::End();
-	}
-
-	if(m_ShowDemo)
-		ImGui::ShowDemoWindow(&m_ShowDemo);
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
-	
 	SDL_RenderPresent(m_Renderer);
 }
 
@@ -177,4 +135,11 @@ void dae::Renderer::RenderHex(const Hex& hex) const
 			SDL_RenderDrawLine(m_Renderer, int(pos.x), int(pos.y), int(point2.x), int(point2.y));
 		}
 	}
+}
+
+void dae::Renderer::RenderSquare(const SDL_Rect& square) const
+{
+	SDL_SetRenderDrawColor(GetSDLRenderer(), 255, 0, 0, 255);
+	SDL_RenderDrawRect(m_Renderer, &square);
+	SDL_SetRenderDrawColor(GetSDLRenderer(), 0, 0, 0, 255);
 }

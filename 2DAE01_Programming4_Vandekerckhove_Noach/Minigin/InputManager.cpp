@@ -6,16 +6,6 @@
 
 using namespace dae;
 
-InputManager::InputManager()
-{
-}
-
-InputManager::~InputManager()
-{
-	for (auto action : m_InputActions)
-		safeDelete(action.command);
-}
-
 bool InputManager::ProcessInput()
 {
 	// todo: read the input from gamepad
@@ -88,10 +78,7 @@ void InputManager::AddInputAction(InputAction action)
 
 void InputManager::ResetInputActions()
 {
-	for (auto& action : m_InputActions)
-	{
-		safeDelete(action.command);
-	}
+	m_InputActions.resize(0);
 	m_InputActions.clear();
 }
 

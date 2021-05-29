@@ -3,6 +3,7 @@
 #include "FontComponent.h"
 #include "GameSettings.h"
 #include "PlayerComponent.h"
+#include "SceneManager.h"
 #include "SubjectComponent.h"
 
 using namespace dae;
@@ -33,7 +34,7 @@ void LivesComponent::UpdateComponent()
 				m_pFontComponent->SetText("Player " + std::to_string(parent->GetPlayerID() + 1) + " has " + std::to_string(m_CurrentLives) + " lives");
 			}
 		}
-
+		m_NeedsUpdate = false;
 	}
 }
 
@@ -45,11 +46,7 @@ void LivesComponent::PostAddedToGameObject()
 
 void LivesComponent::Notify(Event event)
 {
-	if(event == Event::ActorHealthChange)
-	{
-		m_NeedsUpdate = true;
-	}
-	else if(event == Event::ActorDied)
+	if(event == Event::ActorDied)
 	{
 		m_NeedsUpdate = true;
 	}
@@ -74,18 +71,15 @@ void LivesComponent::AddTextOffset(const float x, const float y) const
 void LivesComponent::DecreaseHealth(int amount)
 {
 	m_CurrentLives -= amount;
-	auto subject = GetParentObject()->GetComponent<SubjectComponent>();
+	const auto subject = GetParentObject()->GetComponent<SubjectComponent>();
 	if (m_CurrentLives <= 0)
 	{
 		m_CurrentLives = m_MaxLives;
 		if (subject)
 			subject->Notify(Event::ActorDied);
-		GameSettings::GetInstance().SetGameOver();
+		GameSettings::GetInstance().SetGameMode(GameMode::NotChosen);
+		SceneManager::GetInstance().SetCurrentSceneName("MainMenu");
 	}
-	else
-	{
-		if (subject)
-			subject->Notify(Event::ActorHealthChange);
-	}
+	m_NeedsUpdate = true;
 	
 }

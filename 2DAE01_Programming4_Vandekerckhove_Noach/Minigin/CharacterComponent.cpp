@@ -219,6 +219,9 @@ void CharacterComponent::UpdateComponent()
 			m_CurrentPos = m_NextPos;
 			
 		}
+
+		m_pParentObj->GetTransform().SetPosition(m_CurrentPos.x, m_CurrentPos.y, 1.0f);
+		
 		if (m_Anim)
 			m_Anim->SetPos(m_CurrentPos.x, m_CurrentPos.y);
 	}
@@ -271,15 +274,18 @@ void CharacterComponent::Notify(Event event)
 		if (m_Anim)
 			m_Anim->SetPos(m_CurrentPos.x, m_CurrentPos.y);
 	}
-	else if(event == Event::ActorDied)
+	else if (event == Event::ActorDied)
 	{
 		m_CurrentPos = m_StartPos;
 		m_NextPos = m_CurrentPos;
 		m_Move = false;
 		if (m_Anim)
 			m_Anim->SetPos(m_CurrentPos.x, m_CurrentPos.y);
-
 	}
+	else if (event == Event::ActorHitPurple)
+		CollisionWithPurpleEnemy();
+	else if (event == Event::ActorHitGreen)
+		CollisionWithGreenEnemy();
 }
 
 void CharacterComponent::CollisionWithPurpleEnemy()
@@ -292,14 +298,14 @@ void CharacterComponent::CollisionWithPurpleEnemy()
 		m_Anim->SetPos(m_CurrentPos.x, m_CurrentPos.y);
 		m_Anim->SetAnimState(AnimState::Invisible);		
 	}
-	const auto subject = m_pParentObj->GetComponent<SubjectComponent>();
-	if (subject) subject->Notify(Event::ActorHitPurple);
+	//const auto subject = m_pParentObj->GetComponent<SubjectComponent>();
+	//if (subject) subject->Notify(Event::ActorHitPurple);
 	Logger::GetInstance().Log(LogType::Info, "Hit purple enemy");
 }
 
 void CharacterComponent::CollisionWithGreenEnemy() const
 {
-	const auto subject = m_pParentObj->GetComponent<SubjectComponent>();
-	if (subject) subject->Notify(Event::ActorHitGreen);
+	//const auto subject = m_pParentObj->GetComponent<SubjectComponent>();
+	//if (subject) subject->Notify(Event::ActorHitGreen);
 	Logger::GetInstance().Log(LogType::Info, "Hit green enemy");
 }

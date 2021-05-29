@@ -1,12 +1,11 @@
 #pragma once
-#include "BaseComponent.h"
-#include "Observer.h"
+#include "PlayerControlledComponent.h"
 
 namespace dae
 {
 	enum class direction;
 	class MultiAnimationComponent;
-	class CharacterComponent final : public BaseComponent,public Observer
+	class CharacterComponent final : public PlayerControlledComponent/* BaseComponent,public Observer*/
 	{
 	public:
 		CharacterComponent();
@@ -16,7 +15,7 @@ namespace dae
 		CharacterComponent& operator=(const CharacterComponent& other) = delete;
 		CharacterComponent& operator=(CharacterComponent&& other) noexcept = delete;
 
-		void move(direction dir);
+		void move(direction dir) override;
 
 		glm::vec2 GetCurrentCharacterPos() const { return m_CurrentPos; }
 

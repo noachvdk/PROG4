@@ -79,17 +79,19 @@ void CoilyComponent::UpdateComponent()
 			m_Move = false;
 			m_CurrentPos = m_NextPos;
 		}
+
+		m_pParentObj->GetTransform().SetPosition(m_CurrentPos.x, m_CurrentPos.y, 1.0f);
 		
 		if (m_Anim)
 			m_Anim->SetPos(m_CurrentPos.x, m_CurrentPos.y);
 	}
 
-	auto otherPlayer = LevelManager::GetInstance().GetPlayerOnHexByPos(m_CurrentPos);
-	if (!m_IsDead && otherPlayer && LevelManager::GetInstance().GetIsHexOccupiedByPos(m_CurrentPos))
-	{
-		otherPlayer->CollisionWithPurpleEnemy();
-		Die();
-	}
+	//auto otherPlayer = LevelManager::GetInstance().GetPlayerOnHexByPos(m_CurrentPos);
+	//if (!m_IsDead && otherPlayer && LevelManager::GetInstance().GetIsHexOccupiedByPos(m_CurrentPos))
+	//{
+	//	otherPlayer->CollisionWithPurpleEnemy();
+	//	Die();
+	//}
 }
 
 void CoilyComponent::PostAddedToGameObject()
@@ -98,7 +100,7 @@ void CoilyComponent::PostAddedToGameObject()
 
 void CoilyComponent::Notify(Event event)
 {
-	if (event == Event::LevelFinished || event == Event::ActorDied)
+	if (event == Event::LevelFinished || event == Event::ActorDied || event == Event::ActorHitPurple)
 	{
 		Die();
 	}

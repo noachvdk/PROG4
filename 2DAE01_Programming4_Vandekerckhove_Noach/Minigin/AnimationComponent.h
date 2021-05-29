@@ -35,6 +35,7 @@ namespace dae
 		AnimState GetAnimState() const { return m_State; }
 		int GetTextureFrameHeight()const { return m_FrameHeight; }
 		int GetTextureFrameWidth()const { return m_FrameWidth; }
+		SDL_Rect GetDestRect() const { return m_DestRect; }
 
 		void SetFlipped(bool value) { m_IsFlipped = value; }
 		void SetOffset(float x, float y);

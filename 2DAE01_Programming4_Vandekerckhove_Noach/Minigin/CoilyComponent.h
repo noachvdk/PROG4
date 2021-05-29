@@ -1,12 +1,11 @@
 #pragma once
-#include "BaseComponent.h"
-
+#include "PlayerControlledComponent.h"
 namespace dae
 {
 	enum class direction;
 	class MultiAnimationComponent;
 	class CharacterComponent;
-	class CoilyComponent final : public BaseComponent, public Observer
+	class CoilyComponent final : public PlayerControlledComponent
 	{
 	public:
 		CoilyComponent(bool playerControlled = false);
@@ -24,7 +23,7 @@ namespace dae
 
 		void Notify(Event event) override;
 
-		void move(direction dir);
+		void move(direction dir) override;
 
 		void AddTarget(const CharacterComponent* target);
 		void SetAnim(MultiAnimationComponent* anim);

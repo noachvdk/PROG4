@@ -8,7 +8,6 @@
 
 dae::GameObject::GameObject()
 {
-	
 }
 
 dae::GameObject::~GameObject()

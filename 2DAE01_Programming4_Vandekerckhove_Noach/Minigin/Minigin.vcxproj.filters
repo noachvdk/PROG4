@@ -165,9 +165,6 @@
     <ClInclude Include="GameSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CharacterComponent.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
@@ -183,20 +180,20 @@
     <ClInclude Include="Logger.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
-    <ClInclude Include="CoilyComponent.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="Hex.h">
       <Filter>Header Files\Level</Filter>
-    </ClInclude>
-    <ClInclude Include="SlickOrSamComponent.h">
-      <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="VisualBenchmarking.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
-    <ClInclude Include="UggOrWrongwayComponent.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="PlayerControlledComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ColliderComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>Header Files\Managers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -317,9 +314,6 @@
     <ClCompile Include="GameSettings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CharacterComponent.cpp">
-      <Filter>Header Files\Components</Filter>
-    </ClCompile>
     <ClCompile Include="Renderer.cpp">
       <Filter>Header Files\Managers</Filter>
     </ClCompile>
@@ -335,17 +329,17 @@
     <ClCompile Include="Logger.cpp">
       <Filter>Header Files\Managers</Filter>
     </ClCompile>
-    <ClCompile Include="CoilyComponent.cpp">
-      <Filter>Header Files\Components</Filter>
-    </ClCompile>
     <ClCompile Include="Hex.cpp">
       <Filter>Header Files\Level</Filter>
     </ClCompile>
-    <ClCompile Include="SlickOrSamComponent.cpp">
+    <ClCompile Include="PlayerControlledComponent.cpp">
       <Filter>Header Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="UggOrWrongwayComponent.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="ColliderComponent.cpp">
+      <Filter>Header Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>Header Files\Managers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

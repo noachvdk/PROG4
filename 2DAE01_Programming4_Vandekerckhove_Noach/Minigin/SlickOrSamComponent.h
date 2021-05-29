@@ -5,7 +5,6 @@
 namespace dae
 {
 	class MultiAnimationComponent;
-	//class CharacterComponent;
 	class SlickOrSamComponent final : public BaseComponent, public Observer
 	{
 	public:

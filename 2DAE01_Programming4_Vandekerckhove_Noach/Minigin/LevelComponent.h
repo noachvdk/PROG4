@@ -20,8 +20,6 @@ namespace dae
 		void RenderComponent() override;
 		void PostAddedToGameObject() override;
 
-		//void Notify(Event event) override;
-
 		void NextLevel();
 
 	private:

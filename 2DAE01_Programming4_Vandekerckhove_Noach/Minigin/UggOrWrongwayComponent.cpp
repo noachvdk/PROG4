@@ -87,18 +87,17 @@ void UggOrWrongwayComponent::UpdateComponent()
 			m_Anim->SetPos(m_CurrentPos.x, m_CurrentPos.y);
 	}
 
-	//if hit player
-	auto pos = GetHexCollisionPos(); //hex pos taking in account the Escheresque manner they move
-	if(pos != glm::vec2(0,0))
-	{
-		auto otherPlayer = LevelManager::GetInstance().GetPlayerOnHexByPos(pos);
-		if (!m_IsDead && otherPlayer && LevelManager::GetInstance().GetIsHexOccupiedByPos(pos))
-		{
-			Die();
-			otherPlayer->CollisionWithPurpleEnemy();
-		}
-	}
-
+	//old if hit player
+	//auto pos = GetHexCollisionPos(); //hex pos taking in account the Escheresque manner they move
+	//if(pos != glm::vec2(0,0))
+	//{
+	//	auto otherPlayer = LevelManager::GetInstance().GetPlayerOnHexByPos(pos);
+	//	if (!m_IsDead && otherPlayer && LevelManager::GetInstance().GetIsHexOccupiedByPos(pos))
+	//	{
+	//		Die();
+	//		otherPlayer->CollisionWithPurpleEnemy();
+	//	}
+	//}
 }
 
 void UggOrWrongwayComponent::Notify(Event event)

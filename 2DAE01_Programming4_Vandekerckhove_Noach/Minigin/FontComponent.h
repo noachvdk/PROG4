@@ -13,7 +13,7 @@ namespace dae
 	class FontComponent final : public BaseComponent
 	{
 	public:
-		FontComponent(const std::string& font, const unsigned int size, const std::string& text);
+		FontComponent(const std::string& font, const unsigned int size, const std::string& text, bool moveWithParent = false);
 		~FontComponent() override;
 
 		FontComponent(const FontComponent& other) = delete;
@@ -33,6 +33,7 @@ namespace dae
 		
 	private:
 		bool m_NeedsUpdate;
+		bool m_MovesWithParent;
 		float m_PosX, m_PosY;
 		float m_OffsetX, m_OffsetY;
 		std::string m_Text;

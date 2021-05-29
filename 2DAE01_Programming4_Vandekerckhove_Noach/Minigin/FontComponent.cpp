@@ -10,14 +10,15 @@
 
 using namespace dae;
 
-FontComponent::FontComponent(const std::string& font, const unsigned int size, const std::string& text)
+FontComponent::FontComponent(const std::string& font, const unsigned int size, const std::string& text, bool moveWithParent)
 	: m_NeedsUpdate{true}
+	, m_MovesWithParent(moveWithParent)
 	, m_PosX{ 0.f }, m_PosY{ 0.f }
+	, m_OffsetX(0) , m_OffsetY(0)
 	, m_Color{ (Uint8)255.f, (Uint8)255.f, (Uint8)255.f, (Uint8)255.f }
 	, m_Text{ text }
 {
 	m_pFont = ResourceManager::GetInstance().LoadFont(font, size);
-	
 	CreateTexture();
 }
 
@@ -49,11 +50,17 @@ void FontComponent::UpdateComponent()
 		CreateTexture();
 		m_NeedsUpdate = false;
 
-		if (m_pParentObj != nullptr)
+		if (m_pParentObj != nullptr && m_MovesWithParent)
 		{
 			m_PosX = m_OffsetX + m_pParentObj->GetTransform().GetPosition().x;
 			m_PosY = m_OffsetY + m_pParentObj->GetTransform().GetPosition().y;
 		}
+		else if(!m_MovesWithParent)
+		{
+			m_PosX = m_OffsetX;
+			m_PosY = m_OffsetY;
+		}
+
 	}
 }
 

@@ -1,6 +1,7 @@
 #pragma once
 namespace dae
 {
+	class Scene;
 	class SceneObject
 	{
 	public:
@@ -13,5 +14,11 @@ namespace dae
 		SceneObject(SceneObject&& other) = delete;
 		SceneObject& operator=(const SceneObject& other) = delete;
 		SceneObject& operator=(SceneObject&& other) = delete;
+
+
+		void SetParentScene(Scene* scene) { m_pParentScene = scene; }
+		Scene* GetParentScene() { return m_pParentScene; }
+	protected:
+		Scene* m_pParentScene;
 	};
 }

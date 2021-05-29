@@ -41,8 +41,7 @@ namespace dae
 		const SDL_Keycode keyboardCode;
 		const TriggerType type;
 		ControllerButton button;
-		Command* command;
-
+		std::shared_ptr<Command> command;
 		InputAction()
 			: ID{}
 			, keyboardCode{}
@@ -51,7 +50,7 @@ namespace dae
 			, command{ nullptr }
 		{}
 
-		InputAction(const unsigned int ActionID, const SDL_Keycode keyCode ,const TriggerType triggerType, ControllerButton actionbutton, Command* actionCommand)
+		InputAction(const unsigned int ActionID, const SDL_Keycode keyCode ,const TriggerType triggerType, ControllerButton actionbutton, std::shared_ptr<Command> actionCommand)
 			: ID{ ActionID }
 			, keyboardCode{ keyCode }
 			, type{ triggerType }
@@ -89,8 +88,8 @@ namespace dae
 		bool IsKeyPressedHeld(const SDL_Keycode key) const;
 		bool IsKeyPressedReleased(const SDL_Keycode key) const;
 		
-		InputManager();
-		~InputManager();
+		InputManager() = default;
+		~InputManager() = default;
 	private:
 		XINPUT_STATE m_CurrGamepadState[XUSER_MAX_COUNT];
 		XINPUT_STATE m_OldGamepadState[XUSER_MAX_COUNT];
