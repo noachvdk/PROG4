@@ -8,7 +8,7 @@ namespace dae
 	class LevelComponent final : public BaseComponent
 	{
 	public:
-		LevelComponent(const int levelID);
+		LevelComponent();
 		~LevelComponent() override = default;
 
 		LevelComponent(const LevelComponent& other) = delete;
@@ -24,7 +24,6 @@ namespace dae
 
 	private:
 		int m_LevelID;
-		bool m_NeedsUpdate;
 		glm::vec2 m_Offset{ 550,50 }; //TextOffset
 		FontComponent* m_pFontComponent;
 	};

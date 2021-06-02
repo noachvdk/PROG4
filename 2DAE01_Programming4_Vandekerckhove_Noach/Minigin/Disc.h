@@ -15,6 +15,7 @@ public:
     void Render();
 	
 	bool GetIsUsed()const { return m_Used; }
+	float GetDiscSpeed() const { return m_MoveSpeed; }
 	glm::vec2 GetPos() const { return m_StartPos; }
 	glm::vec2 GetCoord() const { return m_Coord; }
 	glm::vec2 GetOrigin() const { return m_Origin; }
@@ -29,6 +30,7 @@ private:
 	bool m_SteppedOn;
 	bool m_Side;
 	const int m_Radius;
+	const float m_MoveSpeed;
 	glm::vec2 m_Coord;
 	glm::vec2 m_StartCoord;
 	glm::vec2 m_Pos;

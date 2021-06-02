@@ -41,7 +41,7 @@ void PointComponent::Notify(Event event)
 	case Event::ColorChange:
 		AddPoints(25);
 		break;
-	case Event::ActorHitGreen:
+	case Event::CatchedSlickOrSam:
 		AddPoints(300);
 		break;
 	case Event::DefeatedCoily:

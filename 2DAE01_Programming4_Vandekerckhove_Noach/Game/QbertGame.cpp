@@ -60,7 +60,7 @@ void QbertGame::LoadGame() const
 
 		//Level
 		auto LevelObj = std::make_shared<GameObject>();
-		const auto level = new LevelComponent(1);
+		const auto level = new LevelComponent();
 		LevelObj->AddComponent(level);
 		LevelObj->AddComponent(Levelsubject);
 		LevelScene.Add(LevelObj);
@@ -117,30 +117,34 @@ void QbertGame::LoadGame() const
 
 
 		//Slick and sam
-		auto SlickAndSamGO = std::make_shared<GameObject>();
-		auto sam = new SlickOrSamComponent();
-		auto samCollider = new ColliderComponent(ColliderLayer::GreenEnemy);
+		auto SlickGO = std::make_shared<GameObject>();
 		auto slick = new SlickOrSamComponent();
 		auto slickCollider = new ColliderComponent(ColliderLayer::GreenEnemy);
 		auto multislickAnim = new MultiAnimationComponent(AnimState::Invisible);
 		multislickAnim->AddAnimationComponent(std::make_shared<AnimationComponent>("SlickAnim.png", 1, 4, 0.5f, AnimState::None));
+		slick->SetAnimComponent(multislickAnim);
+		slickCollider->SetAnimComponent(multislickAnim);
+		SlickGO->AddComponent(slick);
+		SlickGO->AddComponent(multislickAnim);
+		SlickGO->AddComponent(slickCollider);
+		Levelsubject->AddObserver(slick);
+		Player01subject->AddObserver(slick);
+		LevelScene.Add(SlickGO);
+
+
+		auto SamGO = std::make_shared<GameObject>();
+		auto sam = new SlickOrSamComponent();
+		auto samCollider = new ColliderComponent(ColliderLayer::GreenEnemy);
 		auto multiSamAnim = new MultiAnimationComponent(AnimState::Invisible);
 		multiSamAnim->AddAnimationComponent(std::make_shared<AnimationComponent>("SamAnim.png", 1, 4, 0.5f, AnimState::None));
-		slick->SetAnimComponent(multiSamAnim);
-		sam->SetAnimComponent(multislickAnim);
-		slickCollider->SetAnimComponent(multiSamAnim);
-		samCollider->SetAnimComponent(multislickAnim);
-		SlickAndSamGO->AddComponent(sam);
-		SlickAndSamGO->AddComponent(slick);
-		SlickAndSamGO->AddComponent(multislickAnim);
-		SlickAndSamGO->AddComponent(multiSamAnim);
-		SlickAndSamGO->AddComponent(slickCollider);
-		SlickAndSamGO->AddComponent(samCollider);
-		Levelsubject->AddObserver(slick);
+		sam->SetAnimComponent(multiSamAnim);
+		samCollider->SetAnimComponent(multiSamAnim);
+		SamGO->AddComponent(sam);
+		SamGO->AddComponent(multiSamAnim);
+		SamGO->AddComponent(samCollider);
 		Levelsubject->AddObserver(sam);
-		Player01subject->AddObserver(slick);
 		Player01subject->AddObserver(sam);
-		LevelScene.Add(SlickAndSamGO);
+		LevelScene.Add(SamGO);
 
 		//Ugg and wrongway
 		auto UggGO = std::make_shared<GameObject>();

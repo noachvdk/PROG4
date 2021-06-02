@@ -14,12 +14,16 @@ UggOrWrongwayComponent::UggOrWrongwayComponent(Type type)
 	, m_MaxDeathTime(5.0f)
 	, m_CurrentType(type)
 	, m_MoveDirection(direction::UpLeft)
-	, m_MoveSpeed(1.0f)
+	, m_MoveSpeed(60.0f)
 	, m_MoveTimer(0.0f)
 	, m_MaxMoveTime(2.5f)
 	, m_StartPos(0, 0)
 	, m_CurrentPos(0, 0)
 	, m_NextPos(0, 0)
+	, m_IsFallingDown(false)
+	, m_FallTimer(0)
+	, m_MaxFallTime(3.0f)
+	, m_FallDownDir(0, 0)
 	, m_Offset(0,0)
 	, m_Anim(nullptr)
 {
@@ -58,6 +62,21 @@ void UggOrWrongwayComponent::UpdateComponent()
 			return;
 	}
 
+	if (m_IsFallingDown)
+	{
+		m_FallTimer += TimeManager::GetInstance().GetDeltaTime();
+		if (m_FallTimer >= m_MaxFallTime)
+		{
+			m_FallTimer = 0;
+			m_IsFallingDown = false;
+			Die();
+		}
+		m_CurrentPos += (m_FallDownDir * TimeManager::GetInstance().GetDeltaTime() * m_MoveSpeed * 2.0f);
+		if (m_Anim)
+			m_Anim->SetPos(m_CurrentPos.x, m_CurrentPos.y);
+		return;
+	}
+	
 	//Set target at intervals
 	m_MoveTimer += TimeManager::GetInstance().GetDeltaTime();
 	if (m_MoveTimer >= m_MaxMoveTime)
@@ -70,17 +89,14 @@ void UggOrWrongwayComponent::UpdateComponent()
 	//Actually move
 	if (m_Move)
 	{
-		//std::cout << "move towards target\n";
-
 		auto dir = m_NextPos - m_CurrentPos;
-		glm::normalize(dir);
+		dir = glm::normalize(dir);
 
 		m_CurrentPos += (dir * TimeManager::GetInstance().GetDeltaTime() * m_MoveSpeed);
 		if (glm::distance(m_CurrentPos, m_NextPos) <= 1.0f)
 		{
 			m_Move = false;
 			m_CurrentPos = m_NextPos;
-			LevelManager::GetInstance().ResetHexByPos(m_CurrentPos);
 		}
 
 		if (m_Anim)
@@ -138,6 +154,8 @@ void UggOrWrongwayComponent::Die()
 	m_IsDead = true;
 	m_DeathTimer = 0;
 	m_MoveTimer = 0;
+	m_IsFallingDown = false;
+	m_FallTimer = 0;
 	m_MaxDeathTime = float(rand() % 5 + 5);
 	if (m_Anim)
 	{
@@ -158,27 +176,37 @@ void UggOrWrongwayComponent::Move()
 {
 	auto& levelmanager = LevelManager::GetInstance();
 	auto currentHexCoord = levelmanager.GetHexCoordByClosestPos(m_CurrentPos);
-	
+	const float fallDownUpOffset{ 0.3f };
 	if (m_MoveDirection == direction::Horizontal)
 	{
+		m_FallDownDir.y = 0;
 		if(m_CurrentType == Type::Ugg)
+		{
 			currentHexCoord.y += 1;
+			m_FallDownDir.x = 1;
+		}
 		else
+		{
 			currentHexCoord.y -= 1;
+			m_FallDownDir.x = -1;
+		}
 
 	}
 	else if (m_MoveDirection == direction::Vertical)
 	{
+		m_FallDownDir.y = -fallDownUpOffset;
 		currentHexCoord.x -= 1;
 		if (m_CurrentType == Type::Ugg)
 		{
 			if (int(currentHexCoord.x) % 2 == 0)
 				currentHexCoord.y += 1;
+			m_FallDownDir.x = 1;
 		}
 		else
 		{
 			if (int(currentHexCoord.x) % 2 != 0)
 				currentHexCoord.y -= 1;
+			m_FallDownDir.x = -1;
 		}
 		
 	}
@@ -190,7 +218,7 @@ void UggOrWrongwayComponent::Move()
 	}
 	else
 	{
-		Die();
+		m_IsFallingDown = true;
 	}
 }
 

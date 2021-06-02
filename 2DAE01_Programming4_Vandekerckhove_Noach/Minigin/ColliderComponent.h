@@ -31,14 +31,18 @@ namespace dae
 		ColliderLayer GetLayer() const { return m_Layer; }
 		SDL_Rect GetSquare() const { return m_Square; }
 		MultiAnimationComponent* GetAnim() const { return m_Anim; }
+		bool GetIsEnabled() const { return m_Enabled; }
 		
 		void CheckCollision(ColliderComponent* otherComp);
 
 		void SetAnimComponent(MultiAnimationComponent* anim);
 		void SetVisualize(bool value) { m_Visualize = value; }
+		void SetDisabled() { m_Enabled = false; }
+		void SetEnabled() { m_Enabled = true; }
 		
 	private:
 		bool m_Visualize;
+		bool m_Enabled;
 		ColliderLayer m_Layer;
 		SDL_Rect m_Square;
 		//anim

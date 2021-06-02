@@ -24,11 +24,13 @@ namespace dae
 		void SetAnimComponent(MultiAnimationComponent* anim);
 	private:
 		void Die();
+		void SetRandomStartPos();
 		direction RandomDirectionDown();
 		void MoveDown();
 		// variables
 		bool m_Move;
 		bool m_Initialized;
+		bool m_Catched;
 		//(re)spawing
 		bool m_IsDead;
 		float m_DeathTimer;
@@ -42,6 +44,11 @@ namespace dae
 		glm::vec2 m_StartPos;
 		glm::vec2 m_CurrentPos;
 		glm::vec2 m_NextPos;
+		//Falling down
+		bool m_IsFallingDown;
+		float m_FallTimer;
+		float m_MaxFallTime;
+		glm::vec2 m_FallDownDir;
 		//anim
 		MultiAnimationComponent* m_Anim;
 	};

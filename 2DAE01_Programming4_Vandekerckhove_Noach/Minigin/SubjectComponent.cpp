@@ -12,11 +12,11 @@ void SubjectComponent::UpdateComponent()
 {
 }
 
-void dae::SubjectComponent::PostAddedToGameObject()
+void SubjectComponent::PostAddedToGameObject()
 {
 	for(auto pComp : GetParentObject()->GetAllComponents())
 	{
-		auto obv = dynamic_cast<Observer*>(pComp);
+		const auto obv = dynamic_cast<Observer*>(pComp);
 		if (obv)
 			AddObserver(obv);
 	}

@@ -13,22 +13,28 @@ LevelManager::LevelManager()
 	,m_Disc01(nullptr)
 	,m_Disc02(nullptr)
 {
-	m_Disc01 = std::make_shared<Disc>(m_HexGridManager.GetBaseGridPos(), m_HexGridManager.GetRadius(), false);
-	m_Disc02 = std::make_shared<Disc>(m_HexGridManager.GetBaseGridPos(), m_HexGridManager.GetRadius(), true);
+	//m_Disc01 = std::make_shared<Disc>(m_HexGridManager.GetBaseGridPos(), m_HexGridManager.GetRadius(), false);
+	//m_Disc02 = std::make_shared<Disc>(m_HexGridManager.GetBaseGridPos(), m_HexGridManager.GetRadius(), true);
 }
 
-void LevelManager::LoadLevelWithRawHexCoords(const std::string& layout, const std::string& settings) const
+void LevelManager::LoadLevelWithRawHexCoords(const std::string& layout, const std::string& settings)
 {
 	m_LevelSettings.LoadLevelSettings(settings);
 	m_HexGridManager.Init(m_LevelSettings.GetCurrentSettings(m_CurrentLevelID).m_JumpsNeeded, m_LevelSettings.GetCurrentSettings(m_CurrentLevelID).m_CanChangeBack);
 	m_HexGridManager.loadFromFileRawHex(layout);
+
+	m_Disc01 = std::make_shared<Disc>(m_HexGridManager.GetBaseGridPos(), m_HexGridManager.GetRadius(), false);
+	m_Disc02 = std::make_shared<Disc>(m_HexGridManager.GetBaseGridPos(), m_HexGridManager.GetRadius(), true);
 }
 
-void LevelManager::LoadLevelWithShape(const std::string& layout, const std::string& settings) const
+void LevelManager::LoadLevelWithShape(const std::string& layout, const std::string& settings) 
 {
 	m_LevelSettings.LoadLevelSettings(settings);
 	m_HexGridManager.Init(m_LevelSettings.GetCurrentSettings(m_CurrentLevelID).m_JumpsNeeded, m_LevelSettings.GetCurrentSettings(m_CurrentLevelID).m_CanChangeBack);
 	m_HexGridManager.loadFromFileShape(layout);
+
+	m_Disc01 = std::make_shared<Disc>(m_HexGridManager.GetBaseGridPos(), m_HexGridManager.GetRadius(), false);
+	m_Disc02 = std::make_shared<Disc>(m_HexGridManager.GetBaseGridPos(), m_HexGridManager.GetRadius(), true);
 }
 
 LevelSetting LevelManager::GetCurrentSettings() const
@@ -70,6 +76,15 @@ glm::vec2 LevelManager::GetDiscTopPos() const
 	if (m_Disc02)
 		return m_Disc02->GetOrigin();
 	return glm::vec2();
+}
+
+float LevelManager::GetDiscMoveSpeed() const
+{
+	if (m_Disc01)
+		return m_Disc01->GetDiscSpeed();
+	if (m_Disc02)
+		return m_Disc02->GetDiscSpeed();
+	return 0.0f;
 }
 
 void LevelManager::SetDiscSteppedOn(const glm::vec2& coord) const

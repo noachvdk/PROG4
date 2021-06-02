@@ -224,6 +224,7 @@ void dae::Minigin::Run()
 		auto& sceneManager = SceneManager::GetInstance();
 		auto& input = InputManager::GetInstance();
 		auto& collisionManager = CollisionManager::GetInstance();
+		collisionManager.SetVisualize(false); //show/hide collision boxes
 		
 		auto& time = TimeManager::GetInstance();
 		m_Continue = true;

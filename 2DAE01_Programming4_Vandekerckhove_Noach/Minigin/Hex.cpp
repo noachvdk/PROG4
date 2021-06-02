@@ -29,10 +29,8 @@ void Hex::NextTile()
             return;
         }
     }
-	
     ++m_CurrentTexID;
     m_CurrentTexID = std::min(m_CurrentTexID, m_MaxStep);
-
 }
 
 void Hex::ResetTex()

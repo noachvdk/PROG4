@@ -7,15 +7,16 @@
 #include "Logger.h"
 #include "CollisionManager.h"
 #include "SubjectComponent.h"
+#include "SlickOrSamComponent.h"
 using namespace dae;
 
 ColliderComponent::ColliderComponent(ColliderLayer layer)
 	: m_Visualize(false)
+	, m_Enabled(true)
 	, m_Layer(layer)
 	, m_Square()
 	, m_Anim(nullptr)
 {
-	
 	CollisionManager::GetInstance().AddCollider(this);
 }
 
@@ -23,7 +24,7 @@ void ColliderComponent::UpdateComponent()
 {
 	if (m_Anim)
 	{
-		auto temp = m_Anim->GetCurrentAnimComponent();
+		const auto temp = m_Anim->GetCurrentAnimComponent();
 		if (temp)
 			m_Square = temp->GetDestRect();
 	}
@@ -31,15 +32,16 @@ void ColliderComponent::UpdateComponent()
 
 void ColliderComponent::RenderComponent()
 {
-	if (m_Visualize)
-		return;
-	if (m_Anim && m_Anim->GetCurrentAnimState() != AnimState::Invisible)
+	if (m_Visualize && m_Anim && m_Anim->GetCurrentAnimState() != AnimState::Invisible)
 		Renderer::GetInstance().RenderSquare(m_Square);
 }
 
 void ColliderComponent::CheckCollision(ColliderComponent* otherComp)
 {
 	//Several checks that may return early
+	if (!m_Enabled || !otherComp->GetIsEnabled())
+		return;
+	
 	if (m_pParentObj == otherComp->GetParentObject())
 		return;
 
@@ -75,7 +77,11 @@ void ColliderComponent::CheckCollision(ColliderComponent* otherComp)
 			if (temp && otherComp->GetLayer() == ColliderLayer::PurpleEnemy)
 				temp->Notify(Event::ActorHitPurple);
 			if (temp && otherComp->GetLayer() == ColliderLayer::GreenEnemy)
-				temp->Notify(Event::ActorHitGreen);
+			{
+				temp->Notify(Event::CatchedSlickOrSam);
+				otherComp->GetParentObject()->GetComponent<SlickOrSamComponent>()->Notify(Event::ActorHitGreen);
+			}
+				
 		}
 	}
 }

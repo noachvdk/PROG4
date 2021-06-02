@@ -48,6 +48,11 @@ namespace dae
 		glm::vec2 m_StartPos;
 		glm::vec2 m_CurrentPos;
 		glm::vec2 m_NextPos;
+		//Falling down
+		bool m_IsFallingDown;
+		float m_FallTimer;
+		float m_MaxFallTime;
+		glm::vec2 m_FallDownDir;
 		//anim
 		glm::vec2 m_Offset;
 		MultiAnimationComponent* m_Anim;

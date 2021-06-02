@@ -5,18 +5,22 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
+#include "LevelManager.h"
+
 Disc::Disc(const glm::vec2& originPos, const int rad, bool side)
 	: m_Used(false)
 	, m_SteppedOn(false)
 	, m_Side(side)
 	, m_Radius(rad)
+	, m_MoveSpeed(70.0f)
 	, m_Coord(0,0)
 	, m_StartCoord(0,0)
 	, m_Pos(0, 0)
 	, m_StartPos(0,0)
 	, m_Origin(originPos)
+	, m_Anim(nullptr)
 {
-	SetRandomCoord(6);
+	SetRandomCoord(dae::LevelManager::GetInstance().GetAmountOfSteps());
 
 	m_Anim = std::make_shared<dae::AnimationComponent>("DiscAnim.png", 1, 4, 0.5f, dae::AnimState::Idle, true);
 	m_Anim->SetOffset(m_Pos.x, m_Pos.y);
@@ -35,9 +39,9 @@ void Disc::Update()
 	if (m_SteppedOn)
 	{
 		auto dir = m_Origin - m_Pos;
-		glm::normalize(dir);
+		dir = glm::normalize(dir);
 		
-		m_Pos += (dir * dae::TimeManager::GetInstance().GetDeltaTime() * 5.0f);
+		m_Pos += (dir * dae::TimeManager::GetInstance().GetDeltaTime() * m_MoveSpeed);
 		if (glm::distance(m_Pos, m_Origin) <= 1.0f)
 		{
 			m_SteppedOn = false;

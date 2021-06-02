@@ -1,6 +1,5 @@
 #pragma once
 #include "Singleton.h"
-//#include "ColliderComponent.h"
 namespace dae
 {
 	class ColliderComponent;
@@ -22,7 +21,7 @@ namespace dae
 		void Update();
 	private:
 		CollisionManager() = default;
-		std::vector<ColliderComponent*> m_Colliders;
+		std::vector<ColliderComponent*> m_pColliders;
 	};
 }
 

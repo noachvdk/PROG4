@@ -29,28 +29,6 @@ void HexagonalGridManager::changeClosestHexByPos(const glm::vec2& pos)
 	}
 }
 
-void HexagonalGridManager::SetPlayerStandingOnHexByPos(const glm::vec2& pos, bool value)
-{
-	const glm::vec2 coord{ getHexByPos(pos)->GetPos() };
-
-	for (auto& hex : m_HexGrid)
-	{
-		if (coord == hex.GetPos())
-			hex.SetPlayerStandingOn(value);
-	}
-}
-
-void HexagonalGridManager::SetPlayerStandingOnHexByPos(const glm::vec2& pos, CharacterComponent* value)
-{
-	const glm::vec2 coord{ getHexByPos(pos)->GetPos() };
-
-	for (auto& hex : m_HexGrid)
-	{
-		if (coord == hex.GetPos())
-			hex.SetPlayerStandingOn(value);
-	}
-}
-
 void HexagonalGridManager::changeClosestHexByCoord(const glm::vec2& coord)
 {
 	for (auto& hex : m_HexGrid)
@@ -105,48 +83,10 @@ bool HexagonalGridManager::GetIsHexAlreadyFlippedByCoord(const glm::vec2& coord)
 	return false;
 }
 
-bool HexagonalGridManager::GetIsHexOccupiedByCoord(const glm::vec2& coord) const
-{
-	for (auto& hex : m_HexGrid)
-	{
-		if (coord == glm::vec2(hex.r, hex.c) && hex.GetPlayerStandingOn())
-			return true;
-	}
-	return false;
-}
-
-bool HexagonalGridManager::GetIsHexOccupiedByPos(const glm::vec2& pos) const
+bool HexagonalGridManager::GetIsHexAlreadyFlippedByPos(const glm::vec2& pos) const
 {
 	const glm::vec2 coord{ getHexByPos(pos)->GetPos() };
-
-	for (auto& hex : m_HexGrid)
-	{
-		if (coord == hex.GetPos() && hex.GetIsPlayerStandingOn())
-			return true;
-	}
-	return false;
-}
-
-CharacterComponent* HexagonalGridManager::GetCharacterOnHexByCoord(const glm::vec2& coord) const
-{
-	for (auto& hex : m_HexGrid)
-	{
-		if (coord == glm::vec2(hex.r, hex.c) && hex.GetPlayerStandingOn())
-			return hex.GetPlayerStandingOn();
-	}
-	return nullptr;
-}
-
-CharacterComponent* HexagonalGridManager::GetCharacterOnHexByPos(const glm::vec2& pos) const
-{
-	const glm::vec2 coord{ getHexByPos(pos)->GetPos() };
-
-	for (auto& hex : m_HexGrid)
-	{
-		if (coord == hex.GetPos() && hex.GetPlayerStandingOn())
-			return hex.GetPlayerStandingOn();
-	}
-	return nullptr;
+	return GetIsHexAlreadyFlippedByCoord(coord);
 }
 
 std::vector<Hex> HexagonalGridManager::GetNeighboringHexesByCoord(const glm::vec2& coord) const
