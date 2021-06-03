@@ -31,6 +31,7 @@ namespace dae
 
 		void AddPoints(const int points) { m_CurrentPoints += points; }
 		void ResetPoints() { m_CurrentPoints = 0; }
+		void AddPointsForEachDisc();
 	};
 }
 

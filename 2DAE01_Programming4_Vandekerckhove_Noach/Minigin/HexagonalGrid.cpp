@@ -13,7 +13,7 @@ void HexagonalGridManager::Init(int maxSteps, bool goBack)
 	m_MaxSteps = maxSteps;
 	m_Radius = 30;
 	m_GridBasePos = { 320, 140 };
-	m_HexTextures[0] = ResourceManager::GetInstance().LoadTexture("../Data/HexYellow.png");
+	m_HexTextures[0] = ResourceManager::GetInstance().LoadTexture("HexYellow.png");
 	m_HexTextures[1] = ResourceManager::GetInstance().LoadTexture("HexPurple.png");
 	m_HexTextures[2] = ResourceManager::GetInstance().LoadTexture("HexPink.png");
 }

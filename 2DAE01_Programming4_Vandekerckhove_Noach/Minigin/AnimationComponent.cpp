@@ -19,6 +19,7 @@ AnimationComponent::AnimationComponent(const std::string& filename, unsigned int
 	, m_CurrentColumn(0)
 	, m_MaxRow(rows)
 	, m_MaxColumn(columns)
+	, m_Scale(1)
 	, m_OffsetX(0)
 	, m_OffsetY(0)
 	, m_AnimTimer(0)
@@ -68,11 +69,17 @@ void AnimationComponent::UpdateComponent()
 void AnimationComponent::RenderComponent()
 {
 	Renderer::GetInstance().RenderTexture(*m_pTexture, m_DestRect, m_SrcRect, m_IsFlipped);
-	//Renderer::GetInstance().RenderSquare(m_DestRect);
 }
 
 void AnimationComponent::SetOffset(float x, float y)
 {
 	m_OffsetX = x;
 	m_OffsetY = y;
+}
+
+void AnimationComponent::SetScale(float scale)
+{
+	m_Scale = scale;
+	m_DestRect.w = int(m_FrameWidth * m_Scale);
+	m_DestRect.h = int(m_FrameHeight * m_Scale);
 }

@@ -1,6 +1,8 @@
 #include "MiniginPCH.h"
 #include "PointComponent.h"
 
+
+#include "LevelManager.h"
 #include "PlayerComponent.h"
 
 using namespace dae;
@@ -48,7 +50,7 @@ void PointComponent::Notify(Event event)
 		AddPoints(500);
 		break;
 	case Event::LevelFinished:
-		ResetPoints();
+		AddPointsForEachDisc();
 		break;
 	case Event::ActorDied:
 		ResetPoints();
@@ -58,4 +60,12 @@ void PointComponent::Notify(Event event)
 	}
 
 	m_NeedsUpdate = true;
+}
+
+void PointComponent::AddPointsForEachDisc()
+{
+	auto& levelmanager = LevelManager::GetInstance();
+	const int amount = levelmanager.GetAmountOfDiscsRemaining();
+	AddPoints(50 * amount);
+	
 }

@@ -4,6 +4,8 @@
 #include <algorithm>    // std::find
 #include <vector>  
 
+#include "SceneManager.h"
+
 using namespace dae;
 
 bool InputManager::ProcessInput()
@@ -20,6 +22,11 @@ bool InputManager::ProcessInput()
 
 	if (IsPressedDown(ControllerButton::ButtonStart,0) || (IsKeyPressedDown(SDLK_ESCAPE)))
 		return false;
+
+	//if (IsPressedDown(ControllerButton::ButtonBack, 0) || (IsKeyPressedDown(SDLK_p)))
+	//{
+	//	SceneManager::GetInstance().SetCurrentSceneName("MainMenu");
+	//}
 
 	if ((GetRightTrigger(0) > 0.0f) || (GetLeftTrigger(0) > 0.0f))
 		Rumble(0,GetLeftTrigger(0), GetRightTrigger(0));

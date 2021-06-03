@@ -44,6 +44,8 @@ namespace dae
 		glm::vec2 GetDiscPosByCoord(const glm::vec2& coord)const;
 		glm::vec2 GetDiscTopPos()const;
 		float GetDiscMoveSpeed()const;
+		bool GetIsDiscSteppedOnByCoord(const glm::vec2& coord)const;
+		int GetAmountOfDiscsRemaining() const;
 		//Set Disc
 		void SetDiscSteppedOn(const glm::vec2& coord)const;
 

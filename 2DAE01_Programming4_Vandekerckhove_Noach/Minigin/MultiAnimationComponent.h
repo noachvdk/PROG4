@@ -38,6 +38,7 @@ namespace dae
 		void SetOffset(const glm::vec2 & offset) { m_Offset = offset; m_NeedsUpdate = true; }
 		void SetOffset(const float x, const float y) { m_Offset.x = x; m_Offset.y = y; m_NeedsUpdate = true; }
 		void SetNeedUpdate(bool value) { m_NeedsUpdate = value; }
+		void SetScale(float scale);
 	private:
 		bool m_NeedsUpdate;
 		bool m_MovesWithParent;

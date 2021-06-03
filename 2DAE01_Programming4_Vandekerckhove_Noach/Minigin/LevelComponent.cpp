@@ -22,10 +22,8 @@ void LevelComponent::UpdateComponent()
 
 	levelmanager.Update();
 
-	//broadcast event here
 	if (levelmanager.GetAreAllHexesFlipped())
 	{
-		/*std::cout << "finished\n";*/
 		NextLevel();
 		m_pFontComponent->SetText("Level : " + std::to_string(m_LevelID));
 		const auto subject = GetParentObject()->GetComponent<SubjectComponent>();
@@ -46,10 +44,8 @@ void LevelComponent::PostAddedToGameObject()
 	m_pFontComponent->AddOffset(GetParentObject()->GetTransform().GetPosition().x + m_Offset.x, -GetParentObject()->GetTransform().GetPosition().y + m_Offset.y);
 }
 
-
 void LevelComponent::NextLevel()
 {
 	m_LevelID++;
-	m_LevelID = std::min(m_LevelID, LevelManager::GetInstance().GetAmountOfLevels());
 	LevelManager::GetInstance().SetCurrentLevelID(m_LevelID);
 }

@@ -33,12 +33,13 @@ namespace dae
 		void PostAddedToGameObject() override {};
 
 		AnimState GetAnimState() const { return m_State; }
-		int GetTextureFrameHeight()const { return m_FrameHeight; }
-		int GetTextureFrameWidth()const { return m_FrameWidth; }
+		int GetTextureFrameHeight()const { return int(m_FrameHeight * m_Scale); }
+		int GetTextureFrameWidth()const { return int(m_FrameWidth * m_Scale); }
 		SDL_Rect GetDestRect() const { return m_DestRect; }
 
 		void SetFlipped(bool value) { m_IsFlipped = value; }
 		void SetOffset(float x, float y);
+		void SetScale(float scale);
 	private:
 		bool m_MoveIndependently;
 		bool m_IsFlipped;
@@ -52,6 +53,7 @@ namespace dae
 		int m_CurrentColumn;
 		int m_MaxRow;
 		int m_MaxColumn;
+		float m_Scale;
 		//anim time
 		float m_OffsetX, m_OffsetY;
 		float m_AnimTimer;

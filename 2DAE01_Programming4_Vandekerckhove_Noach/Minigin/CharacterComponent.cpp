@@ -103,7 +103,7 @@ void CharacterComponent::move(direction dir)
 	{
 		m_NextPos = levelmanager.GetHexPosByCoord(currentHexCoord);
 	}
-	else if(levelmanager.GetIsDiscValidByCoord(currentHexCoord))
+	else if(levelmanager.GetIsDiscValidByCoord(currentHexCoord) && !levelmanager.GetIsDiscSteppedOnByCoord(currentHexCoord))
 	{
 		m_NextPos = levelmanager.GetDiscPosByCoord(currentHexCoord);
 		m_DiscPos = m_NextPos;
@@ -165,6 +165,7 @@ void CharacterComponent::UpdateComponent()
 	if (m_IsDead)
 		return;
 
+	//Fall down 
 	if (m_IsFallingDown)
 	{
 		m_FallTimer += TimeManager::GetInstance().GetDeltaTime();
@@ -323,7 +324,12 @@ void CharacterComponent::Die()
 	m_StunSwitchTimer = 0;
 	m_StunTimer = 0;
 	if (m_Anim)
+	{
+		m_Anim->SetAnimState(AnimState::FacingForward);
 		m_Anim->SetPos(m_CurrentPos.x, m_CurrentPos.y);
+	}
+	auto collider = GetParentObject()->GetComponent<ColliderComponent>();
+	if (collider) collider->SetEnabled();
 }
 
 void CharacterComponent::CollisionWithPurpleEnemy()

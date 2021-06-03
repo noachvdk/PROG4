@@ -15,6 +15,7 @@ public:
     void Render();
 	
 	bool GetIsUsed()const { return m_Used; }
+	bool GetIsSteppedOn()const { return m_SteppedOn; }
 	float GetDiscSpeed() const { return m_MoveSpeed; }
 	glm::vec2 GetPos() const { return m_StartPos; }
 	glm::vec2 GetCoord() const { return m_Coord; }

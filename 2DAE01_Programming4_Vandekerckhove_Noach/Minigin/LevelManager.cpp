@@ -87,6 +87,28 @@ float LevelManager::GetDiscMoveSpeed() const
 	return 0.0f;
 }
 
+bool LevelManager::GetIsDiscSteppedOnByCoord(const glm::vec2& coord) const
+{
+	if (m_Disc01 && m_Disc01->GetCoord() == coord)
+		return m_Disc01->GetIsSteppedOn();
+
+	if (m_Disc02 && m_Disc02->GetCoord() == coord)
+		return m_Disc02->GetIsSteppedOn();
+
+	return false;
+}
+
+int LevelManager::GetAmountOfDiscsRemaining() const
+{
+	int amount{};
+	if (m_Disc01 && !m_Disc01->GetIsUsed())
+		amount++;
+
+	if (m_Disc02 && !m_Disc02->GetIsUsed())
+		amount++;
+	return amount;
+}
+
 void LevelManager::SetDiscSteppedOn(const glm::vec2& coord) const
 {
 	if (m_Disc01 && m_Disc01->GetCoord() == coord)

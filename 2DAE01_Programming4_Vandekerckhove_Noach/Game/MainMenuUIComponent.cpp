@@ -3,7 +3,6 @@
 
 #include "backends/imgui_impl_opengl2.h"
 #include "backends/imgui_impl_sdl.h"
-#include "GameSettings.h"
 #include "Renderer.h"
 #include "SceneManager.h"
 
@@ -35,20 +34,14 @@ void MainMenuUIComponent::RenderComponent()
 		ImGui::End();
 
 	ImGui::Indent(m_Indent);
-	if (ImGui::Button("Single player", m_ButtonSize))
+
+	for (const auto& option :m_SceneOptions)
 	{
-		GameSettings::GetInstance().SetGameMode(GameMode::SinglePlayer);
-		SceneManager::GetInstance().SetCurrentSceneName("SinglePlayerLevel");
-	}
-	if (ImGui::Button("Co-op", m_ButtonSize))
-	{
-		GameSettings::GetInstance().SetGameMode(GameMode::Coop);
-		SceneManager::GetInstance().SetCurrentSceneName("CoopLevel");
-	}
-	if (ImGui::Button("Versus", m_ButtonSize))
-	{
-		GameSettings::GetInstance().SetGameMode(GameMode::Versus);
-		SceneManager::GetInstance().SetCurrentSceneName("SinglePlayerLevel");
+		if (ImGui::Button(option.first.c_str(), m_ButtonSize))
+		{
+			GameSettings::GetInstance().SetGameMode(option.second);
+			SceneManager::GetInstance().SetCurrentSceneName(option.first.c_str());
+		}
 	}
 	ImGui::Unindent();
 	ImGui::End();

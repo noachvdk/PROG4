@@ -127,3 +127,11 @@ void MultiAnimationComponent::SetFlippedCurrent(bool value)
 		}
 	}
 }
+
+void MultiAnimationComponent::SetScale(float scale)
+{
+	for (auto& comp : m_AnimationComponents)
+	{
+		comp->SetScale(scale);
+	}
+}
