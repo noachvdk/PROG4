@@ -12,6 +12,7 @@ namespace dae
 	public:
 		SDLAudioSystem()
 			: m_IsMuted(false)
+			, m_IsPaused(false)
 		{
 			m_Thread = std::thread([this]() {this->Update(); });
 		}
@@ -23,7 +24,7 @@ namespace dae
 				m_Thread.join();
 		}
 
-		void PlaySound(const std::string path, const int volume) override
+		void PlaySound(const std::string& path, const int volume) override
 		{
 			std::lock_guard<std::mutex>guard(m_Mutex);
 
@@ -43,7 +44,7 @@ namespace dae
 			m_Tail = (m_Tail + 1) % MAX_PENDING;
 			m_Cv.notify_one();
 		}
-		void PlayMusic(const std::string path, const int volume) override
+		void PlayMusic(const std::string& path, const int volume) override
 		{
 			std::lock_guard<std::mutex>guard(m_Mutex);
 			assert((m_Tail + 1) % MAX_PENDING != m_Head);
@@ -56,9 +57,10 @@ namespace dae
 			m_Cv.notify_one();
 		}
 
-		void Pause() override { pauseAudio(); }
-		void UnPause() override { unpauseAudio(); }
-
+		void Pause() override { pauseAudio(); m_IsPaused = true; }
+		void UnPause() override { unpauseAudio(); m_IsPaused = false; }
+		void TogglePause() override;
+		
 		void Init() override { m_Head = 0; m_Tail = 0; m_IsMuted = false; }
 
 		void Mute() override { m_IsMuted = true; }
@@ -96,6 +98,7 @@ namespace dae
 		std::thread m_Thread;
 		std::condition_variable m_Cv;
 		bool m_IsMuted;
+		bool m_IsPaused;
 	};
 }
 

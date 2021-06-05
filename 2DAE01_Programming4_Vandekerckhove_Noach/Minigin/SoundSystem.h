@@ -19,10 +19,11 @@ namespace dae
 	{
 	public:
 		virtual ~SoundSystem() = default;
-		virtual void PlaySound(const std::string path, const int volume) = 0;
-		virtual void PlayMusic(const std::string path, const int volume) = 0;
+		virtual void PlaySound(const std::string& path, const int volume) = 0;
+		virtual void PlayMusic(const std::string& path, const int volume) = 0;
 		virtual void Pause() = 0;
 		virtual void UnPause() = 0;
+		virtual void TogglePause() = 0;
 		virtual void Init() = 0;
 		virtual void Update() = 0;
 		virtual void Mute() = 0;
@@ -33,20 +34,17 @@ namespace dae
 	class NullAudioSystem : public SoundSystem
 	{
 	public:
-		void PlayMusic(const std::string path, const int volume) override
+		void PlayMusic(const std::string& , const int ) override
 		{
 			std::cout << "no SoundSystem registered\n";
-			UNREFERENCED_PARAMETER(path);
-			UNREFERENCED_PARAMETER(volume);
 		}
-		void PlaySound(const std::string path, const int volume) override
+		void PlaySound(const std::string& , const int ) override
 		{
 			std::cout << "no SoundSystem registered\n";
-			UNREFERENCED_PARAMETER(path);
-			UNREFERENCED_PARAMETER(volume);
 		}
 		void Pause() override { std::cout << "no sound system\n"; }
 		void UnPause() override { std::cout << "no sound system\n"; }
+		void TogglePause() override { std::cout << "no sound system\n"; }
 		void Init() override { std::cout << "no sound system\n"; }
 		void Update() override { }
 		void Mute() override { std::cout << "Mute\n"; }
@@ -59,27 +57,30 @@ namespace dae
 	public:
 		LoggingSoundSystem(SoundSystem* ss) : m_pSoundSystem(ss){}
 		~LoggingSoundSystem() { delete m_pSoundSystem; m_pSoundSystem = nullptr; };
-		void PlayMusic(const std::string path, const int volume) override
+		void PlayMusic(const std::string& path, const int volume) override
 		{
 			std::cout << "playing music " << path << "at volume " << volume << "\n";
 			m_pSoundSystem->PlayMusic(path, volume);
 		}
-		void PlaySound(const std::string path, const int volume) override
+		void PlaySound(const std::string& path, const int volume) override
 		{
 			std::cout << "playing sound " << path << "at volume " << volume << "\n";
 			m_pSoundSystem->PlaySound(path, volume);
 		}
 		void Pause() override { std::cout << "pausing\n"; m_pSoundSystem->Pause(); }
 		void UnPause() override { std::cout << "unpausing\n"; m_pSoundSystem->UnPause(); }
+		void TogglePause() override { std::cout << "toggle pausing\n"; m_pSoundSystem->TogglePause();
+		}
 		void Init() override { std::cout << "init soundsystem\n"; m_pSoundSystem->Init(); }
 		void Update() override { m_pSoundSystem->Update(); }
 
 		void Mute() override { std::cout << "Mute\n"; m_pSoundSystem->Mute(); }
 		void UnMute() override { std::cout << "UnMute\n"; m_pSoundSystem->UnMute(); }
-		void ToggleMute() override { std::cout << "Mute\n"; m_pSoundSystem->ToggleMute(); }
+		void ToggleMute() override { std::cout << "toggle Mute\n"; m_pSoundSystem->ToggleMute(); }
 	private:
 		SoundSystem* m_pSoundSystem;
 	};
+	
 	//class OpenGLAudioSystem : public SoundSystem
 	//{
 	//public:

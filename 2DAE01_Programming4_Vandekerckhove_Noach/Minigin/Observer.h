@@ -5,13 +5,6 @@ namespace dae
 	enum class Event
 	{
 		ActorDied,
-		ActorTakeDamage,
-		ActorHealthChange,
-		ActorFell,
-		ActorMoveUpLeft,
-		ActorMoveUpRight,
-		ActorMoveDownLeft,
-		ActorMoveDownRight,
 		ActorHitPurple,
 		ActorHitGreen,
 		ColorChange,

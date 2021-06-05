@@ -1,7 +1,5 @@
 #pragma once
-#include "Renderer.h"
 #include <vector>
-#include "Singleton.h"
 #pragma warning(push)
 #pragma warning (disable:4201)
 #include <glm/glm.hpp>
@@ -16,6 +14,7 @@ namespace dae
     class HexagonalGridManager final
     {
     public:
+        HexagonalGridManager();
     	//load
         void loadFromFileRawHex(const std::string& file);
         void loadFromFileShape(const std::string& file);
@@ -44,13 +43,14 @@ namespace dae
 
         void SetNewLevel(int maxSteps, bool goBack);
    
-        void Init(int maxSteps, bool goBack);
+     
     private:
         void addHex(Hex hex) { m_HexGrid.push_back(hex); }
+        void Init();
     	
         std::vector<Hex> m_HexGrid;
-        glm::vec2 m_GridBasePos{ 320,140 };
-        int m_Radius{ 30 };
+        glm::vec2 m_GridBasePos{};
+        int m_Radius{ };
         int m_MaxSteps{};
         int m_Amount{};
         bool m_CanChangeBack{};

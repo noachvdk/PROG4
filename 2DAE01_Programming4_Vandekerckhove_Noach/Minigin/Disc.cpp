@@ -18,6 +18,7 @@ Disc::Disc(const glm::vec2& originPos, const int rad, bool side)
 	, m_Pos(0, 0)
 	, m_StartPos(0,0)
 	, m_Origin(originPos)
+	, m_StartOrigin(originPos)
 	, m_Anim(nullptr)
 {
 	SetRandomCoord(dae::LevelManager::GetInstance().GetAmountOfSteps());
@@ -29,14 +30,14 @@ Disc::Disc(const glm::vec2& originPos, const int rad, bool side)
 void Disc::Reset()
 {
 	m_Used = false;
-	m_Coord = m_StartCoord;
 	m_SteppedOn = false;
-	m_Pos = m_StartPos;
+	m_Active = false;
+	SetRandomCoord(dae::LevelManager::GetInstance().GetAmountOfSteps());
 }
 
 void Disc::Update()
 {
-	if (m_SteppedOn)
+	if (m_Active)
 	{
 		auto dir = m_Origin - m_Pos;
 		dir = glm::normalize(dir);
@@ -90,8 +91,9 @@ void Disc::SetRandomCoord(int max)
 
 void Disc::CalcPos()
 {
+	m_Origin = m_StartOrigin;
 	const glm::vec2 offset{ (glm::sin(60 * M_PI / 180) * 2) * m_Radius, m_Radius * 1.5f };
-	glm::vec2 basePos{ m_Origin.x + (offset.x * m_Coord.y) , m_Origin.y + (offset.y * m_Coord.x) };
+	glm::vec2 basePos{ m_StartOrigin.x + (offset.x * m_Coord.y) , m_StartOrigin.y + (offset.y * m_Coord.x) };
 	if ((int(m_Coord.x) % 2) != 0)
 		basePos.x += offset.x / 2; //push odd rows by half the offset to avoid overlapping
 	m_Origin.y -= (offset.y);

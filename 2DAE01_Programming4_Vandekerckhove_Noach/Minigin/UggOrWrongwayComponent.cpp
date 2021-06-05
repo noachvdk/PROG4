@@ -118,7 +118,7 @@ void UggOrWrongwayComponent::UpdateComponent()
 
 void UggOrWrongwayComponent::Notify(Event event)
 {
-	if (event == Event::LevelFinished || event == Event::ActorDied || event == Event::ActorHitPurple)
+	if (event == Event::LevelFinished || event == Event::ActorDied || event == Event::ActorHitPurple || event == Event::Reset)
 	{
 		Die();
 	}

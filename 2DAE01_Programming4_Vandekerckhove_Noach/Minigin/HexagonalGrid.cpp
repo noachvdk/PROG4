@@ -3,16 +3,21 @@
 #include <fstream>
 #include "Logger.h"
 #include "ResourceManager.h"
-
-
+#include "Renderer.h"
 using namespace dae;
 
-void HexagonalGridManager::Init(int maxSteps, bool goBack)
+
+HexagonalGridManager::HexagonalGridManager()
+	: m_CanChangeBack(false)
+	, m_MaxSteps(0)
+	, m_Radius(30)
+	,m_GridBasePos(320,140)
 {
-	m_CanChangeBack = goBack;
-	m_MaxSteps = maxSteps;
-	m_Radius = 30;
-	m_GridBasePos = { 320, 140 };
+
+}
+
+void HexagonalGridManager::Init()
+{
 	m_HexTextures[0] = ResourceManager::GetInstance().LoadTexture("HexYellow.png");
 	m_HexTextures[1] = ResourceManager::GetInstance().LoadTexture("HexPurple.png");
 	m_HexTextures[2] = ResourceManager::GetInstance().LoadTexture("HexPink.png");
@@ -20,11 +25,11 @@ void HexagonalGridManager::Init(int maxSteps, bool goBack)
 
 void HexagonalGridManager::changeClosestHexByPos(const glm::vec2& pos)
 {
-	const glm::vec2 coord{ getHexByPos(pos)->GetPos() };
+	const glm::vec2 hexPos{ getHexByPos(pos)->GetPos() };
 
 	for(auto& hex : m_HexGrid)
 	{
-		if (coord == hex.GetPos())
+		if (hexPos == hex.GetPos())
 			hex.NextTile();
 	}
 }
@@ -40,11 +45,11 @@ void HexagonalGridManager::changeClosestHexByCoord(const glm::vec2& coord)
 
 void HexagonalGridManager::ResetClosestHexByPos(const glm::vec2& pos)
 {
-	const glm::vec2 coord{ getHexByPos(pos)->GetPos() };
+	const glm::vec2 hexPos{ getHexByPos(pos)->GetPos() };
 	
 	for (auto& hex : m_HexGrid)
 	{
-		if (coord == hex.GetPos())
+		if (hexPos == hex.GetPos())
 			hex.ResetTex();
 	}
 }
@@ -85,7 +90,7 @@ bool HexagonalGridManager::GetIsHexAlreadyFlippedByCoord(const glm::vec2& coord)
 
 bool HexagonalGridManager::GetIsHexAlreadyFlippedByPos(const glm::vec2& pos) const
 {
-	const glm::vec2 coord{ getHexByPos(pos)->GetPos() };
+	const glm::vec2 coord{ getHexByPos(pos)->r,getHexByPos(pos)->c };
 	return GetIsHexAlreadyFlippedByCoord(coord);
 }
 
@@ -181,6 +186,7 @@ void HexagonalGridManager::Render()
 
 void HexagonalGridManager::loadFromFileRawHex(const std::string& path)
 {
+	Init();
 	std::ifstream file{ dae::ResourceManager::GetInstance().GetFullPath() + path };
 	std::string text;
 	if (!file)
@@ -198,11 +204,12 @@ void HexagonalGridManager::loadFromFileRawHex(const std::string& path)
 
 void HexagonalGridManager::loadFromFileShape(const std::string& path)
 {
-	std::ifstream file{ dae::ResourceManager::GetInstance().GetFullPath() + path };
+	Init();
+	std::ifstream file{ ResourceManager::GetInstance().GetFullPath() + path };
 	if (!file)
 		Logger::GetInstance().Log(LogType::Error, "file not opened " + ResourceManager::GetInstance().GetFullPath() + path);
 
-	std::string text;
+	std::string text{};
 	file >> text;
 	int size{};
 	file >> size;
@@ -253,7 +260,7 @@ const std::shared_ptr<Texture2D> HexagonalGridManager::GetHexTexture(int id) con
 	return m_HexTextures[i];
 }
 
-std::shared_ptr<Hex> dae::HexagonalGridManager::getHexByCoord(const glm::vec2& coord) const
+std::shared_ptr<Hex> HexagonalGridManager::getHexByCoord(const glm::vec2& coord) const
 {
 	std::shared_ptr<Hex> currentHex = nullptr;
 

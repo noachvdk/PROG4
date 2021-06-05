@@ -39,7 +39,6 @@ namespace dae
 		bool m_Move;
 		bool m_Initialized;
 		bool m_OnDisc;
-		bool m_IsDead;
 		//Stunned
 		bool m_isStunned;
 		bool m_Switch;

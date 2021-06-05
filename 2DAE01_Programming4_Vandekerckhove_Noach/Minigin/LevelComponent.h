@@ -5,7 +5,7 @@
 namespace dae
 {
 	class FontComponent;
-	class LevelComponent final : public BaseComponent
+	class LevelComponent final : public BaseComponent, public Observer
 	{
 	public:
 		LevelComponent();
@@ -20,11 +20,14 @@ namespace dae
 		void RenderComponent() override;
 		void PostAddedToGameObject() override;
 
-		void NextLevel();
+		void Notify(Event event) override;
+		
 
 	private:
+		void NextLevel();
+		
 		int m_LevelID;
-		glm::vec2 m_Offset{ 550,50 }; //TextOffset
+		glm::vec2 m_Offset{ 10,50 }; //TextOffset
 		FontComponent* m_pFontComponent;
 	};
 

@@ -17,6 +17,7 @@
 #include "LevelManager.h"
 #include "Logger.h"
 #include "CollisionManager.h"
+#include "ServiceLocator.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -103,7 +104,8 @@ void dae::Minigin::Run()
 
 	// tell the resource manager where he can find the game data
 	ResourceManager::GetInstance().Init("../Data/");
-	ServiceLocator::RegisterSoundSystem(new LoggingSoundSystem( new SDLAudioSystem()));
+	ServiceLocator::RegisterSoundSystem(new SDLAudioSystem());
+	//ServiceLocator::RegisterSoundSystem(new LoggingSoundSystem( new SDLAudioSystem()));
 	GameSettings::GetInstance().SetGameMode(GameMode::NotChosen);
 	LoadGame();
 

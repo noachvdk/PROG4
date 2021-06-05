@@ -1,6 +1,6 @@
 #include "MiniginPCH.h"
 #include "QbertGame.h"
-
+#include "VisualBenchmarking.h"
 #include "LevelManager.h"
 #include "SceneManager.h"
 #include "AllComponents.h"
@@ -18,20 +18,21 @@ using namespace dae;
 void QbertGame::LoadGame() const
 {
 	LevelManager::GetInstance().LoadLevelWithShape("Shape.txt", "LevelSettings.txt");
+
 	//MainMenu
 	{
 		auto& MainMenuScene = SceneManager::GetInstance().CreateScene("MainMenu");
 		auto go = std::make_shared<GameObject>();
 		const auto background = new TextureComponent{ "background.jpg" };
 		go->AddComponent(background);
-		auto howTo1 = new FontComponent{ "Lingua.otf", 18,"P1 : AEQD to move(azerty)" };
-		howTo1->AddOffset(200, 250);
-		auto howTo2 = new FontComponent{ "Lingua.otf", 18,"P2 : (keypad) 3 to die, 1/2/3 add points" };
-		howTo2->AddOffset(200, 270);
-		auto howToController = new FontComponent{ "Lingua.otf", 18,"Controller : A/X/Y/B to move" };
-		howToController->AddOffset(200, 290);
-		auto howToBasics = new FontComponent{ "Lingua.otf", 18,"Escape(start) to quit and P(back) to return to menu" };
-		howToBasics->AddOffset(200, 310);
+		auto howTo1 = new FontComponent{ "Cooper.ttf", 18,"P1 : AEQD to move(azerty)" };
+		howTo1->AddOffset(150, 250);
+		auto howTo2 = new FontComponent{ "Cooper.ttf", 18,"P2 : (keypad) 3 to die, 1/2/3 add points" };
+		howTo2->AddOffset(150, 270);
+		auto howToController = new FontComponent{ "Cooper.ttf", 18,"Controller : A/X/Y/B to move" };
+		howToController->AddOffset(150, 290);
+		auto howToBasics = new FontComponent{ "Cooper.ttf", 18,"Escape(start) to quit and P(back) to (un)mute music" };
+		howToBasics->AddOffset(150, 310);
 		auto menu = new MainMenuUIComponent{};
 		menu->AddOption("SinglePlayer",GameMode::SinglePlayer);
 		menu->AddOption("Coop", GameMode::Coop);
@@ -71,11 +72,11 @@ void QbertGame::LoadGame() const
 
 		//Player 1 
 		auto PlayerOneObject = std::make_shared<GameObject>();
-		const auto pointComp = new PointComponent{ "Lingua.otf",16 };
+		const auto pointComp = new PointComponent{ "Cooper.ttf",16 };
 		pointComp->AddTextOffset(550, 75);
 		const auto characterComp = new CharacterComponent();
 		auto playerCollider = new ColliderComponent(ColliderLayer::Friendly);
-		const auto liveComp = new LivesComponent{ 3,"Lingua.otf",16,true };
+		const auto liveComp = new LivesComponent{ 3,"Cooper.ttf",16,true };
 		liveComp->AddTextOffset(10, 75);
 		auto multiQbertAnim = new MultiAnimationComponent(AnimState::FacingForward);
 		multiQbertAnim->AddAnimationComponent(std::make_shared<AnimationComponent>("QbertFacingAway.png", 1, 2, .5f, AnimState::FacingAway));
@@ -197,6 +198,8 @@ void QbertGame::LoadGame() const
 		LevelObj->AddComponent(level);
 		LevelObj->AddComponent(Levelsubject);
 		CoopLevelScene.Add(LevelObj);
+		Player01subject->AddObserver(level);
+		Player02subject->AddObserver(level);
 
 		//fps
 		auto go = std::make_shared<GameObject>();
@@ -207,11 +210,11 @@ void QbertGame::LoadGame() const
 		const auto characterComp01 = new CharacterComponent();
 		{
 			auto Player01Object = std::make_shared<GameObject>();
-			const auto pointComp01 = new PointComponent{ "Lingua.otf",16 };
+			const auto pointComp01 = new PointComponent{ "Cooper.ttf",16 };
 			pointComp01->AddTextOffset(550, 75);
 			
 			auto playerCollider01 = new ColliderComponent(ColliderLayer::Friendly);
-			const auto liveComp01 = new LivesComponent{ 3,"Lingua.otf",16,true };
+			const auto liveComp01 = new LivesComponent{ 3,"Cooper.ttf",16,true };
 			liveComp01->AddTextOffset(10, 75);
 			auto multiQbertAnim01 = new MultiAnimationComponent(AnimState::FacingForward);
 			multiQbertAnim01->AddAnimationComponent(std::make_shared<AnimationComponent>("QbertFacingAway.png", 1, 2, .5f, AnimState::FacingAway));
@@ -236,11 +239,11 @@ void QbertGame::LoadGame() const
 		const auto characterComp02 = new CharacterComponent();
 		{
 			auto Player02Object = std::make_shared<GameObject>();
-			const auto pointComp02 = new PointComponent{ "Lingua.otf",16 };
+			const auto pointComp02 = new PointComponent{ "Cooper.ttf",16 };
 			pointComp02->AddTextOffset(550, 100);
 			
 			auto playerCollider02 = new ColliderComponent(ColliderLayer::Friendly);
-			const auto liveComp02 = new LivesComponent{ 3,"Lingua.otf",16,true };
+			const auto liveComp02 = new LivesComponent{ 3,"Cooper.ttf",16,true };
 			liveComp02->AddTextOffset(10, 100);
 			auto multiQbertAnim02 = new MultiAnimationComponent(AnimState::FacingForward);
 			multiQbertAnim02->AddAnimationComponent(std::make_shared<AnimationComponent>("QbertFacingAway.png", 1, 2, .5f, AnimState::FacingAway));
@@ -388,11 +391,11 @@ void QbertGame::LoadGame() const
 		const auto characterComp01 = new CharacterComponent();
 		{
 			auto Player01Object = std::make_shared<GameObject>();
-			const auto pointComp01 = new PointComponent{ "Lingua.otf",16 };
+			const auto pointComp01 = new PointComponent{ "Cooper.ttf",16 };
 			pointComp01->AddTextOffset(550, 75);
 
 			auto playerCollider01 = new ColliderComponent(ColliderLayer::Friendly);
-			const auto liveComp01 = new LivesComponent{ 3,"Lingua.otf",16,true };
+			const auto liveComp01 = new LivesComponent{ 3,"Cooper.ttf",16,true };
 			liveComp01->AddTextOffset(10, 75);
 			auto multiQbertAnim01 = new MultiAnimationComponent(AnimState::FacingForward);
 			multiQbertAnim01->AddAnimationComponent(std::make_shared<AnimationComponent>("QbertFacingAway.png", 1, 2, .5f, AnimState::FacingAway));

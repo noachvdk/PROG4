@@ -1,7 +1,5 @@
 #include "MiniginPCH.h"
 #include "CharacterComponent.h"
-
-#include "ColliderComponent.h"
 #include "LevelManager.h"
 #include "LivesComponent.h"
 #include "SubjectComponent.h"
@@ -10,6 +8,8 @@
 #include "Logger.h"
 #include "PlayerComponent.h"
 #include "MultiAnimationComponent.h"
+#include "SoundSystem.h"
+#include "ServiceLocator.h"
 
 using namespace dae;
 
@@ -18,7 +18,6 @@ CharacterComponent::CharacterComponent()
 	, m_Move(false)
 	, m_Initialized(false)
 	, m_OnDisc(false)
-	, m_IsDead(false)
 	, m_isStunned(false)
 	, m_Switch(false)
 	, m_StunTimer(0.0f)
@@ -97,11 +96,11 @@ void CharacterComponent::move(direction dir)
 			currentHexCoord.y += 1;
 		m_FallDownDir.x = fallDownOffset;
 	}
-	const auto subject = GetParentObject()->GetComponent<SubjectComponent>();
 	//move to hex/Disc or fall off
 	if (levelmanager.GetIsHexValidByCoord(currentHexCoord))
 	{
 		m_NextPos = levelmanager.GetHexPosByCoord(currentHexCoord);
+		ServiceLocator::GetSoundSystem().PlaySound("../Data/sounds/jump.wav", SDL_MIX_MAXVOLUME);
 	}
 	else if(levelmanager.GetIsDiscValidByCoord(currentHexCoord) && !levelmanager.GetIsDiscSteppedOnByCoord(currentHexCoord))
 	{
@@ -110,15 +109,12 @@ void CharacterComponent::move(direction dir)
 		m_OnDisc = true;
 		m_DiscMoveSpeed = levelmanager.GetDiscMoveSpeed();
 		m_CurrentCoord = currentHexCoord;
+		LevelManager::GetInstance().SetDiscSteppedOn(m_CurrentCoord);
 	}
 	else
 	{
 		m_IsFallingDown = true;
-		if (subject) subject->Notify(Event::ActorFell);
-		auto lives = GetParentObject()->GetComponent<LivesComponent>();
-		if (lives) lives->DecreaseHealth();
-		auto collider = GetParentObject()->GetComponent<ColliderComponent>();
-		if (collider) collider->SetDisabled();
+		ServiceLocator::GetSoundSystem().PlaySound("../Data/sounds/fall.wav", SDL_MIX_MAXVOLUME);
 	}
 
 	//std::cout << currentHexCoord.x << " and " << currentHexCoord.y << "\n";
@@ -161,10 +157,8 @@ void CharacterComponent::UpdateComponent()
 		if(m_Anim)
 			m_Anim->SetPos(m_CurrentPos.x, m_CurrentPos.y);
 	}
-
-	if (m_IsDead)
-		return;
-
+	
+	const auto subject = GetParentObject()->GetComponent<SubjectComponent>();
 	//Fall down 
 	if (m_IsFallingDown)
 	{
@@ -173,8 +167,8 @@ void CharacterComponent::UpdateComponent()
 		{
 			m_FallTimer = 0;
 			m_IsFallingDown = false;
-			auto collider = GetParentObject()->GetComponent<ColliderComponent>();
-			if (collider) collider->SetEnabled();
+			auto lives = GetParentObject()->GetComponent<LivesComponent>();
+			if (lives) lives->DecreaseHealth();
 			Die();
 			return;
 		}
@@ -219,8 +213,6 @@ void CharacterComponent::UpdateComponent()
 			m_Switch = false;
 			if (m_Anim)
 				m_Anim->SetAnimState(AnimState::FacingForward);
-			auto collider = GetParentObject()->GetComponent<ColliderComponent>();
-			if (collider) collider->SetEnabled();
 			return;
 		}
 		return;
@@ -242,7 +234,6 @@ void CharacterComponent::UpdateComponent()
 			m_CurrentPos = m_NextPos;
 			if (!levelmanager.GetIsHexFlippedByPos(m_NextPos))
 			{
-				const auto subject = GetParentObject()->GetComponent<SubjectComponent>();
 				if (subject)
 					subject->Notify(Event::ColorChange);
 				levelmanager.ChangeHexColorByPos(m_NextPos);
@@ -293,8 +284,9 @@ void CharacterComponent::UpdateComponent()
 		{
 			m_DiscDelay = false;
 			m_Move = false;
-			LevelManager::GetInstance().SetDiscSteppedOn(m_CurrentCoord);
+			LevelManager::GetInstance().SetDiscActivated(m_CurrentCoord);
 			m_DiscDelayTime = 0.0f;
+			ServiceLocator::GetSoundSystem().PlaySound("../Data/sounds/lift.wav", SDL_MIX_MAXVOLUME);
 		}
 	}
 }
@@ -305,7 +297,7 @@ void CharacterComponent::PostAddedToGameObject()
 
 void CharacterComponent::Notify(Event event)
 {
-	if (event == Event::LevelFinished || event == Event::ActorDied)
+	if (event == Event::LevelFinished || event == Event::ActorDied || event == Event::Reset)
 		Die();
 	else if (event == Event::ActorHitPurple)
 		CollisionWithPurpleEnemy();
@@ -315,25 +307,28 @@ void CharacterComponent::Notify(Event event)
 
 void CharacterComponent::Die()
 {
-	m_CurrentPos = m_StartPos;
-	m_NextPos = m_CurrentPos;
 	m_Move = false;
+	m_OnDisc = false;
 	m_isStunned = false;
+	m_Switch = false;
+	m_StunTimer = 0;
+	m_StunSwitchTimer = 0;
+	m_CurrentPos = m_StartPos;
+	m_NextPos = m_StartPos;
+	m_DiscDelay = false;
+	m_DiscDelayTime = 0;
 	m_IsFallingDown = false;
 	m_FallTimer = 0;
-	m_StunSwitchTimer = 0;
-	m_StunTimer = 0;
 	if (m_Anim)
 	{
 		m_Anim->SetAnimState(AnimState::FacingForward);
-		m_Anim->SetPos(m_CurrentPos.x, m_CurrentPos.y);
+		m_Anim->SetPos(m_StartPos.x, m_StartPos.y);
 	}
-	auto collider = GetParentObject()->GetComponent<ColliderComponent>();
-	if (collider) collider->SetEnabled();
 }
 
 void CharacterComponent::CollisionWithPurpleEnemy()
 {
+	ServiceLocator::GetSoundSystem().PlaySound("../Data/sounds/curse.wav", SDL_MIX_MAXVOLUME);
 	m_isStunned = true;
 	m_CurrentPos = m_NextPos;
 	m_Move = false;
@@ -343,8 +338,6 @@ void CharacterComponent::CollisionWithPurpleEnemy()
 		m_Anim->SetAnimState(AnimState::Invisible);		
 	}
 	Logger::GetInstance().Log(LogType::Info, "Hit purple enemy");
-	auto collider = GetParentObject()->GetComponent<ColliderComponent>();
-	if (collider) collider->SetDisabled();
 }
 
 void CharacterComponent::CollisionWithGreenEnemy() const

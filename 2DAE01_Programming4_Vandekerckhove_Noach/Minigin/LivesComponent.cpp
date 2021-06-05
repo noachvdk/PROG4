@@ -16,6 +16,7 @@ LivesComponent::LivesComponent(const int startingLives, const std::string& font,
 	, m_NeedsUpdate(false)
 {
 	m_pFontComponent = new FontComponent{ font,size," " };
+	m_pFontComponent->SetColor(122.0f, 250.0f, 50.f, 255.0f);
 }
 
 void LivesComponent::UpdateComponent()
@@ -31,7 +32,7 @@ void LivesComponent::UpdateComponent()
 			}
 			else
 			{
-				m_pFontComponent->SetText("Player " + std::to_string(parent->GetPlayerID() + 1) + " has " + std::to_string(m_CurrentLives) + " lives");
+				m_pFontComponent->SetText("P" + std::to_string(parent->GetPlayerID() + 1) + ": " + std::to_string(m_CurrentLives) + " lives");
 			}
 		}
 		m_NeedsUpdate = false;
@@ -50,7 +51,7 @@ void LivesComponent::Notify(Event event)
 	{
 		m_NeedsUpdate = true;
 	}
-	else if (event == Event::LevelFinished)
+	else if (event == Event::LevelFinished || event == Event::Reset)
 	{
 		m_CurrentLives = m_MaxLives;
 		m_IsDead = false;
@@ -71,10 +72,11 @@ void LivesComponent::AddTextOffset(const float x, const float y) const
 void LivesComponent::DecreaseHealth(int amount)
 {
 	m_CurrentLives -= amount;
-	const auto subject = GetParentObject()->GetComponent<SubjectComponent>();
+	
 	if (m_CurrentLives <= 0)
 	{
 		m_CurrentLives = m_MaxLives;
+		const auto subject = GetParentObject()->GetComponent<SubjectComponent>();
 		if (subject)
 			subject->Notify(Event::ActorDied);
 		GameSettings::GetInstance().SetGameMode(GameMode::NotChosen);

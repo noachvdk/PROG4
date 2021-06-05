@@ -106,7 +106,7 @@ void SlickOrSamComponent::UpdateComponent()
 
 void SlickOrSamComponent::Notify(Event event)
 {
-	if (event == Event::LevelFinished || event == Event::ActorDied)
+	if (event == Event::LevelFinished || event == Event::ActorDied || event == Event::Reset)
 	{
 		m_Catched = false;
 		Die();

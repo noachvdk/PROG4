@@ -7,6 +7,7 @@
 
 void dae::LevelSettings::LoadLevelSettings(const std::string& path)
 {
+	//TIME();
 	std::ifstream file{ dae::ResourceManager::GetInstance().GetFullPath() + path };
 	if (!file)
 		Logger::GetInstance().Log(LogType::Error, "file not opened " + ResourceManager::GetInstance().GetFullPath() + path);

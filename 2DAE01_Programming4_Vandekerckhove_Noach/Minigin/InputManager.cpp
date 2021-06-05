@@ -3,7 +3,7 @@
 #include <SDL.h>
 #include <algorithm>    // std::find
 #include <vector>  
-
+#include "ServiceLocator.h"
 #include "SceneManager.h"
 
 using namespace dae;
@@ -23,10 +23,12 @@ bool InputManager::ProcessInput()
 	if (IsPressedDown(ControllerButton::ButtonStart,0) || (IsKeyPressedDown(SDLK_ESCAPE)))
 		return false;
 
-	//if (IsPressedDown(ControllerButton::ButtonBack, 0) || (IsKeyPressedDown(SDLK_p)))
-	//{
+	if (IsPressedDown(ControllerButton::ButtonBack, 0) || (IsKeyPressedDown(SDLK_p)))
+		ServiceLocator::GetSoundSystem().ToggleMute();
+	
+	//only the level resets not the player and enemies
+	//if (IsPressedDown(ControllerButton::ButtonBack, 0) || (IsKeyPressedDown(SDLK_m)))
 	//	SceneManager::GetInstance().SetCurrentSceneName("MainMenu");
-	//}
 
 	if ((GetRightTrigger(0) > 0.0f) || (GetLeftTrigger(0) > 0.0f))
 		Rumble(0,GetLeftTrigger(0), GetRightTrigger(0));

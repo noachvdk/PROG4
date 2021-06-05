@@ -4,6 +4,8 @@
 #include "GameSettings.h"
 #include "Scene.h"
 #include "InputManager.h"
+#include "LevelManager.h"
+#include "Logger.h"
 
 void dae::SceneManager::Update()
 {
@@ -38,6 +40,7 @@ dae::Scene& dae::SceneManager::GetCurrentScene()
 		if (scene->GetName() == m_CurrentSceneName)
 			return *scene;
 	}
+	Logger::GetInstance().Log(LogType::Warning, "No scene with the name " + m_CurrentSceneName);
 	const auto scene = std::shared_ptr<Scene>(new Scene("Empty"));
 	return *scene;
 }

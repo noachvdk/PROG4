@@ -3,6 +3,8 @@
 #include "HexagonalGrid.h"
 #include "LevelSettings.h"
 #include "Singleton.h"
+#include <mutex>
+#include <thread>
 
 namespace dae
 {
@@ -45,13 +47,13 @@ namespace dae
 		glm::vec2 GetDiscTopPos()const;
 		float GetDiscMoveSpeed()const;
 		bool GetIsDiscSteppedOnByCoord(const glm::vec2& coord)const;
+		bool GetIsDiscActiveByCoord(const glm::vec2& coord)const;
 		int GetAmountOfDiscsRemaining() const;
 		//Set Disc
 		void SetDiscSteppedOn(const glm::vec2& coord)const;
-
+		void SetDiscActivated(const glm::vec2& coord)const;
 		//General Setters
 		void SetCurrentLevelID(int newID);
-		void NextLevel();
 		void ChangeHexColorByPos(const glm::vec2& pos);
 		//
 		void Render()const;
@@ -59,7 +61,6 @@ namespace dae
 	private:
 		friend class Singleton<LevelManager>;
 		LevelManager();
-
 		//LevelSettings
 		int m_CurrentLevelID;
 		static LevelSettings m_LevelSettings;
