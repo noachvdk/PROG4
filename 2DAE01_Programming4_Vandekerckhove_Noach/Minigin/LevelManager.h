@@ -41,6 +41,7 @@ namespace dae
 		
 		//Set Hex
 		void ResetHexByPos(const glm::vec2& pos)const { return m_HexGridManager.ResetClosestHexByPos(pos); }
+		void SetAllHexColors(const int texID) { return m_HexGridManager.SetAllHexColors(texID); }
 		//Get Disc
 		bool GetIsDiscValidByCoord(const glm::vec2& coord)const;
 		glm::vec2 GetDiscPosByCoord(const glm::vec2& coord)const;

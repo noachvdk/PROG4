@@ -38,6 +38,7 @@ namespace dae
         void changeClosestHexByPos(const glm::vec2& pos);
         void changeClosestHexByCoord(const glm::vec2& coord);
         void ResetClosestHexByPos(const glm::vec2& pos);
+        void SetAllHexColors(const int texID);
 
         void Render();
 

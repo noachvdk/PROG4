@@ -13,6 +13,7 @@ using namespace dae;
 FontComponent::FontComponent(const std::string& font, const unsigned int size, const std::string& text, bool moveWithParent)
 	: m_NeedsUpdate{true}
 	, m_MovesWithParent(moveWithParent)
+	, m_Visible(true)
 	, m_PosX{ 0.f }, m_PosY{ 0.f }
 	, m_OffsetX(0) , m_OffsetY(0)
 	, m_Color{ (Uint8)255.f, (Uint8)255.f, (Uint8)255.f, (Uint8)255.f }
@@ -25,7 +26,6 @@ FontComponent::FontComponent(const std::string& font, const unsigned int size, c
 FontComponent::~FontComponent()
 {
 	safeDelete(m_pTexture);
-	//safeDelete(m_pFont);
 }
 
 void FontComponent::CreateTexture()
@@ -66,7 +66,7 @@ void FontComponent::UpdateComponent()
 
 void FontComponent::RenderComponent()
 {
-	if (m_pTexture != nullptr)
+	if (m_pTexture != nullptr && m_Visible)
 		Renderer::GetInstance().RenderTexture(*m_pTexture, m_PosX, m_PosY);
 }
 

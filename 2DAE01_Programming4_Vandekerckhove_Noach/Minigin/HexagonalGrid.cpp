@@ -54,6 +54,14 @@ void HexagonalGridManager::ResetClosestHexByPos(const glm::vec2& pos)
 	}
 }
 
+void HexagonalGridManager::SetAllHexColors(const int texID)
+{
+	for (auto& hex : m_HexGrid)
+	{
+		hex.SetTexID(texID);
+	}
+}
+
 const glm::vec2 HexagonalGridManager::GetHexPosByCoord(const glm::vec2& coord) const
 {
 	for (auto& hex : m_HexGrid)

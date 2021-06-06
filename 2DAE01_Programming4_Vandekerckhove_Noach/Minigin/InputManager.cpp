@@ -20,7 +20,7 @@ bool InputManager::ProcessInput()
 	m_Event = SDL_Event(); //Reset 
 	SDL_PollEvent(&m_Event);
 
-	if (IsPressedDown(ControllerButton::ButtonStart,0) || (IsKeyPressedDown(SDLK_ESCAPE)))
+	if (IsPressedDown(ControllerButton::ButtonStart,0) || (IsKeyPressedDown(SDLK_ESCAPE)) || m_Event.type == SDL_QUIT)
 		return false;
 
 	if (IsPressedDown(ControllerButton::ButtonBack, 0) || (IsKeyPressedDown(SDLK_p)))

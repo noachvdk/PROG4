@@ -27,6 +27,7 @@ namespace dae
 
 		void SetText(const std::string& text);
 		void SetFont(const std::string& font, const unsigned int size);
+		void SetVisible(bool value) { m_Visible = value; }
 		void AddOffset(float x, float y);
 		void SetColor(float r, float g, float b, float a);
 		void CreateTexture();
@@ -34,6 +35,7 @@ namespace dae
 	private:
 		bool m_NeedsUpdate;
 		bool m_MovesWithParent;
+		bool m_Visible;
 		float m_PosX, m_PosY;
 		float m_OffsetX, m_OffsetY;
 		std::string m_Text;

@@ -26,13 +26,13 @@ void QbertGame::LoadGame() const
 		const auto background = new TextureComponent{ "background.jpg" };
 		go->AddComponent(background);
 		auto howTo1 = new FontComponent{ "Cooper.ttf", 18,"P1 : AEQD to move(azerty)" };
-		howTo1->AddOffset(150, 250);
+		howTo1->AddOffset(125, 250);
 		auto howTo2 = new FontComponent{ "Cooper.ttf", 18,"P2 : (keypad) 3 to die, 1/2/3 add points" };
-		howTo2->AddOffset(150, 270);
+		howTo2->AddOffset(125, 270);
 		auto howToController = new FontComponent{ "Cooper.ttf", 18,"Controller : A/X/Y/B to move" };
-		howToController->AddOffset(150, 290);
+		howToController->AddOffset(125, 290);
 		auto howToBasics = new FontComponent{ "Cooper.ttf", 18,"Escape(start) to quit and P(back) to (un)mute music" };
-		howToBasics->AddOffset(150, 310);
+		howToBasics->AddOffset(125, 310);
 		auto menu = new MainMenuUIComponent{};
 		menu->AddOption("SinglePlayer",GameMode::SinglePlayer);
 		menu->AddOption("Coop", GameMode::Coop);
@@ -64,7 +64,7 @@ void QbertGame::LoadGame() const
 		LevelObj->AddComponent(level);
 		LevelObj->AddComponent(Levelsubject);
 		LevelScene.Add(LevelObj);
-
+		Player01subject->AddObserver(level);
 		//fps
 		auto go = std::make_shared<GameObject>();
 		go->AddComponent(new FpsComponent{ "lingua.otf",24 });
@@ -381,7 +381,7 @@ void QbertGame::LoadGame() const
 		LevelObj->AddComponent(level);
 		LevelObj->AddComponent(Levelsubject);
 		VersusLevelScene.Add(LevelObj);
-
+		Player01subject->AddObserver(level);
 		//fps
 		auto go = std::make_shared<GameObject>();
 		go->AddComponent(new FpsComponent{ "lingua.otf",24 });

@@ -1,9 +1,7 @@
 #include "MiniginPCH.h"
 #include "LivesComponent.h"
 #include "FontComponent.h"
-#include "GameSettings.h"
 #include "PlayerComponent.h"
-#include "SceneManager.h"
 #include "SubjectComponent.h"
 
 using namespace dae;
@@ -14,6 +12,7 @@ LivesComponent::LivesComponent(const int startingLives, const std::string& font,
 	, m_IsDead(false)
 	, m_DisplayHealth(displayHealth)
 	, m_NeedsUpdate(false)
+	, m_pFontComponent(nullptr)
 {
 	m_pFontComponent = new FontComponent{ font,size," " };
 	m_pFontComponent->SetColor(122.0f, 250.0f, 50.f, 255.0f);
@@ -76,11 +75,9 @@ void LivesComponent::DecreaseHealth(int amount)
 	if (m_CurrentLives <= 0)
 	{
 		m_CurrentLives = m_MaxLives;
-		const auto subject = GetParentObject()->GetComponent<SubjectComponent>();
+		const auto subject = m_pParentObj->GetComponent<SubjectComponent>();
 		if (subject)
 			subject->Notify(Event::ActorDied);
-		GameSettings::GetInstance().SetGameMode(GameMode::NotChosen);
-		SceneManager::GetInstance().SetCurrentSceneName("MainMenu");
 	}
 	m_NeedsUpdate = true;
 	
